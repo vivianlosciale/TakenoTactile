@@ -8,6 +8,7 @@ const server = new WebSocket.Server({port: 8080}, () => {
 let sockets = [];
 server.on('connection', function connection(socket) {
     sockets.push(socket);
+    console.log("Connected");
     socket.on('message', function (msg) {
         console.log(msg.toString());
         socket.send(msg.toString());

@@ -1,17 +1,14 @@
 ﻿using UnityEngine;
 using WebSocketSharp;
+
 public class Client : MonoBehaviour
 {
+
     WebSocket ws;
     private void Start()
     {
-        ws = new WebSocket("ws://localhost:8080");
-        ws.Connect();
-        ws.OnMessage += (sender, e) =>
-        {
-            Debug.Log("Message Received from "+((WebSocket)sender).Url+", Data : "+e.Data);
-        };
     }
+
     private void Update()
     {
         if(ws == null)
@@ -21,6 +18,20 @@ public class Client : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             ws.Send("Hello");
-        }  
+        }
+        if (Input.touchCount > 0)
+        {
+            ws.Send("Touch");
+        }
+    }
+
+    public void Connect(string address)
+    {
+        ws = new WebSocket(address);
+        ws.Connect();
+        ws.OnMessage += (sender, e) =>
+        {
+            Debug.Log("Message Received from " + ((WebSocket)sender).Url + ", Data : " + e.Data);
+        };
     }
 }

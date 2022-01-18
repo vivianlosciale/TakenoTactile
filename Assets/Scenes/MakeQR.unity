@@ -219,7 +219,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   QRText: Truc
-  QRTexture: {fileID: 0}
+  address: ws://192.168.150.199:8080
 --- !u!4 &766036166
 Transform:
   m_ObjectHideFlags: 0

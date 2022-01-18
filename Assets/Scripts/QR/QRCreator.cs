@@ -7,10 +7,11 @@ using ZXing.QrCode;
 public class QRCreator : MonoBehaviour
 {
     public string QRText;
+    public string address;
 
     void OnGUI()
     {
-        Texture2D myQR = generateQR(QRText);
+        Texture2D myQR = generateQR(address);
         if (GUI.Button(new Rect(300, 300, 256, 256), myQR, GUIStyle.none)) { }
     }
 
