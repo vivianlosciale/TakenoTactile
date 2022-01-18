@@ -18,11 +18,12 @@ public class ReceivingMessage : MonoBehaviour
 
     void OnReceiveX(OscMessage message)
     {
+        Debug.Log(message);
         string res = "";
         foreach(object obj in message.values)
         {
             res += obj + " ";
         }
-        Debug.Log(res);
+        //Debug.Log(res);
     }
 }
