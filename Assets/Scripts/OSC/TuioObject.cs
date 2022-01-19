@@ -1,0 +1,6 @@
+﻿class TuioObject
+{
+    public TuioObject()
+    {
+    }
+}
