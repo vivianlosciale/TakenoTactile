@@ -2,43 +2,42 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using ZXing;
-using ZXing.QrCode;
 
 public class Scan : MonoBehaviour
 {
-    int currentCamIndex = 0;
-
-    private WebCamTexture camTexture;
+    
     public RawImage display;
     public Text text;
     public Client client;
+    
+    private int _currentCamIndex;
+    private WebCamTexture _camTexture;
 
     private void Start()
     {
+        _currentCamIndex = 0;
 
-        currentCamIndex = 0;
-
-        WebCamDevice device = WebCamTexture.devices[currentCamIndex];
-        camTexture = new WebCamTexture(device.name);
-        display.texture = camTexture;
-
-
-
-        camTexture.Play();
+        WebCamDevice device = WebCamTexture.devices[_currentCamIndex];
+        _camTexture = new WebCamTexture(device.name);
+        display.texture = _camTexture;
+        
+        _camTexture.Play();
+        
+        text.color = Color.white;
     }
 
     private void Update()
     {
-        if (camTexture.videoRotationAngle == 90 || camTexture.videoRotationAngle == 270)
+        if (_camTexture.videoRotationAngle == 90 || _camTexture.videoRotationAngle == 270)
         {
-            float antiRotate = -(180 - camTexture.videoRotationAngle);
+            float antiRotate = -(180 - _camTexture.videoRotationAngle);
             Quaternion quatRot = new Quaternion();
             quatRot.eulerAngles = new Vector3(0, 0, antiRotate);
             display.transform.rotation = quatRot;
         }
         else
         {
-            float antiRotate = -(360 - camTexture.videoRotationAngle);
+            float antiRotate = -(360 - _camTexture.videoRotationAngle);
             Quaternion quatRot = new Quaternion();
             quatRot.eulerAngles = new Vector3(0, 0, antiRotate);
             display.transform.rotation = quatRot;
@@ -48,8 +47,8 @@ public class Scan : MonoBehaviour
         {
             IBarcodeReader barcodeReader = new BarcodeReader();
             // decode the current frame
-            var result = barcodeReader.Decode(camTexture.GetPixels32(),
-              camTexture.width, camTexture.height);
+            var result = barcodeReader.Decode(_camTexture.GetPixels32(),
+                _camTexture.width, _camTexture.height);
             if (result != null)
             {
                 Debug.Log("DECODED TEXT FROM QR:" + result.Text);
@@ -57,27 +56,16 @@ public class Scan : MonoBehaviour
                 client.Connect(result.Text);
             }
         }
-        catch (Exception ex) { Debug.LogWarning(ex.Message); }
+        catch (Exception ex)
+        {
+            Debug.LogWarning(ex.Message);
+        }
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    private void OnDisable()
+    {
+        _camTexture.Stop();
+    }
 
 
     /*    public Text text;
@@ -166,7 +154,7 @@ public class Scan : MonoBehaviour
             GUI.DrawTexture(screenRect, camTexture, ScaleMode.ScaleToFit);
 
 
-        // do the reading — you might want to attempt to read less often than you draw on the screen for performance sake
+        // do the reading ï¿½ you might want to attempt to read less often than you draw on the screen for performance sake
         try
         {
             IBarcodeReader barcodeReader = new BarcodeReader();

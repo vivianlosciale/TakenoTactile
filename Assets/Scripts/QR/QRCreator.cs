@@ -1,18 +1,24 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using ZXing;
 using ZXing.QrCode;
 
 public class QRCreator : MonoBehaviour
 {
-    public string QRText;
+
+    public GameObject qrRenderer;
     public string address;
+
+    private void Start()
+    {
+        qrRenderer.SetActive(false);
+    }
 
     void OnGUI()
     {
-        Texture2D myQR = generateQR(address);
-        if (GUI.Button(new Rect(300, 300, 256, 256), myQR, GUIStyle.none)) { }
+        Texture2D myQr = generateQR(address);
+        Rect rect = new Rect(0,0,myQr.width, myQr.height);
+        rect.center = new Vector2(Screen.width / 2, Screen.height / 2);
+        if (GUI.Button(rect, myQr, GUIStyle.none)) { }
     }
 
     private static Color32[] Encode(string textForEncoding, int width, int height)
