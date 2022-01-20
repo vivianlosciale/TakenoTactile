@@ -5,6 +5,7 @@ public enum MessageQuery
     None,
     Ping,
     RequestConnection,
+    Broadcast,
 }
 
 public static class QueryMethods

@@ -56,6 +56,16 @@ public class Server : MonoBehaviour
         if (_players.Count >= 4) StartGame();
     }
 
+    /*
+     * 
+     */
+    public void Broadcast(string message)
+    {
+        foreach (PlayerRoom player in _players)
+        {
+            player.ShowMessage(message);
+        }
+    }
     
     /*
      * Stop the login websocket.

@@ -9,6 +9,7 @@ public class MessageManager : MonoBehaviour
 {
     public OSC osc;
     public TextMeshPro text;
+    public Server server;
 
     List<TuioCursor> tuioCur = new List<TuioCursor>();
     List<TuioObject> tuioObj = new List<TuioObject>();
@@ -55,6 +56,10 @@ public class MessageManager : MonoBehaviour
                 foreach (TuioCursor t in tuioCur)
                 {
                     str = str + "detection numero " + t.Id + ": clic:" + t.isClick() + " drag:" + t.isDrag() + " longclic:" + t.isLongClick() + "\n";
+                    if (t.isClick())
+                    {
+                        server.Broadcast("Hello World !");
+                    }
                 }
                 text.SetText(str);
                 tuioCur = tuioCur.Except(deadTouches).ToList();

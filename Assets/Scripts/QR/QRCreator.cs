@@ -8,11 +8,6 @@ public class QRCreator : MonoBehaviour
     public GameObject qrRenderer;
     public string address;
 
-    private void Start()
-    {
-        qrRenderer.SetActive(false);
-    }
-
     void OnGUI()
     {
         Texture2D myQr = generateQR(address);
