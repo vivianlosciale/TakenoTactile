@@ -51,7 +51,7 @@ public class Scan : MonoBehaviour
                 _camTexture.width, _camTexture.height);
             if (result != null)
             {
-                Debug.Log("DECODED TEXT FROM QR:" + result.Text);
+                Debug.Log("DECODED TEXT FROM QR: " + result.Text);
                 text.text = result.Text;
                 client.Connect(result.Text);
             }

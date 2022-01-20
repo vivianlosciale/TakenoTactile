@@ -1,42 +1,102 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
+using WebSocketSharp.Server;
 
 public class Client : MonoBehaviour
 {
-
+    private static Client _client;
+    
     public GameObject unityCamera;
     public Text text;
 
-    private string _socketAddress;
-    private WebSocket _ws;
-    private string _id;
+    private WebSocketServer _ws;
+    private string _privateAddress;
     
+    
+    /*
+     * Private constructor to avoid outside instantiations.
+     */
+    private Client() {}
+
+
+    /*
+     * Create a singleton.
+     */
+    private void Start()
+    {
+        _client = this;
+        _privateAddress = OpenPrivateSocket();
+    }
+
+
+    /*
+     * Deactivate the camera gameObject.
+     * Open a private websocket to communicate with the server.
+     * Send the private websocket address to the server.
+     */
     public void Connect(string address)
     {
+        DeactivateCamera();
+        RequestConnection(address);
+    }
+
+    
+    /*
+     * Deactivate the camera gameObject.
+     */
+    private void DeactivateCamera()
+    {
         unityCamera.SetActive(false);
-        
-        _socketAddress = address;
-        _id = Device.GetIPv4();
-        _ws = new WebSocket(_socketAddress+"/login");
-        _ws.Connect();
-        _ws.Send("REQUEST_LOG " + _id);
-        _ws.OnMessage += MessageHandling;
+    }
+
+    
+    /*
+     * Open a private websocket.
+     * Return the websocket address.
+     */
+    private string OpenPrivateSocket()
+    {
+        string socketAddress = "ws://" + Device.GetIPv4() + ":8080";
+        string socketPath = "/player";
+        _ws = new WebSocketServer(socketAddress);
+        _ws.AddWebSocketService<ClientBehavior>(socketPath);
+        _ws.Start();
+        Debug.Log("Client started on " + socketAddress);
+        text.text = socketAddress + socketPath;
+        return socketAddress + socketPath;
+    }
+
+    
+    /*
+     * Connect to the server websocket.
+     * Send the private websocket address to the server.
+     */
+    private void RequestConnection(string serverAddress)
+    {
+        WebSocket server = new WebSocket(serverAddress);
+        server.Connect();
+        server.Send(QueryMethods.ToString(MessageQuery.RequestConnection) + " " + _privateAddress);
+        server.Close();
     }
     
-    private void MessageHandling(object sender, MessageEventArgs e)
+    
+    private class ClientBehavior : WebSocketBehavior
     {
-        string id = e.Data.Split(' ')[0];
-        if (id.Equals(_id))
+        protected override void OnMessage(MessageEventArgs e)
         {
-            string path = e.Data.Substring(id.Length + 1);
-            Debug.Log(path);
-            text.text = path;
-            _ws.Close();
-            _ws = new WebSocket(_socketAddress+path);
-            _ws.Connect();
-            _ws.Send("Hello privately in '" + path + "'");
+            MessageParser parser = new MessageParser(e.Data);
+            switch (parser.GetQuery())
+            {
+                case MessageQuery.Ping:
+                    Debug.Log("Server says: " + parser.GetBody());
+                    _client.text.text = parser.GetBody();
+                    Send(QueryMethods.ToString(MessageQuery.Ping) + " Received!");
+                    break;
+                default:
+                    Send(QueryMethods.ToString(MessageQuery.Ping) + " Unknown query!");
+                    break;
+            }
         }
-        
     }
 }

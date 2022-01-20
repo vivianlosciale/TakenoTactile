@@ -1,21 +1,32 @@
 using UnityEngine;
 using WebSocketSharp;
-using WebSocketSharp.Server;
 
 public class PlayerRoom
 {
 
-    public PlayerRoom(WebSocketServer ws, string socketServicePath)
+    private WebSocket _client;
+    private int _playerNumber;
+
+    public PlayerRoom(int playerNumber, string clientSocket)
     {
-        ws.AddWebSocketService<PlayerBehavior>(socketServicePath);
+        _playerNumber = playerNumber;
+        _client = new WebSocket(clientSocket);
+        _client.Connect();
+        _client.OnMessage += ClientMessageReceived;
+        _client.Send(QueryMethods.ToString(MessageQuery.Ping) + " Player" + _playerNumber);
     }
-    
-    private class PlayerBehavior : WebSocketBehavior {
-        
-        protected override void OnMessage(MessageEventArgs e) {
-            Debug.Log("Private message received from client: " + e.Data);
-            Send("OK thx!");
+
+    private void ClientMessageReceived(object sender, MessageEventArgs message)
+    {
+        MessageParser parser = new MessageParser(message.Data);
+        switch (parser.GetQuery())
+        {
+            case MessageQuery.Ping:
+                Debug.Log("Client said: " + parser.GetBody());
+                break;
+            default:
+                _client.Send(QueryMethods.ToString(MessageQuery.Ping) + " Unsupported query!");
+                break;
         }
-        
     }
 }
