@@ -59,7 +59,7 @@ public class Server : MonoBehaviour
     /*
      * 
      */
-    private void Broadcast(string message)
+    public void Broadcast(string message)
     {
         foreach (PlayerRoom player in _players)
         {

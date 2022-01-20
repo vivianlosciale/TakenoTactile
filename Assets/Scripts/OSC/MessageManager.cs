@@ -58,7 +58,7 @@ public class MessageManager : MonoBehaviour
                     str = str + "detection numero " + t.Id + ": clic:" + t.isClick() + " drag:" + t.isDrag() + " longclic:" + t.isLongClick() + "\n";
                     if (t.isClick())
                     {
-                        server.BroadcastMessage("Hello World !");
+                        server.Broadcast("Hello World !");
                     }
                 }
                 text.SetText(str);
