@@ -29,4 +29,9 @@ public class PlayerRoom
                 break;
         }
     }
+
+    public void ShowMessage(string message)
+    {
+        _client.Send(QueryMethods.ToString(MessageQuery.Broadcast) + " " + message);
+    }
 }

@@ -37,8 +37,11 @@ public class Client : MonoBehaviour
      */
     public void Connect(string address)
     {
+        text.text = "Before desactivate camera";
         DeactivateCamera();
+        text.text = "After desactivate camera";
         RequestConnection(address);
+        text.text = "After Request camera";
     }
 
     
@@ -92,6 +95,10 @@ public class Client : MonoBehaviour
                     Debug.Log("Server says: " + parser.GetBody());
                     _client.text.text = parser.GetBody();
                     Send(QueryMethods.ToString(MessageQuery.Ping) + " Received!");
+                    break;
+                case MessageQuery.Broadcast:
+                    Debug.Log("Server says: " + parser.GetBody());
+                    _client.text.text = parser.GetBody();
                     break;
                 default:
                     Send(QueryMethods.ToString(MessageQuery.Ping) + " Unknown query!");
