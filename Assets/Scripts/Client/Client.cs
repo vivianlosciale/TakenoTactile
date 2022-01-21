@@ -37,11 +37,8 @@ public class Client : MonoBehaviour
      */
     public void Connect(string address)
     {
-        text.text = "Before desactivate camera";
         DeactivateCamera();
-        text.text = "After desactivate camera";
         RequestConnection(address);
-        text.text = "After Request camera";
     }
 
     

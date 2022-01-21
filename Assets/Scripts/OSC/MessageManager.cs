@@ -18,8 +18,14 @@ public class MessageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        osc.SetAddressHandler("/tuio/2Dcur", generate2DMouseEvent);
-        osc.SetAddressHandler("/tuio/2Dobj", generate2DObjectEvent);
+        //osc.SetAddressHandler("/tuio/2Dcur", generate2DMouseEvent);
+        //osc.SetAddressHandler("/tuio/2Dobj", generate2DObjectEvent);
+        osc.SetAllMessageHandler(debugEvent);
+    }
+
+    private void debugEvent(OscMessage oscM)
+    {
+        text.SetText(oscM.ToString());
     }
 
     private void generate2DObjectEvent(OscMessage oscM)
@@ -89,16 +95,15 @@ public class MessageManager : MonoBehaviour
     private IEnumerator instantiateType(TuioCursor tuioEvent)
     {
         yield return new WaitForSeconds(1.0f);
-        if (tuioCur.Contains(tuioEvent))
-            if (!tuioEvent.AlreadyUpdate)
-                tuioEvent.State = CursorState.LONG_CLICK;
+        if (tuioCur.Contains(tuioEvent) && tuioEvent.State == TuioState.CLICK_DOWN)
+            tuioEvent.State = TuioState.LONG_CLICK;
     }
 
     private void updateCollection(List<string> idAlive)
     {
         deadTouches = tuioCur.FindAll(e => (!idAlive.Contains(e.Id.ToString())));
         foreach (TuioCursor t in deadTouches)
-            t.State = CursorState.CLICK_UP;
+            t.State = TuioState.CLICK_UP;
         //tuioCur.RemoveAll(e => (!idAlive.Contains(e.Id.ToString())));
     }
 

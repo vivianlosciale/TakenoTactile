@@ -1,4 +1,4 @@
-﻿public enum CursorState
+﻿public enum TuioState
 {
     CLICK_DOWN,
     CLICK_UP,
