@@ -1,20 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 using ZXing;
 using ZXing.QrCode;
 
 public class QRCreator : MonoBehaviour
 {
-
-    public GameObject qrRenderer;
+    public InputField addressInput;
+    public RawImage QRImage;
     public string address;
-
-    void OnGUI()
-    {
-        Texture2D myQr = generateQR(address);
-        Rect rect = new Rect(0,0,myQr.width, myQr.height);
-        rect.center = new Vector2(Screen.width / 2, Screen.height / 2);
-        if (GUI.Button(rect, myQr, GUIStyle.none)) { }
-    }
 
     private static Color32[] Encode(string textForEncoding, int width, int height)
     {
@@ -37,5 +30,20 @@ public class QRCreator : MonoBehaviour
         encoded.SetPixels32(color32);
         encoded.Apply();
         return encoded;
+    }
+
+    public void DisplayQR()
+    {
+        try
+        {
+            Texture2D myQr = generateQR(addressInput.text);
+            QRImage.texture = myQr;
+            address = addressInput.text;
+            QRImage.gameObject.SetActive(true);
+        } 
+        catch(System.ArgumentException e)   
+        {
+            Debug.LogWarning("Please specify an IP address [" + e.Message + "]");
+        }
     }
 }
