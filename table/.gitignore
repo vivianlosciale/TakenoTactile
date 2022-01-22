@@ -77,5 +77,6 @@ crashlytics-build.properties
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# Environment variables.
-.env
+# Settings files
+/UserSettings/EditorUserSettings.asset
+/ProjectSettings/ProjectVersion.txt
