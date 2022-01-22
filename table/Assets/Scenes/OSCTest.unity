@@ -163,8 +163,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 'Voici les detections:'
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -252,7 +252,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 2180264, guid: 2e498d1c8094910479dc3e1b768306a4, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -302,7 +302,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1170645694}
-  - component: {fileID: 1170645693}
   m_Layer: 0
   m_Name: Server
   m_TagString: Untagged
@@ -310,19 +309,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1170645693
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1170645692}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cdf5b3a022b3499dba0358ff3e315994, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qrRenderer: {fileID: 1743854685}
 --- !u!4 &1170645694
 Transform:
   m_ObjectHideFlags: 0
@@ -363,7 +349,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1452674821}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4d92013c117c6fe498e9cdf5b9f1736c, type: 3}
+  m_Script: {fileID: 11500000, guid: e1def49012ecdbb489496574d92aa154, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   inPort: 3333
@@ -476,51 +462,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &1743854685
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1743854687}
-  - component: {fileID: 1743854686}
-  m_Layer: 0
-  m_Name: Qr Renderer
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1743854686
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743854685}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1b5a703b6391f147b9a4955a6d23c45, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  qrRenderer: {fileID: 1743854685}
-  address: ws://localhost:8080
---- !u!4 &1743854687
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1743854685}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1928117651
 GameObject:
   m_ObjectHideFlags: 0
@@ -630,12 +571,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2130510434}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c412326d8137b354dba2cef3a8f825e3, type: 3}
+  m_Script: {fileID: 11500000, guid: 8639d56ee26c50c46b5911effc6ba903, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   osc: {fileID: 1452674822}
   text: {fileID: 676541132}
-  server: {fileID: 1170645693}
 --- !u!4 &2130510436
 Transform:
   m_ObjectHideFlags: 0
