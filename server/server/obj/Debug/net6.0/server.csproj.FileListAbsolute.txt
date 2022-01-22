@@ -1,0 +1,17 @@
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/server
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/server.deps.json
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/server.runtimeconfig.json
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/server.dll
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/ref/server.dll
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/server.pdb
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/bin/Debug/net6.0/websocket-sharp.dll
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.csproj.AssemblyReference.cache
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.GeneratedMSBuildEditorConfig.editorconfig
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.AssemblyInfoInputs.cache
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.AssemblyInfo.cs
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.csproj.CoreCompileInputs.cache
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.csproj.CopyComplete
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.dll
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/ref/server.dll
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.pdb
+/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/Debug/net6.0/server.genruntimeconfig.cache
