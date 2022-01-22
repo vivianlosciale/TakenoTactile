@@ -177,7 +177,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: df2a8ab0c8045cc4b8c832ade390297c, type: 2}
+  - {fileID: 2100000, guid: e2af190fd2489894ba7ff4b28ebb3089, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -233,7 +233,7 @@ Animator:
   m_GameObject: {fileID: 30007293}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1b5fea2583a3944438dc43b8e1f43cdb, type: 2}
+  m_Controller: {fileID: 9100000, guid: 5b11ce1021bff8a49bab4a4bd8e63fb1, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -251,10 +251,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 30007293}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b1e99a6b2f02cb40bc16ac135a677ed, type: 3}
+  m_Script: {fileID: 11500000, guid: c8596c5cadbe16f49911a879a13c1b8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 2
+  level: 1
 --- !u!1 &1205354309
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,7 +385,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1605138926}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c399bd8b0197b524ba6a467798efe469, type: 3}
+  m_Script: {fileID: 11500000, guid: be732513d1a358f4db22804978109173, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_radius: 5
@@ -536,7 +536,7 @@ GameObject:
   - component: {fileID: 1949726706}
   - component: {fileID: 1949726709}
   - component: {fileID: 1949726708}
-  - component: {fileID: 1949726707}
+  - component: {fileID: 1949726710}
   m_Layer: 0
   m_Name: Text (TMP)
   m_TagString: Untagged
@@ -563,22 +563,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 1}
   m_SizeDelta: {x: 20, y: 5}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1949726707
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1949726705}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c399bd8b0197b524ba6a467798efe469, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_radius: 5
-  m_arcDegrees: 360
-  m_angularOffset: 0
-  m_maxDegreesPerLetter: 5
 --- !u!114 &1949726708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -712,3 +696,19 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1949726710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1949726705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: be732513d1a358f4db22804978109173, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_radius: 5
+  m_arcDegrees: 360
+  m_angularOffset: 0
+  m_maxDegreesPerLetter: 5
