@@ -8,7 +8,6 @@ public class Scan : MonoBehaviour
     
     public RawImage display;
     public Text text;
-    public Client client;
     
     private int _currentCamIndex;
     private WebCamTexture _camTexture;
@@ -53,7 +52,7 @@ public class Scan : MonoBehaviour
             {
                 Debug.Log("DECODED TEXT FROM QR: " + result.Text);
                 text.text = result.Text;
-                client.Connect(result.Text);
+                //client.Connect(result.Text);
             }
         }
         catch (Exception ex)
