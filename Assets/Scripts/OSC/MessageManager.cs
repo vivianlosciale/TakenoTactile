@@ -10,6 +10,7 @@ public class MessageManager : MonoBehaviour
     public OSC osc;
     public TextMeshPro text;
     public Server server;
+    bool remove = true;
 
     List<TuioCursor> tuioCur = new List<TuioCursor>();
     List<TuioObject> tuioObj = new List<TuioObject>();
@@ -18,14 +19,27 @@ public class MessageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //osc.SetAddressHandler("/tuio/2Dcur", generate2DMouseEvent);
-        //osc.SetAddressHandler("/tuio/2Dobj", generate2DObjectEvent);
-        osc.SetAllMessageHandler(debugEvent);
+        osc.SetAddressHandler("/tuio/2Dcur", generate2DMouseEvent);
+        //osc.SetAddressHandler("/tuio/2Dobj", debugEvent);
     }
-
+    string s = "";
     private void debugEvent(OscMessage oscM)
     {
-        text.SetText(oscM.ToString());
+        string[] messageTab = getMessage(oscM).Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
+        List<string> tmp = new List<string>(messageTab);
+        switch (tmp[0])
+        {
+            case "alive":
+                s = oscM.ToString()+"\n";
+                break;
+            case "set":
+                s += oscM.ToString() + "\n";
+                break;
+            case "fseq":
+                s += oscM.ToString();
+                text.SetText(s);
+                break;
+        }
     }
 
     private void generate2DObjectEvent(OscMessage oscM)
