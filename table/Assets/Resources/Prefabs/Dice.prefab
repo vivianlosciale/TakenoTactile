@@ -233,7 +233,7 @@ GameObject:
   - component: {fileID: 7964215149989664028}
   - component: {fileID: 8013017725036635338}
   - component: {fileID: 4641671090769801290}
-  - component: {fileID: 1943644744430164491}
+  - component: {fileID: 3122245952107965151}
   m_Layer: 0
   m_Name: Dice
   m_TagString: Untagged
@@ -268,7 +268,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8468578245158417609}
-  m_Mesh: {fileID: -835688487210165693, guid: 35085e84d64f22e45bcf50007ec78012, type: 3}
+  m_Mesh: {fileID: -835688487210165693, guid: ee644dda756076245888f1f1272faef8, type: 3}
 --- !u!23 &7964215149989664028
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -288,7 +288,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c77c5f347a78c1a47b863321749fc934, type: 2}
+  - {fileID: 2100000, guid: 4aeee0a5349c5364b9ce0411de370630, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -340,7 +340,7 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 30
   m_Mesh: {fileID: -835688487210165693, guid: 35085e84d64f22e45bcf50007ec78012, type: 3}
---- !u!114 &1943644744430164491
+--- !u!114 &3122245952107965151
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -349,7 +349,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8468578245158417609}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 92154f4f1bb38ad4b9061a26bce2c515, type: 3}
+  m_Script: {fileID: 11500000, guid: e5881474037066640b53a605ca830d5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &8879933847443010580
