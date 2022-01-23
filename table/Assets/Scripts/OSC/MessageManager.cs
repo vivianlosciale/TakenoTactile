@@ -29,7 +29,7 @@ public class MessageManager : MonoBehaviour
         switch (tmp[0])
         {
             case "alive":
-                s = oscM.ToString()+"\n";
+                s = oscM.ToString() + "\n";
                 break;
             case "set":
                 s += oscM.ToString() + "\n";
@@ -74,7 +74,7 @@ public class MessageManager : MonoBehaviour
                 string str = "Voici les detections:\n";
                 foreach (TuioCursor t in tuioCur)
                 {
-                    str = str + "detection numero " + t.Id + ": clic:" + t.isClick() + " drag:" + t.isDrag() + " longclic:" + t.isLongClick() + "\n";
+                    str = str + "detection numero " + t.Id + ": clic:" + t.isClick() + " drag:" + t.isDrag() + " longclic:" + t.isLongClick() + " " + t.position + "\n";
                     if (t.isClick())
                     {
                         //server.Broadcast("Hello World !");

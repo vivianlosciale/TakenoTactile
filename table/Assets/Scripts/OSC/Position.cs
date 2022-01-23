@@ -18,4 +18,8 @@ class Position
         XCoord = x;
         YCoord = y;
     }
+    public override string ToString()
+    {
+        return $"Position({XCoord},{YCoord})"; ;
+    }
 }

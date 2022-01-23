@@ -5,8 +5,9 @@ abstract class TuioEntity
     protected TuioState previousState;
     protected TuioState state;
     private readonly int id;
+    private readonly Position pos;
     public int Id { get => id; }
-    private Position position;
+    public Position position { get => pos; }
     public TuioState State
     {
         get => state;
@@ -20,13 +21,13 @@ abstract class TuioEntity
     public TuioEntity(int id, float x, float y)
     {
         this.id = id;
-        position = new Position(x, y);
+        pos = new Position(x, y);
     }
 
     public void updateCoordinates(Vector2 newPosition)
     {
         
-        if (Vector2.Distance(newPosition, position.TUIOPosition) > 0.01f)
+        if (Vector2.Distance(newPosition, position.TUIOPosition) > 0.01f || state == TuioState.DRAG)
         {
             State = TuioState.DRAG;
             position.TUIOPosition = newPosition;
