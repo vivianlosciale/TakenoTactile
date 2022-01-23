@@ -154,6 +154,7 @@ PlayerSettings:
   androidMaxAspectRatio: 2.1
   applicationIdentifier:
     Android: com.UnNomAuPif.TakenoTactile
+    Standalone: com.UnNomAuPif.TakenoTactile
   buildNumber:
     Standalone: 0
     iPhone: 0

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using UnityEngine.UI;
 using WebSocketSharp;
 
@@ -10,6 +11,9 @@ public class TableClient : MonoBehaviour
     private WebSocket _serverSocket;
     private string _privateAddress;
     public InputField adresseInput;
+
+    public GameObject playerCountText;
+    private int playerCount;
         
     /*
      * Private constructor to avoid outside instantiations.
@@ -24,6 +28,7 @@ public class TableClient : MonoBehaviour
     {
         _table = this;
         _privateAddress = "ws://" + Device.GetIPv4() + ":8080";
+        playerCount = 0;
     }
 
 
@@ -32,9 +37,10 @@ public class TableClient : MonoBehaviour
      * Open a private websocket to communicate with the server.
      * Send the private websocket address to the server.
      */
-    public void Connect(string address)
+    public void Connect()
     {
-        RequestConnection(address);
+        Debug.Log(adresseInput.text);
+        RequestConnection(adresseInput.text);
     }
 
     
@@ -52,6 +58,12 @@ public class TableClient : MonoBehaviour
         _sender.Send(MessageQuery.TableConnection, _privateAddress);
     }
 
+    private void changePlayerCount()
+    {
+        playerCount++;
+        playerCountText.GetComponent<Text>().text = playerCount + " / 4";
+    }
+
     private void OnMessage(object sender, MessageEventArgs e)
     {
         MessageParser parser = new MessageParser(e.Data);
@@ -63,6 +75,10 @@ public class TableClient : MonoBehaviour
                 break;
             case MessageQuery.AcceptConnection:
                 Debug.Log("Server says: " + parser.GetBody());
+                break;
+            case MessageQuery.APlayerJoined:
+                Debug.Log("Server says: A player joined");
+                changePlayerCount();
                 break;
             default:
                 _sender.Send(MessageQuery.Ping, "Unknown query!");
