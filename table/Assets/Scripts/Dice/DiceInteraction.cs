@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DiceInteraction : MonoBehaviour
 {
-    private float moveSpeed = 30.0f;
+    private float moveSpeed = 10.0f;
     private float range = 5.0f;
     private float force = 17.5f;
     float cameraZDistance;
@@ -28,7 +28,6 @@ public class DiceInteraction : MonoBehaviour
         //follow mouse cursor
         Vector3 ScreenPosition = new Vector3(Input.mousePosition.x, Input.mousePosition.y, cameraZDistance);
         transform.position = Camera.main.ScreenToWorldPoint(ScreenPosition);
-        Debug.Log(Camera.main.ScreenToWorldPoint(ScreenPosition));
         //add rotation
         GetComponent<Rigidbody>().angularVelocity += new Vector3(Random.Range(-range, range), Random.Range(-range, range), Random.Range(-range, range));
         //add velocity from mouse
@@ -51,7 +50,7 @@ public class DiceInteraction : MonoBehaviour
         {
             GetComponent<MeshCollider>().enabled = false;
             float step = moveSpeed * Time.deltaTime;
-            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 10, 0), step);
+            transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 16.4f, 0), step);
         }
     }
 

@@ -3,7 +3,12 @@ guid: ee644dda756076245888f1f1272faef8
 ModelImporter:
   serializedVersion: 20200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: DiceMaterial
+    second: {fileID: 2100000, guid: 4aeee0a5349c5364b9ce0411de370630, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
