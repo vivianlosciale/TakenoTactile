@@ -1,6 +1,6 @@
-using takenoko_server.SocketRooms;
+using server.SocketRooms;
 
-namespace takenoko_server.Utils.Protocol;
+namespace server.Utils.Protocol;
 
 public class MessageSender
 {
@@ -37,6 +37,6 @@ public class MessageSender
                 Console.WriteLine("Message sent try "+tries+": "+message);
             }
         }
-        Console.Write("Message sent fait!");
+        Console.Write("Message sent failed!");
     }
 }

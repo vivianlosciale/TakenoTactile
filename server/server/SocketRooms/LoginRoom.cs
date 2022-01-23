@@ -1,7 +1,7 @@
-using takenoko_server.Utils.Protocol;
+using server.Utils.Protocol;
 using WebSocketSharp;
 
-namespace takenoko_server.SocketRooms;
+namespace server.SocketRooms;
 
 public class LoginRoom : SocketRoom
 {

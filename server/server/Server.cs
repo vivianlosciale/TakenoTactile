@@ -1,17 +1,18 @@
-using takenoko_server.Game;
-using takenoko_server.SocketRooms;
-using takenoko_server.Utils.Devices;
-using takenoko_server.Utils.Protocol;
+using server.Game;
+using server.SocketRooms;
+using server.Utils.Devices;
+using server.Utils.Protocol;
 using WebSocketSharp.Server;
 
-namespace takenoko_server;
+namespace server;
 
 public class Server
 {
     private const string LoginPath = "/login";
     private const string PlayerPath = "/player";
     private const string TablePath = "/table";
-    
+
+    private readonly string _socketAddress;
     private readonly WebSocketServer _ws;
     private readonly List<PlayerRoom> _players;
     private readonly TableRoom _table;
@@ -19,8 +20,8 @@ public class Server
 
     public Server()
     {
-        string socketAddress = "ws://"+Device.GetIPv4()+":8080";
-        _ws = new WebSocketServer(socketAddress);
+        _socketAddress = "ws://"+Device.GetIPv4()+":8080";
+        _ws = new WebSocketServer(_socketAddress);
         _players = new();
         _table = new TableRoom(this);
     }
@@ -33,7 +34,7 @@ public class Server
     {
         _ws.AddWebSocketService(LoginPath, () => new LoginRoom(this));
         _ws.Start();
-        Console.Write("Server started on " + _ws.Address + LoginPath);
+        Console.Write("Server started on " + _socketAddress + LoginPath);
     }
 
     

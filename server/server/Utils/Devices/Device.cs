@@ -1,7 +1,7 @@
 using System.Net;
 using System.Net.Sockets;
 
-namespace takenoko_server.Utils.Devices;
+namespace server.Utils.Devices;
 
 public class Device
 {

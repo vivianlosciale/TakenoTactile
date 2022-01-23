@@ -1,6 +1,6 @@
-using takenoko_server.SocketRooms;
+using server.SocketRooms;
 
-namespace takenoko_server.Game;
+namespace server.Game;
 
 public class Takenoko
 {

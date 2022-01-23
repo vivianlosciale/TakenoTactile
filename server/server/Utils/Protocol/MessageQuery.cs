@@ -1,4 +1,4 @@
-namespace takenoko_server.Utils.Protocol;
+namespace server.Utils.Protocol;
 
 public enum MessageQuery
 {

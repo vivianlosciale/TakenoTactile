@@ -1,6 +1,6 @@
 using WebSocketSharp.Server;
 
-namespace takenoko_server.SocketRooms;
+namespace server.SocketRooms;
 
 public class SocketRoom : WebSocketBehavior
 {
