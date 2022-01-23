@@ -1,13 +1,12 @@
-﻿abstract class TuioEntity
+﻿using UnityEngine;
+
+abstract class TuioEntity
 {
     protected TuioState previousState;
     protected TuioState state;
-    private float xCoord;
-    private float yCoord;
     private readonly int id;
     public int Id { get => id; }
-    protected float XCoord { get => xCoord; }
-    protected float YCoord { get => yCoord; }
+    private Position position;
     public TuioState State
     {
         get => state;
@@ -21,17 +20,16 @@
     public TuioEntity(int id, float x, float y)
     {
         this.id = id;
-        xCoord = x;
-        yCoord = y;
+        position = new Position(x, y);
     }
 
-    public void updateCoordinates(float xCoord, float yCoord)
+    public void updateCoordinates(Vector2 newPosition)
     {
-        if (this.xCoord != xCoord || this.yCoord != yCoord)
+        
+        if (Vector2.Distance(newPosition, position.TUIOPosition) > 0.01f)
         {
             State = TuioState.DRAG;
-            this.xCoord = xCoord;
-            this.yCoord = yCoord;
+            position.TUIOPosition = newPosition;
         }
     }
 }

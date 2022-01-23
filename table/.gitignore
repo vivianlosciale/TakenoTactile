@@ -29,8 +29,10 @@
 ExportedObj/
 .consulo/
 *.unityproj
+*.csproj
 *.suo
 *.tmp
+*.sln
 *.user
 *.userprefs
 *.pidb

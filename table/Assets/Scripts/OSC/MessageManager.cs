@@ -100,7 +100,8 @@ public class MessageManager : MonoBehaviour
         }
         else
         {
-            tuioEvent.updateCoordinates(xCoord, yCoord);
+            Position p = new Position(xCoord, yCoord);
+            tuioEvent.updateCoordinates(p.TUIOPosition);
         }
 
     }
