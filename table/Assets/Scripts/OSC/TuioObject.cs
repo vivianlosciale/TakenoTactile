@@ -1,17 +1,29 @@
-﻿class TuioObject : TuioEntity
+﻿using System;
+
+class TuioObject : TuioEntity
 {
-    public TuioObject(int id, float x, float y) : base(id, x, y)
+    private float angle;
+    private int value;
+    public TuioObject(int id, float x, float y, float angle, int value) : base(id, x, y)
     {
         state = TuioState.CLICK_DOWN;
         previousState = TuioState.CLICK_DOWN;
+        this.angle = angle;
+        this.value = value;
+    }
+    public void updateAngle(float angle)
+    {
+        this.angle = angle;
     }
 
-    public bool isDrag()
-    {
-        return previousState == TuioState.DRAG;
-    }
     public bool isOnTable()
     {
-        return previousState != TuioState.CLICK_UP;
+        return state != TuioState.CLICK_UP;
     }
+    public override string ToString()
+    {
+        return $"Id : {Id} onTable: {isOnTable()} drag: {isDrag()}  {position} value: {value} angle: {angle}\n";
+    }
+
+
 }

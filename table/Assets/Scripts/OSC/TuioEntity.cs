@@ -24,6 +24,11 @@ abstract class TuioEntity
         pos = new Position(x, y);
     }
 
+    public bool isDrag()
+    {
+        return previousState == TuioState.DRAG;
+    }
+
     public void updateCoordinates(Vector2 newPosition)
     {
         
