@@ -1,6 +1,7 @@
 ﻿using System;
+using UnityEngine;
 
-class TuioObject : TuioEntity
+public class TuioObject : TuioEntity
 {
     private float angle;
     private int value;

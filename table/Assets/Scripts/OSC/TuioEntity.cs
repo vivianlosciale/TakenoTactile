@@ -1,13 +1,13 @@
 ﻿using UnityEngine;
 
-abstract class TuioEntity
+public abstract class TuioEntity
 {
     protected TuioState previousState;
     protected TuioState state;
     private readonly int id;
-    private readonly Position pos;
+    private Position pos;
     public int Id { get => id; }
-    public Position position { get => pos; }
+    public Position position { get => pos; set => pos = value; }
     public TuioState State
     {
         get => state;
@@ -31,7 +31,7 @@ abstract class TuioEntity
 
     public void updateCoordinates(Vector2 newPosition)
     {
-        
+
         if (Vector2.Distance(newPosition, position.TUIOPosition) > 0.01f || state == TuioState.DRAG)
         {
             State = TuioState.DRAG;

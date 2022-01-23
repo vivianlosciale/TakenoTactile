@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-class Position
+public class Position
 {
     private float XCoord;
     private float YCoord;

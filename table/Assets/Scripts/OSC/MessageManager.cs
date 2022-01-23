@@ -8,7 +8,6 @@ using UnityEngine;
 public class MessageManager : MonoBehaviour
 {
     public OSC osc;
-    public TextMeshPro text;
 
     List<TuioEntity> tuioEvents = new List<TuioEntity>();
     List<TuioEntity> deadTouches = new List<TuioEntity>();
@@ -47,12 +46,13 @@ public class MessageManager : MonoBehaviour
                     checkObject(tmp);
                 break;
             case "fseq":
-                string str = "Voici les detections:\n";
                 foreach (TuioEntity t in tuioEvents)
                 {
-                    str = str + t;
+                    Ray ray = Camera.main.ScreenPointToRay(new Vector3(t.position.TUIOPosition.x * Screen.width, t.position.TUIOPosition.y * Screen.height, 0));
+                    if (Physics.Raycast(ray, out RaycastHit hit))
+                        if (hit.transform.GetComponent<OSCEvent>() != null)
+                            hit.transform.GetComponent<OSCEvent>().RunFunction(t);
                 }
-                text.SetText(str);
                 tuioEvents = tuioEvents.Except(deadTouches).ToList();
                 break;
         }
@@ -72,8 +72,8 @@ public class MessageManager : MonoBehaviour
         }
         else
         {
-            Position p = new Position(xCoord, yCoord);
-            tuioEvent.updateCoordinates(p.TUIOPosition);
+            Vector2 p = new Vector2(xCoord, yCoord);
+            tuioEvent.updateCoordinates(p);
         }
 
     }
@@ -94,8 +94,8 @@ public class MessageManager : MonoBehaviour
         }
         else
         {
-            Position p = new Position(xCoord, yCoord);
-            tuioEvent.updateCoordinates(p.TUIOPosition);
+            Vector2 p = new Vector2(xCoord, yCoord);
+            tuioEvent.updateCoordinates(p);
             tuioEvent.updateAngle(angle);
         }
 
