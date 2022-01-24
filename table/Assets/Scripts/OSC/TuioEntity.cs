@@ -22,6 +22,8 @@ public abstract class TuioEntity
     {
         this.id = id;
         pos = new Position(x, y);
+        state = TuioState.CLICK_DOWN;
+        previousState = TuioState.CLICK_DOWN;
     }
 
     public bool isDrag()

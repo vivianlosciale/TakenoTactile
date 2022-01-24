@@ -48,10 +48,11 @@ public class MessageManager : MonoBehaviour
             case "fseq":
                 foreach (TuioEntity t in tuioEvents)
                 {
+                    //cast an invisible ray that will collide with the first object
                     Ray ray = Camera.main.ScreenPointToRay(new Vector3(t.position.TUIOPosition.x * Screen.width, t.position.TUIOPosition.y * Screen.height, 0));
                     if (Physics.Raycast(ray, out RaycastHit hit))
                         if (hit.transform.GetComponent<OSCEvent>() != null)
-                            hit.transform.GetComponent<OSCEvent>().RunFunction(t);
+                            hit.transform.GetComponent<OSCEvent>().RunFunction(t); //will run specific function based on the state of the TUIOEvent
                 }
                 tuioEvents = tuioEvents.Except(deadTouches).ToList();
                 break;
@@ -111,9 +112,9 @@ public class MessageManager : MonoBehaviour
     private void updateCollection(List<string> idAlive, string adress)
     {
         if (adress == obj)
-            deadTouches = tuioEvents.FindAll(e => !(idAlive.Contains(e.Id.ToString()) && !(e is TuioCursor)));
+            deadTouches = tuioEvents.FindAll(e => !(e is TuioCursor || idAlive.Contains(e.Id.ToString())));
         else
-            deadTouches = tuioEvents.FindAll(e => !idAlive.Contains(e.Id.ToString()) && !(e is TuioObject));
+            deadTouches = tuioEvents.FindAll(e => !(e is TuioObject|| idAlive.Contains(e.Id.ToString())));
         foreach (TuioEntity t in deadTouches)
             t.State = TuioState.CLICK_UP;
     }

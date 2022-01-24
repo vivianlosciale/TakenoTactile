@@ -5,6 +5,7 @@ public class OSCEvent : MonoBehaviour
 {
     public UnityEvent OnClickDown;
     public UnityEvent OnClickUp;
+    public UnityEvent OnClick;
     public UnityEvent OnDrag;
 
     public void RunFunction(TuioEntity tuio)
@@ -20,6 +21,10 @@ public class OSCEvent : MonoBehaviour
         if (tuio.State == TuioState.CLICK_UP)
         {
             OnClickUp.Invoke();
+        }
+        if( tuio is TuioCursor && ((TuioCursor)tuio).isClick())
+        {
+            OnClick.Invoke();
         }
     }
 }

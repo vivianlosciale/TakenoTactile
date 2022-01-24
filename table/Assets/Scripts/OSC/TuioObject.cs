@@ -7,8 +7,6 @@ public class TuioObject : TuioEntity
     private int value;
     public TuioObject(int id, float x, float y, float angle, int value) : base(id, x, y)
     {
-        state = TuioState.CLICK_DOWN;
-        previousState = TuioState.CLICK_DOWN;
         this.angle = angle;
         this.value = value;
     }
