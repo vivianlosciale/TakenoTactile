@@ -44,7 +44,7 @@ public class Server
     public string SetTable()
     {
         _ws.AddWebSocketService(TablePath, () => _table);
-        return TablePath;
+        return _socketAddress + TablePath;
     }
 
     
@@ -56,7 +56,7 @@ public class Server
     {
         if (_players.Count < 4)
         {
-            string privatePlayerPath = PlayerPath + _players.Count;
+            string privatePlayerPath = _socketAddress + PlayerPath + _players.Count;
             PlayerRoom playerRoom = new PlayerRoom(this, _players.Count);
             _ws.AddWebSocketService(privatePlayerPath, () => playerRoom);
             _players.Add(playerRoom);

@@ -45,9 +45,15 @@
       "packagesPath": "/home/ludovic/.nuget/packages/",
       "outputPath": "/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/obj/",
       "projectStyle": "PackageReference",
+      "configFilePaths": [
+        "/home/ludovic/.nuget/NuGet/NuGet.Config"
+      ],
       "originalTargetFrameworks": [
         "net6.0"
       ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
