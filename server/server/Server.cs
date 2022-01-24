@@ -34,7 +34,7 @@ public class Server
     {
         _ws.AddWebSocketService(LoginPath, () => new LoginRoom(this));
         _ws.Start();
-        Console.Write("Server started on " + _socketAddress + LoginPath);
+        Console.WriteLine("Server started on " + _socketAddress + LoginPath);
     }
 
     
