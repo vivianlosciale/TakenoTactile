@@ -15,24 +15,29 @@ public class LoginRoom : SocketRoom
         _sender = new MessageSender(this);
     }
 
+    private void ConnectPlayer(string dest)
+    {
+        string? playerRoot = _server.AddPlayer();
+        if (playerRoot == null) _sender.Send(MessageQuery.GameIsFull);
+        else _sender.Send(MessageQuery.AcceptConnection, dest, playerRoot);
+    }
+
+    private void ConnectTable(string dest)
+    {
+        string tableRoot = _server.SetTable();
+        _sender.Send(MessageQuery.AcceptConnection, dest, tableRoot);
+    }
+
     protected override void OnMessage(MessageEventArgs e)
     {
         MessageParser message = new MessageParser(e.Data);
         switch (message.GetQuery())
         {
             case MessageQuery.PlayerConnection:
-                string playerRoot = _server.AddPlayer();
-                _sender.Send(
-                    MessageQuery.AcceptConnection,
-                    message.GetBody(),
-                    playerRoot);
+                ConnectPlayer(message.GetBody());
                 break;
             case MessageQuery.TableConnection:
-                string tableRoot = _server.SetTable();
-                _sender.Send(
-                    MessageQuery.AcceptConnection,
-                    message.GetBody(),
-                    tableRoot);
+                ConnectTable(message.GetBody());
                 break;
         }
     }

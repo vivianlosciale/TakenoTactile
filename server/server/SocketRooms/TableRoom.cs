@@ -16,7 +16,7 @@ public class TableRoom : SocketRoom
 
     public void SendEvent(MessageQuery query)
     {
-        _sender.Send(query,"");
+        _sender.Send(query);
     }
 
     protected override void OnMessage(MessageEventArgs e)

@@ -56,12 +56,12 @@ public class Server
     {
         if (_players.Count < 4)
         {
-            string privatePlayerPath = _socketAddress + PlayerPath + _players.Count;
+            string privatePlayerPath = PlayerPath + _players.Count;
             PlayerRoom playerRoom = new PlayerRoom(this, _players.Count);
             _ws.AddWebSocketService(privatePlayerPath, () => playerRoom);
             _players.Add(playerRoom);
             _table.SendEvent(MessageQuery.APlayerJoined);
-            return privatePlayerPath;
+            return _socketAddress + privatePlayerPath;
         }
         return null;
     }

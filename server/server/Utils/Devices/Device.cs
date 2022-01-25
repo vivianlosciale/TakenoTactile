@@ -8,15 +8,26 @@ public class Device
     
     public static string GetIPv4()
     {
-        var host = Dns.GetHostEntry(Dns.GetHostName());
-        foreach (var ip in host.AddressList) {
-            if (IPAddress.IsLoopback(ip))
-                continue;
-            if (ip.AddressFamily == AddressFamily.InterNetwork) {
-                return ip.ToString();
+        var localIp = IPAddress.None;
+        try
+        {
+            using (var socket = new Socket(AddressFamily.InterNetwork, SocketType.Dgram, 0))
+            {
+                // Connect socket to Google's Public DNS service
+                socket.Connect("8.8.8.8", 65530);
+                if (!(socket.LocalEndPoint is IPEndPoint endPoint))
+                {
+                    throw new InvalidOperationException($"Error occurred casting {socket.LocalEndPoint} to IPEndPoint");
+                }
+                localIp = endPoint.Address;
+                socket.Dispose();
             }
         }
-        throw new Exception("No network adapters with an IPv4 address in the system!");
+        catch (SocketException ex)
+        {
+            Console.Error.WriteLine(ex.Message);
+        }
+        return localIp.ToString();
     }
     
 }

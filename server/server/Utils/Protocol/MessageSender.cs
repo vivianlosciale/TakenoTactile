@@ -12,14 +12,19 @@ public class MessageSender
         _room = room;
     }
 
-    public void Send(MessageQuery query, string dest, string message)
+    public void Send(MessageQuery query)
     {
-        Send(QueryMethods.ToString(query)+"-"+dest+"-"+message);
+        Send(QueryMethods.ToString(query));
     }
 
     public void Send(MessageQuery query, string message)
     {
         Send(QueryMethods.ToString(query)+"-"+message);
+    }
+
+    public void Send(MessageQuery query, string dest, string message)
+    {
+        Send(QueryMethods.ToString(query)+"-"+dest+"-"+message);
     }
 
     public void Send(string message)
@@ -37,6 +42,6 @@ public class MessageSender
                 Console.WriteLine("Message sent try "+tries+": "+message);
             }
         }
-        Console.Write("Message sent failed!");
+        Console.Error.Write("Message sent failed!");
     }
 }

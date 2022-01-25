@@ -9,6 +9,7 @@ public enum MessageQuery
     PlayerConnection,
     AcceptConnection,
     APlayerJoined,
+    GameIsFull,
     StartGame,
 }
 
