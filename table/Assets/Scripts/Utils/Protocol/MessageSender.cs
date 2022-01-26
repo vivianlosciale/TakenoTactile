@@ -12,6 +12,11 @@ public class MessageSender
         _room = room;
     }
 
+    public void Send(MessageQuery query)
+    {
+        Send(QueryMethods.ToString(query));
+    }
+
     public void Send(MessageQuery query, string dest, string message)
     {
         Send(QueryMethods.ToString(query)+"-"+dest+"-"+message);

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WebSocketSharp;
 
@@ -8,11 +9,12 @@ public class TableClient : MonoBehaviour
     private static TableClient _table;
     private MessageSender _sender;
 
+    private WebSocket _loginServerSocket;
     private WebSocket _serverSocket;
     private string _privateAddress;
     public InputField adresseInput;
 
-    public GameObject playerCountText;
+    public GameObject playerCountContainer;
     private int playerCount;
         
     /*
@@ -50,18 +52,18 @@ public class TableClient : MonoBehaviour
      */
     private void RequestConnection(string serverAddress)
     {
-        _serverSocket = new WebSocket(serverAddress);
-        _serverSocket.Connect();
-        _serverSocket.OnMessage += OnMessage;
+        _loginServerSocket = new WebSocket(serverAddress);
+        _loginServerSocket.Connect();
+        _loginServerSocket.OnMessage += OnMessage;
 
-        _sender = new MessageSender(_serverSocket);
+        _sender = new MessageSender(_loginServerSocket);
         _sender.Send(MessageQuery.TableConnection, _privateAddress);
     }
 
-    private void changePlayerCount()
+    private void ChangePlayerCount()
     {
         playerCount++;
-        playerCountText.GetComponent<Text>().text = playerCount + " / 4";
+        playerCountContainer.GetComponent<Text>().text = playerCount + " / 4";
     }
 
     private void OnMessage(object sender, MessageEventArgs e)
@@ -75,10 +77,18 @@ public class TableClient : MonoBehaviour
                 break;
             case MessageQuery.AcceptConnection:
                 Debug.Log("Server says: " + parser.GetBody());
+                _loginServerSocket.Close();
+                _serverSocket = new WebSocket(parser.GetBody());
+                _serverSocket.Connect();
+                _serverSocket.OnMessage += OnMessage;
+                _sender = new MessageSender(_serverSocket);
                 break;
             case MessageQuery.APlayerJoined:
                 Debug.Log("Server says: A player joined");
-                changePlayerCount();
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    ChangePlayerCount();
+                });
                 break;
             default:
                 _sender.Send(MessageQuery.Ping, "Unknown query!");

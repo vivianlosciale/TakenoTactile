@@ -10,12 +10,12 @@ public class MessageParser
         _message = message;
         string[] split = message.Split('-');
         _query = split[0];
-        if (_message.Length > 2)
+        if (split.Length > 2)
         {
             _dest = split[1];
             _body = split[2];
         } 
-        else if (_message.Length > 1)
+        else if (split.Length > 1)
         {
             _dest = "";
             _body = split[1];
