@@ -2,15 +2,20 @@ namespace server.Utils.Protocol;
 
 public enum MessageQuery
 {
+    // COMMON
     None,
     Ping,
-    PlayerBroadcast,
-    TableConnection,
-    PlayerConnection,
     AcceptConnection,
-    APlayerJoined,
+    StartGame, 
+    
+    // PLAYERS
+    PlayerBroadcast,
+    PlayerConnection,
     GameIsFull,
-    StartGame,
+    
+    // TABLE
+    TableConnection,
+    APlayerJoined,
 }
 
 public static class QueryMethods

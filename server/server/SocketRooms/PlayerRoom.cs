@@ -8,13 +8,17 @@ public class PlayerRoom : SocketRoom
 
     private readonly Server _server;
     private readonly int _playerNumber;
-    private readonly MessageSender _sender;
+    private bool _isPlaying = false;
 
     public PlayerRoom(Server server, int playerNumber)
     {
         _server = server;
         _playerNumber = playerNumber;
-        _sender = new MessageSender(this);
+    }
+
+    public bool IsPlaying()
+    {
+        return _isPlaying;
     }
 
     protected override void OnMessage(MessageEventArgs e)

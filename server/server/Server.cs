@@ -76,7 +76,6 @@ public class Server
         if (_players.Count >= 2)
         {
             _ws.RemoveWebSocketService(LoginPath);
-            _table.SendEvent(MessageQuery.StartGame);
             new Takenoko(_table, _players).StartGame();
         }
     }
