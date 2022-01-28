@@ -12,10 +12,16 @@ public class TableClient : MonoBehaviour
     private WebSocket _loginServerSocket;
     private WebSocket _serverSocket;
     private string _privateAddress;
+    
+    public GameObject playerCountContainer;
     public InputField adresseInput;
 
-    public GameObject playerCountContainer;
     private int playerCount;
+    private bool _canPickCard;
+
+    private static string GAME_SCENE = "Game";
+    private static string HOME_SCENE = "Takenotest";
+
         
     /*
      * Private constructor to avoid outside instantiations.
@@ -45,6 +51,16 @@ public class TableClient : MonoBehaviour
         RequestConnection(adresseInput.text);
     }
 
+    public void StartGame()
+    {
+        _sender.Send(MessageQuery.StartGame);
+    }
+
+    public void ChangeScene(string sceneToLoad, string sceneToUnload)
+    {
+        gameObject.GetComponent<MoveObject>().MoveToAnotherScene(sceneToLoad, sceneToUnload);
+    }
+
     
     /*
      * Connect to the server websocket.
@@ -64,6 +80,17 @@ public class TableClient : MonoBehaviour
     {
         playerCount++;
         playerCountContainer.GetComponent<Text>().text = playerCount + " / 4";
+    }
+
+    public void PickCard()
+    {
+        _sender.Send(MessageQuery.PickCard);
+        _canPickCard = false;
+    }
+
+    public bool CanPickCard()
+    {
+        return _canPickCard;
     }
 
     private void OnMessage(object sender, MessageEventArgs e)
@@ -88,6 +115,19 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     ChangePlayerCount();
+                });
+                break;
+            case MessageQuery.StartGame:
+                Debug.Log("Server says: Start Game");
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    ChangeScene(GAME_SCENE, HOME_SCENE);
+                });
+                break;
+            case MessageQuery.WaitingPickCard:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _canPickCard = true;
                 });
                 break;
             default:

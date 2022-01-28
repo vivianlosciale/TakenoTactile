@@ -5,6 +5,8 @@ using UnityEngine;
 public class TestEvent : MonoBehaviour
 {
 
+    public TableClient tableClient;
+
     // Start is called before the first frame update
     public void test()
     {
@@ -12,8 +14,17 @@ public class TestEvent : MonoBehaviour
     }
     public void pickCard(GameObject board)
     {
-        Transform pointPosition = board.transform.GetChild(0).transform;
-        StartCoroutine(TranslateCard(pointPosition));
+        if (tableClient.CanPickCard())
+        {
+            Transform pointPosition = board.transform.GetChild(0).transform;
+            StartCoroutine(TranslateCard(pointPosition));
+            tableClient.PickCard();
+        }
+    }
+
+    public void StartGame()
+    {
+        tableClient.StartGame();
     }
 
     private IEnumerator TranslateCard(Transform pointPosition)

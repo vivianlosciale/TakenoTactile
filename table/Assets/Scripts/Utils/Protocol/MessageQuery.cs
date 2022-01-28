@@ -2,14 +2,18 @@ using System;
 
 public enum MessageQuery
 {
+    // COMMON
     None,
     Ping,
-    PlayerBroadcast,
-    TableConnection,
-    PlayerConnection,
     AcceptConnection,
-    APlayerJoined,
     StartGame,
+    PickCard,
+
+    // TABLE
+    TableConnection,
+    APlayerJoined,
+    WaitingPickCard,
+    StopGame,
 }
 
 public static class QueryMethods
