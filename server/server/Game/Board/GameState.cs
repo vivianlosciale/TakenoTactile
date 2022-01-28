@@ -1,3 +1,4 @@
+using server.Game.Board.Cards;
 using server.SocketRooms;
 
 namespace server.Game.Board;
@@ -21,16 +22,21 @@ public class GameState
         _field = new Field.Field();
     }
 
-    public FoodStorage GetCurrentPlayerFoodStorage()
+    private PlayerRoom GetCurrentPlayerRoom()
     {
-        for (int i = 0; i < _players.Count; i++)
+        foreach (PlayerRoom player in _players)
         {
-            if (_players[i].IsPlaying())
+            if (player.IsPlaying())
             {
-                return _foodStorages[i];
+                return player;
             }
         }
-        return new FoodStorage();
+        return _players[0];
+    }
+
+    public FoodStorage GetCurrentPlayerFoodStorage()
+    {
+        return _foodStorages[_players.IndexOf(GetCurrentPlayerRoom())]; 
     }
 
     public Field.Field GetField()
@@ -41,5 +47,31 @@ public class GameState
     public Deck GetDeck()
     {
         return _deck;
+    }
+
+    public PlayerRoom NextPlayerTurn()
+    {
+        PlayerRoom currentPlayer = GetCurrentPlayerRoom();
+        PlayerRoom nextPlayer = _players[(_players.IndexOf(currentPlayer) + 1) % _players.Count];
+        nextPlayer.SetPlaying(true);
+        currentPlayer.SetPlaying(false);
+        return nextPlayer;
+    }
+
+    public bool APlayerWon()
+    {
+        foreach (PlayerRoom player in _players)
+        {
+            if (player.FinishedGame())
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public VictoryCard PickCard()
+    {
+        return _deck.PickCard();
     }
 }

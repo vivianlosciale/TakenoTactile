@@ -4,7 +4,7 @@ public class FoodVictoryCard : VictoryCard
 {
     private readonly FoodCondition _condition;
 
-    public FoodVictoryCard(string name, FoodCondition condition) : base(name)
+    public FoodVictoryCard(string name, int value, FoodCondition condition) : base(name, value)
     {
         _condition = condition;
     }

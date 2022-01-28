@@ -4,7 +4,7 @@ public class GrowthVictoryCard : VictoryCard
 {
     private readonly GrowthCondition _condition;
 
-    public GrowthVictoryCard(string name, GrowthCondition condition) : base(name)
+    public GrowthVictoryCard(string name, int value, GrowthCondition condition) : base(name, value)
     {
         _condition = condition;
     }

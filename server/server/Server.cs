@@ -16,6 +16,7 @@ public class Server
     private readonly WebSocketServer _ws;
     private readonly List<PlayerRoom> _players;
     private readonly TableRoom _table;
+    private readonly Takenoko _game;
 
 
     public Server()
@@ -24,6 +25,7 @@ public class Server
         _ws = new WebSocketServer(_socketAddress);
         _players = new();
         _table = new TableRoom(this);
+        _game = new Takenoko(_table, _players);
     }
     
     
@@ -57,7 +59,7 @@ public class Server
         if (_players.Count < 4)
         {
             string privatePlayerPath = PlayerPath + _players.Count;
-            PlayerRoom playerRoom = new PlayerRoom(this, _players.Count);
+            PlayerRoom playerRoom = new PlayerRoom(_game, _players.Count);
             _ws.AddWebSocketService(privatePlayerPath, () => playerRoom);
             _players.Add(playerRoom);
             _table.SendEvent(MessageQuery.APlayerJoined);

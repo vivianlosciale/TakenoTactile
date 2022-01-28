@@ -4,7 +4,7 @@ public class FieldVictoryCard : VictoryCard
 {
     private readonly FieldCondition _condition;
     
-    public FieldVictoryCard(string name, FieldCondition condition) : base(name)
+    public FieldVictoryCard(string name, int value, FieldCondition condition) : base(name, value)
     {
         _condition = condition;
     }

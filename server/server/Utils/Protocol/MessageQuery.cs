@@ -7,15 +7,19 @@ public enum MessageQuery
     Ping,
     AcceptConnection,
     StartGame, 
+    PickCard,
     
     // PLAYERS
     PlayerBroadcast,
     PlayerConnection,
     GameIsFull,
+    RollDice,
+    ValidateObjective,
     
     // TABLE
     TableConnection,
     APlayerJoined,
+    StopGame,
 }
 
 public static class QueryMethods

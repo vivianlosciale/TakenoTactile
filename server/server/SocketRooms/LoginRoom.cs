@@ -32,9 +32,11 @@ public class LoginRoom : SocketRoom
         switch (message.GetQuery())
         {
             case MessageQuery.PlayerConnection:
+                Console.WriteLine("Player "+message.GetDest()+" require a connection.");
                 ConnectPlayer(message.GetBody());
                 break;
             case MessageQuery.TableConnection:
+                Console.WriteLine("Table "+message.GetDest()+" require a connection.");
                 ConnectTable(message.GetBody());
                 break;
         }

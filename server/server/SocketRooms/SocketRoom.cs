@@ -21,4 +21,9 @@ public class SocketRoom : WebSocketBehavior
     {
         Sender.Send(query);
     }
+
+    protected void WaitSeconds(int sec)
+    {
+        Thread.Sleep(TimeSpan.FromSeconds(sec));
+    }
 }

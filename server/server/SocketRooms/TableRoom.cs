@@ -6,6 +6,7 @@ namespace server.SocketRooms;
 public class TableRoom : SocketRoom
 {
     private readonly Server _server;
+    private bool _pickCard;
 
     public TableRoom(Server server)
     {
@@ -21,8 +22,18 @@ public class TableRoom : SocketRoom
                 _server.StartGame();
                 break;
             case MessageQuery.Ping:
-                Console.Write("Table said: " + message.GetBody());
+                Console.WriteLine("Table said: " + message.GetBody());
+                break;
+            case MessageQuery.PickCard:
+                Console.WriteLine("Table asked for a card pick.");
+                _pickCard = true;
                 break;
         }
+    }
+
+    public void WaitForCardPick()
+    {
+        _pickCard = false;
+        while (!_pickCard) WaitSeconds(1);
     }
 }
