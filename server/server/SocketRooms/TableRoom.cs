@@ -6,17 +6,10 @@ namespace server.SocketRooms;
 public class TableRoom : SocketRoom
 {
     private readonly Server _server;
-    private readonly MessageSender _sender;
 
     public TableRoom(Server server)
     {
         _server = server;
-        _sender = new MessageSender(this);
-    }
-
-    public void SendEvent(MessageQuery query)
-    {
-        _sender.Send(query);
     }
 
     protected override void OnMessage(MessageEventArgs e)

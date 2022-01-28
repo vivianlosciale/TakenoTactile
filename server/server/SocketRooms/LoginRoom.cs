@@ -7,25 +7,23 @@ public class LoginRoom : SocketRoom
 {
 
     private readonly Server _server;
-    private readonly MessageSender _sender;
 
     public LoginRoom(Server server)
     {
         _server = server;
-        _sender = new MessageSender(this);
     }
 
     private void ConnectPlayer(string dest)
     {
         string? playerRoot = _server.AddPlayer();
-        if (playerRoot == null) _sender.Send(MessageQuery.GameIsFull);
-        else _sender.Send(MessageQuery.AcceptConnection, dest, playerRoot);
+        if (playerRoot == null) Sender.Send(MessageQuery.GameIsFull);
+        else Sender.Send(MessageQuery.AcceptConnection, dest, playerRoot);
     }
 
     private void ConnectTable(string dest)
     {
         string tableRoot = _server.SetTable();
-        _sender.Send(MessageQuery.AcceptConnection, dest, tableRoot);
+        Sender.Send(MessageQuery.AcceptConnection, dest, tableRoot);
     }
 
     protected override void OnMessage(MessageEventArgs e)
