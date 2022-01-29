@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class TestEvent : MonoBehaviour
+public class DeckEvent : MonoBehaviour
 {
 
     public TableClient tableClient;
