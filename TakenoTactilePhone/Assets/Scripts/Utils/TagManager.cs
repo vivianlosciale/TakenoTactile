@@ -2,8 +2,11 @@
  {
      JoinGameScene,
      InGameScene,
+     EndGameScene,
      PopUpManager,
      Player,
      MobileClient,
-     SceneChanger
+     SceneChanger,
+     DiceCheckerFloor,
+     GameManager
  }

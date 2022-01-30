@@ -1,14 +1,13 @@
 ﻿
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using WebSocketSharp;
 
 public class MobileClient : MonoBehaviour
 {
     private WebSocket _serverSocket; // pour parler avec le serveur
     private MessageSender _messageSender;
-    public GameObject unityCamera;
-    public GameObject PopUpManager;
+    public GameObject phoneCamera;
+    public GameObject GameManager;
 
     /*
      * Deactivate the camera gameObject.
@@ -28,7 +27,7 @@ public class MobileClient : MonoBehaviour
     */
     private void DeactivateCamera() 
     {
-        unityCamera.SetActive(false);
+        phoneCamera.SetActive(false);
     }
 
     /*
@@ -38,6 +37,7 @@ public class MobileClient : MonoBehaviour
     {
         var move = gameObject.GetComponent<MoveObject>();
         move.MoveToAnotherScene();
+        GameManager = GameObject.FindWithTag(TagManager.GameManager.ToString());
     }
     
     
@@ -70,12 +70,21 @@ public class MobileClient : MonoBehaviour
     private void ReceiveGameMessages(object sender, MessageEventArgs args)
     {
         var parser = new MessageParser(args.Data);
-        PopUpManager = GameObject.FindGameObjectWithTag(TagManager.PopUpManager.ToString());
+        var popUpManager = GameObject.FindGameObjectWithTag(TagManager.PopUpManager.ToString());
+        var popUpSystem = popUpManager.GetComponent<PopUpSystem>();
+        var gameActions = GameManager.GetComponent<GameActions>();
         switch(parser.GetQuery())
         {
             case MessageQuery.StartGame:
                 break;
             case MessageQuery.PlayerBroadcast:
+                break;
+            case MessageQuery.RollDice:
+                //Do Action Roll Dice
+                //subscribe to ontrigger event du DiceChecker
+                //on retrieve le result
+                //on renvoie 
+                gameActions.StartTurn();
                 break;
             default:
                 break;

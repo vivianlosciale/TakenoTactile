@@ -6,6 +6,8 @@ TagManager:
   tags:
   - PopUpManager
   - MobileClient
+  - DiceCheckerFloor
+  - GameManager
   layers:
   - Default
   - TransparentFX

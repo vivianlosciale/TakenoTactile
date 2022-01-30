@@ -2,14 +2,24 @@ using System;
 
 public enum MessageQuery
 {
+    // COMMON
     None,
     Ping,
-    PlayerBroadcast,
-    TableConnection,
-    PlayerConnection,
     AcceptConnection,
+    StartGame, 
+    
+    // PLAYERS
+    PlayerBroadcast,
+    PlayerConnection,
+    GameIsFull,
+    //les actions du joueur : lancer le dé
+    ValidateObjective, //nom de la carte, on demande l'autorisation
+    RollDice, // on donne un entier
+    ChooseTile, //TODO
+    
+    // TABLE
+    TableConnection,
     APlayerJoined,
-    StartGame,
 }
 
 public static class QueryMethods
