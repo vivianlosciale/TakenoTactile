@@ -21,7 +21,7 @@ public class TuioObject : TuioEntity
     }
     public override string ToString()
     {
-        return $"Id : {Id} onTable: {isOnTable()} drag: {isDrag()}  {position} value: {value} angle: {angle}\n";
+        return $"Id : {id} onTable: {isOnTable()} drag: {isDrag()}  {position} value: {value} angle: {angle}\n";
     }
 
 

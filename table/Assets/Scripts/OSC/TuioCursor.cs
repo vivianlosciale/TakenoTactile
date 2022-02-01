@@ -2,13 +2,13 @@
 
 public class TuioCursor : TuioEntity
 {
-    public TuioCursor(int id, float x, float y) :base(id,  x, y)
+    public TuioCursor(int id, float x, float y) : base(id, x, y)
     {
     }
 
     public bool isClick()
     {
-        return previousState == TuioState.CLICK_DOWN && state == TuioState.CLICK_UP;
+        return previousState == TuioState.MAINTAIN_DOWN && state == TuioState.CLICK_UP;
     }
 
     public bool isLongClick()
@@ -18,6 +18,6 @@ public class TuioCursor : TuioEntity
 
     public override string ToString()
     {
-        return $"detection numero :{Id} clic: {isClick()} drag: {isDrag()} longclic: {isLongClick()} {position}\n";
+        return $"detection numero :{id} clic: {isClick()} drag: {isDrag()} longclic: {isLongClick()} {position}\n";
     }
 }

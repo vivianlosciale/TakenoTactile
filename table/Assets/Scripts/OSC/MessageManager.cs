@@ -68,7 +68,7 @@ public class MessageManager : MonoBehaviour
         int id = int.Parse(tmp[0]);
         float xCoord = float.Parse(tmp[1]);
         float yCoord = float.Parse(tmp[2]);
-        TuioCursor tuioEvent = (TuioCursor)tuioEvents.Find(e => e.Id == id);
+        TuioCursor tuioEvent = (TuioCursor)tuioEvents.Find(e => e.id == id);
         if (tuioEvent == null)
         {
             tuioEvent = new TuioCursor(id, xCoord, yCoord);
@@ -90,7 +90,7 @@ public class MessageManager : MonoBehaviour
         float xCoord = float.Parse(tmp[2]);
         float yCoord = float.Parse(tmp[3]);
         float angle = float.Parse(tmp[4]);
-        TuioObject tuioEvent = (TuioObject)tuioEvents.Find(e => e.Id == id);
+        TuioObject tuioEvent = (TuioObject)tuioEvents.Find(e => e.id == id);
         if (tuioEvent == null)
         {
             tuioEvent = new TuioObject(id, xCoord, yCoord, angle, value);
@@ -109,16 +109,16 @@ public class MessageManager : MonoBehaviour
     private IEnumerator instantiateType(TuioEntity tuioEvent)
     {
         yield return new WaitForSeconds(1.0f);
-        if (tuioEvents.Contains(tuioEvent) && tuioEvent.State == TuioState.CLICK_DOWN)
+        if (tuioEvents.Contains(tuioEvent) && tuioEvent.State == TuioState.MAINTAIN_DOWN)
             tuioEvent.State = TuioState.LONG_CLICK;
     }
 
     private void updateCollection(List<string> idAlive, string adress)
     {
         if (adress == obj)
-            deadTouches = tuioEvents.FindAll(e => !(e is TuioCursor || idAlive.Contains(e.Id.ToString())));
+            deadTouches = tuioEvents.FindAll(e => !(e is TuioCursor || idAlive.Contains(e.id.ToString())));
         else
-            deadTouches = tuioEvents.FindAll(e => !(e is TuioObject|| idAlive.Contains(e.Id.ToString())));
+            deadTouches = tuioEvents.FindAll(e => !(e is TuioObject|| idAlive.Contains(e.id.ToString())));
         foreach (TuioEntity t in deadTouches)
             t.State = TuioState.CLICK_UP;
     }

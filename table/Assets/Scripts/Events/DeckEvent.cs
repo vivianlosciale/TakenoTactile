@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using UnityEngine;
 
@@ -10,7 +9,7 @@ public class DeckEvent : MonoBehaviour
     // Start is called before the first frame update
     public void test()
     {
-        Debug.Log("This is a onclick donw");
+        Debug.Log("This is a onEnter event");
     }
     public void pickCard(GameObject board)
     {
