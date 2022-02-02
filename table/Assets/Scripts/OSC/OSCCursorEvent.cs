@@ -10,25 +10,25 @@ class OSCCursorEvent : OSCEvent
 
     public override void RunFunction(TuioEntity tuio)
     {
-        if (tuio is TuioCursor)
+        if (tuio is TuioCursor t)
         {
-            if (tuio.isDrag())
+            if (t.IsDrag())
             {
                 OnDrag.Invoke();
             }
-            if (tuio.State == TuioState.CLICK_DOWN)
+            if (t.State == TuioState.CLICK_DOWN)
             {
                 OnClickDown.Invoke();
             }
-            if (tuio.State == TuioState.CLICK_UP)
+            if (t.State == TuioState.CLICK_UP)
             {
                 OnClickUp.Invoke();
             }
-            if (((TuioCursor)tuio).isClick())
+            if (t.IsClick())
             {
                 OnClick.Invoke();
             }
-            if (((TuioCursor)tuio).isLongClick())
+            if (t.IsLongClick())
             {
                 OnLongClick.Invoke();
             }

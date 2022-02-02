@@ -11,7 +11,7 @@ public class DeckEvent : MonoBehaviour
     {
         Debug.Log("This is a onEnter event");
     }
-    public void pickCard(GameObject board)
+    public void PickCard(GameObject board)
     {
         if (tableClient.CanPickCard())
         {
@@ -33,7 +33,7 @@ public class DeckEvent : MonoBehaviour
         for (int i = 0; i < nbOfCard; i++)
         {
             GameObject instance = Instantiate(prefab, transform.position, Quaternion.Euler(90, 0, 60));
-            instance.AddComponent<TileMovement>().setPosition(pointPosition.position);
+            instance.AddComponent<TileMovement>().SetPosition(pointPosition.position);
             yield return new WaitForSeconds(0.5f);
         }
 

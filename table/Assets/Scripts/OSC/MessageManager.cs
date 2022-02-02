@@ -19,17 +19,17 @@ public class MessageManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        osc.SetAddressHandler(cursor, generate2DTUIOEvent);
-        osc.SetAddressHandler(obj, generate2DTUIOEvent);
+        osc.SetAddressHandler(cursor, Generate2DTUIOEvent);
+        osc.SetAddressHandler(obj, Generate2DTUIOEvent);
     }
 
-    private void generate2DTUIOEvent(OscMessage oscM)
+    private void Generate2DTUIOEvent(OscMessage oscM)
     {
-        string message = getMessage(oscM);
-        manageTuioObjectEvent(message, oscM.address);
+        string message = GetMessage(oscM);
+        ManageTuioObjectEvent(message, oscM.address);
     }
 
-    private void manageTuioObjectEvent(string message, string adress)
+    private void ManageTuioObjectEvent(string message, string adress)
     {
         string[] messageTab = message.Split(new char[0], StringSplitOptions.RemoveEmptyEntries);
         List<string> tmp = new List<string>(messageTab);
@@ -37,20 +37,20 @@ public class MessageManager : MonoBehaviour
         {
             case "alive":
                 tmp.RemoveAt(0);
-                updateCollection(tmp, adress);
+                UpdateCollection(tmp, adress);
                 break;
             case "set":
                 tmp.RemoveAt(0);
                 if (adress == obj)
-                    checkObjectObj(tmp);
+                    CheckObjectObj(tmp);
                 else
-                    checkObject(tmp);
+                    CheckObject(tmp);
                 break;
             case "fseq":
                 string str = "Voici les detections:\n";
                 foreach (TuioEntity t in tuioEvents)
                 {
-                    str = str + t;
+                    str += t;
                     //cast an invisible ray that will collide with the first object
                     Ray ray = Camera.main.ScreenPointToRay(new Vector3(t.position.TUIOPosition.x * Screen.width, t.position.TUIOPosition.y * Screen.height, 0));
                     if (Physics.Raycast(ray, out RaycastHit hit))
@@ -63,67 +63,65 @@ public class MessageManager : MonoBehaviour
         }
     }
 
-    private void checkObject(List<string> tmp)
+    private void CheckObject(List<string> tmp)
     {
         int id = int.Parse(tmp[0]);
         float xCoord = float.Parse(tmp[1]);
         float yCoord = float.Parse(tmp[2]);
-        TuioCursor tuioEvent = (TuioCursor)tuioEvents.Find(e => e.id == id);
+        TuioCursor tuioEvent = (TuioCursor)tuioEvents.Find(e => e.Id == id);
         if (tuioEvent == null)
         {
             tuioEvent = new TuioCursor(id, xCoord, yCoord);
             tuioEvents.Add(tuioEvent);
-            StartCoroutine(instantiateType(tuioEvent));
+            StartCoroutine(InstantiateType(tuioEvent));
         }
         else
         {
             Vector2 p = new Vector2(xCoord, yCoord);
-            tuioEvent.updateCoordinates(p);
+            tuioEvent.UpdateCoordinates(p);
         }
 
     }
 
-    private void checkObjectObj(List<string> tmp)
+    private void CheckObjectObj(List<string> tmp)
     {
         int id = int.Parse(tmp[0]);
-        int value = int.Parse(tmp[1]);
+        string value = tmp[1];
         float xCoord = float.Parse(tmp[2]);
         float yCoord = float.Parse(tmp[3]);
-        float angle = float.Parse(tmp[4]);
-        TuioObject tuioEvent = (TuioObject)tuioEvents.Find(e => e.id == id);
+        TuioObject tuioEvent = (TuioObject)tuioEvents.Find(e => e.Id == id);
         if (tuioEvent == null)
         {
-            tuioEvent = new TuioObject(id, xCoord, yCoord, angle, value);
+            tuioEvent = new TuioObject(id, xCoord, yCoord, value);
             tuioEvents.Add(tuioEvent);
-            StartCoroutine(instantiateType(tuioEvent));
+            StartCoroutine(InstantiateType(tuioEvent));
         }
         else
         {
             Vector2 p = new Vector2(xCoord, yCoord);
-            tuioEvent.updateCoordinates(p);
-            tuioEvent.updateAngle(angle);
+            tuioEvent.UpdateCoordinates(p);
         }
 
     }
 
-    private IEnumerator instantiateType(TuioEntity tuioEvent)
+    private IEnumerator InstantiateType(TuioEntity tuioEvent)
     {
         yield return new WaitForSeconds(1.0f);
         if (tuioEvents.Contains(tuioEvent) && tuioEvent.State == TuioState.MAINTAIN_DOWN)
             tuioEvent.State = TuioState.LONG_CLICK;
     }
 
-    private void updateCollection(List<string> idAlive, string adress)
+    private void UpdateCollection(List<string> idAlive, string adress)
     {
         if (adress == obj)
-            deadTouches = tuioEvents.FindAll(e => !(e is TuioCursor || idAlive.Contains(e.id.ToString())));
+            deadTouches = tuioEvents.FindAll(e => !(e is TuioCursor || idAlive.Contains(e.Id.ToString())));
         else
-            deadTouches = tuioEvents.FindAll(e => !(e is TuioObject|| idAlive.Contains(e.id.ToString())));
+            deadTouches = tuioEvents.FindAll(e => !(e is TuioObject || idAlive.Contains(e.Id.ToString())));
         foreach (TuioEntity t in deadTouches)
             t.State = TuioState.CLICK_UP;
     }
 
-    private string getMessage(OscMessage message)
+    private string GetMessage(OscMessage message)
     {
         string res = "";
         foreach (object obj in message.values)

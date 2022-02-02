@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class PlaceHolderBoard : MonoBehaviour
 {
-    private int sizeColumn = 5;
-    private int sizeLine = 10;
+    private readonly int sizeColumn = 5;
+    private readonly int sizeLine = 10;
     List<PlaceHolder> placeHolderPositions;
     void Awake()
     {
@@ -25,7 +25,7 @@ public class PlaceHolderBoard : MonoBehaviour
             even = !even;
         }
         placeHolderPositions.Find(e => e.position == new Vector2Int(0, 0)).used = true;
-        activateNeighborsSlot(getActiveSlot());
+        ActivateNeighborsSlot(GetActiveSlot());
     }
 
     private void GeneratePlaceHolder(int i, int j)
@@ -34,15 +34,15 @@ public class PlaceHolderBoard : MonoBehaviour
         placeHolderPositions.Add(p);
     }
 
-    private void resetProcessed()
+    private void ResetProcessed()
     {
         foreach (PlaceHolder p in placeHolderPositions)
             p.processed = false;
     }
 
-    private List<PlaceHolder> getActiveSlot()
+    private List<PlaceHolder> GetActiveSlot()
     {
-        resetProcessed();
+        ResetProcessed();
         Queue<PlaceHolder> toProcess = new Queue<PlaceHolder>();
         PlaceHolder origin = placeHolderPositions.Find(e => e.position == new Vector2Int(0, 0));
         toProcess.Enqueue(origin);
@@ -51,7 +51,7 @@ public class PlaceHolderBoard : MonoBehaviour
         while (toProcess.Count > 0)
         {
             PlaceHolder placeHolder = toProcess.Dequeue();
-            List<PlaceHolder> neighbors = getNeighbors(placeHolder);
+            List<PlaceHolder> neighbors = GetNeighbors(placeHolder);
             for (var i = 0; i < neighbors.Count; i++)
             {
                 if (!neighbors[i].processed)
@@ -67,13 +67,13 @@ public class PlaceHolderBoard : MonoBehaviour
         return foundNeighbors;
     }
 
-    private void activateNeighborsSlot(List<PlaceHolder> neighbors)
+    private void ActivateNeighborsSlot(List<PlaceHolder> neighbors)
     {
         foreach (PlaceHolder p in neighbors)
-            p.placeHolder.SetActive(true);
+            p.GameObject.SetActive(true);
     }
 
-    private List<PlaceHolder> getNeighbors(PlaceHolder placeHolder)
+    private List<PlaceHolder> GetNeighbors(PlaceHolder placeHolder)
     {
         List<PlaceHolder> neighbors = new List<PlaceHolder>();
         Vector2Int position = placeHolder.position;

@@ -6,18 +6,18 @@ public class TuioCursor : TuioEntity
     {
     }
 
-    public bool isClick()
+    public bool IsClick()
     {
         return previousState == TuioState.MAINTAIN_DOWN && state == TuioState.CLICK_UP;
     }
 
-    public bool isLongClick()
+    public bool IsLongClick()
     {
         return previousState == TuioState.LONG_CLICK && state == TuioState.CLICK_UP;
     }
 
     public override string ToString()
     {
-        return $"detection numero :{id} clic: {isClick()} drag: {isDrag()} longclic: {isLongClick()} {position}\n";
+        return $"detection numero :{Id} clic: {IsClick()} drag: {IsDrag()} longclic: {IsLongClick()} {position}\n";
     }
 }

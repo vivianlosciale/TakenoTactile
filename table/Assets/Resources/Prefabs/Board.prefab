@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2128566416984179586}
   - component: {fileID: 4210540922120435528}
   - component: {fileID: 6442083886155637006}
+  - component: {fileID: 7151478105461038818}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -100,6 +101,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d631f9d6b7b82d74291daf51b103c61c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &7151478105461038818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408903365948102301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85120b6778c5b2f4ba711e607f1b6a89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tableClient: {fileID: 0}
 --- !u!1 &3291934551702170932
 GameObject:
   m_ObjectHideFlags: 0
@@ -110,7 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934551702170935}
   - component: {fileID: 3291934551702170934}
-  - component: {fileID: 2650256494728704383}
+  - component: {fileID: 2079251045299907373}
   m_Layer: 0
   m_Name: BoxTiles
   m_TagString: Untagged
@@ -145,7 +159,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2650256494728704383
+--- !u!114 &2079251045299907373
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -154,7 +168,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291934551702170932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
@@ -163,18 +177,15 @@ MonoBehaviour:
   OnClickUp:
     m_PersistentCalls:
       m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   OnDrag:
     m_PersistentCalls:
       m_Calls: []
-  OnObjectSet:
+  OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
+      - m_Target: {fileID: 7151478105461038818}
+        m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -184,21 +195,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnObjectUnset:
+  OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934551747151891
 GameObject:
   m_ObjectHideFlags: 0
@@ -209,7 +208,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934551747151890}
   - component: {fileID: 3291934551747151893}
-  - component: {fileID: 3331154650167649774}
+  - component: {fileID: 8111482743175618186}
   m_Layer: 0
   m_Name: BoxCards
   m_TagString: Untagged
@@ -244,7 +243,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3331154650167649774
+--- !u!114 &8111482743175618186
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -253,7 +252,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291934551747151891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
@@ -262,18 +261,15 @@ MonoBehaviour:
   OnClickUp:
     m_PersistentCalls:
       m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   OnDrag:
     m_PersistentCalls:
       m_Calls: []
-  OnObjectSet:
+  OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
+      - m_Target: {fileID: 7151478105461038818}
+        m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -283,21 +279,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnObjectUnset:
+  OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934552580350920
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,7 +292,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934552580350923}
   - component: {fileID: 3291934552580350922}
-  - component: {fileID: 848764470616501869}
+  - component: {fileID: 630859496647148016}
   m_Layer: 0
   m_Name: BoxWater
   m_TagString: Untagged
@@ -343,7 +327,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &848764470616501869
+--- !u!114 &630859496647148016
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -352,7 +336,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291934552580350920}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
@@ -361,18 +345,15 @@ MonoBehaviour:
   OnClickUp:
     m_PersistentCalls:
       m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   OnDrag:
     m_PersistentCalls:
       m_Calls: []
-  OnObjectSet:
+  OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
+      - m_Target: {fileID: 7151478105461038818}
+        m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -382,21 +363,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnObjectUnset:
+  OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934553018803104
 GameObject:
   m_ObjectHideFlags: 0
@@ -407,7 +376,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934553018803107}
   - component: {fileID: 3291934553018803106}
-  - component: {fileID: 6975996240250860348}
+  - component: {fileID: 4582382704913967228}
   m_Layer: 0
   m_Name: BoxGardener
   m_TagString: Untagged
@@ -442,7 +411,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6975996240250860348
+--- !u!114 &4582382704913967228
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -451,7 +420,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291934553018803104}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
@@ -460,18 +429,15 @@ MonoBehaviour:
   OnClickUp:
     m_PersistentCalls:
       m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   OnDrag:
     m_PersistentCalls:
       m_Calls: []
-  OnObjectSet:
+  OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
+      - m_Target: {fileID: 7151478105461038818}
+        m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -481,21 +447,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnObjectUnset:
+  OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934553127445135
 GameObject:
   m_ObjectHideFlags: 0
@@ -506,7 +460,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934553127445134}
   - component: {fileID: 3291934553127445137}
-  - component: {fileID: 6317503841093953990}
+  - component: {fileID: 6880967312175542033}
   m_Layer: 0
   m_Name: BoxPanda
   m_TagString: Untagged
@@ -541,7 +495,7 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6317503841093953990
+--- !u!114 &6880967312175542033
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -550,7 +504,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3291934553127445135}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
@@ -559,18 +513,15 @@ MonoBehaviour:
   OnClickUp:
     m_PersistentCalls:
       m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls: []
   OnDrag:
     m_PersistentCalls:
       m_Calls: []
-  OnObjectSet:
+  OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
+      - m_Target: {fileID: 7151478105461038818}
+        m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
+        m_MethodName: test
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -580,21 +531,9 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnObjectUnset:
+  OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 6442083886155637006}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934553137323070
 GameObject:
   m_ObjectHideFlags: 0

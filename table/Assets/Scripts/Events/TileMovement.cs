@@ -14,7 +14,7 @@ class TileMovement : MonoBehaviour
         }
     }
 
-    public void setPosition(Vector3 pointPosition)
+    public void SetPosition(Vector3 pointPosition)
     {
         this.pointPosition = pointPosition;
     }

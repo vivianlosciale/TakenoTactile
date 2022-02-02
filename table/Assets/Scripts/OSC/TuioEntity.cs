@@ -13,24 +13,24 @@ public abstract class TuioEntity
             state = value;
         }
     }
-    public int id { get; private set; }
+    public int Id { get; private set; }
     public Position position;
 
 
     public TuioEntity(int id, float x, float y)
     {
-        this.id = id;
+        this.Id = id;
         position = new Position(x, y);
         state = TuioState.CLICK_DOWN;
         previousState = TuioState.CLICK_DOWN;
     }
 
-    public bool isDrag()
+    public bool IsDrag()
     {
         return state == TuioState.DRAG;
     }
 
-    public void updateCoordinates(Vector2 newPosition)
+    public void UpdateCoordinates(Vector2 newPosition)
     {
         //to trigger one time the event clickdown
         if (state == TuioState.CLICK_DOWN)

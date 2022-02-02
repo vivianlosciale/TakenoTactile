@@ -6,7 +6,7 @@ class OSCObjectEvent : OSCEvent
     {
         if (tuio is TuioObject)
         {
-            if (tuio.isDrag())
+            if (tuio.IsDrag())
             {
                 OnDrag.Invoke();
             }

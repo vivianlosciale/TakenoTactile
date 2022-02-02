@@ -379,7 +379,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c8a144b7d4c115e49aecef3dda2757e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlaceHolder: {fileID: 1934906737681333336, guid: ffb1c50a53599a74e949c222efa198cc, type: 3}
 --- !u!4 &322070131
 Transform:
   m_ObjectHideFlags: 0
@@ -698,13 +697,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 900682063}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: 170c0b5a6348a084ba8146d9bb4d6670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
     m_PersistentCalls:
       m_Calls: []
   OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionExit:
     m_PersistentCalls:
       m_Calls: []
   OnClick:
@@ -722,13 +730,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnDrag:
-    m_PersistentCalls:
-      m_Calls: []
-  OnObjectSet:
-    m_PersistentCalls:
-      m_Calls: []
-  OnObjectUnset:
+  OnLongClick:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &956691997
@@ -943,7 +945,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -5913,7 +5915,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -10717,7 +10719,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -15521,7 +15523,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -20297,7 +20299,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1540088700}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
+  m_Script: {fileID: 11500000, guid: 170c0b5a6348a084ba8146d9bb4d6670, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnClickDown:
@@ -20306,12 +20308,21 @@ MonoBehaviour:
   OnClickUp:
     m_PersistentCalls:
       m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionExit:
+    m_PersistentCalls:
+      m_Calls: []
   OnClick:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1540088701}
-        m_TargetAssemblyTypeName: TestEvent, Assembly-CSharp
-        m_MethodName: pickCard
+        m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
+        m_MethodName: PickCard
         m_Mode: 2
         m_Arguments:
           m_ObjectArgument: {fileID: 919132147482652252}
@@ -20321,13 +20332,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnDrag:
-    m_PersistentCalls:
-      m_Calls: []
-  OnObjectSet:
-    m_PersistentCalls:
-      m_Calls: []
-  OnObjectUnset:
+  OnLongClick:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &1751430424
@@ -20430,7 +20435,7 @@ ParticleSystem:
   ringBufferLoopRange: {x: 0, y: 1}
   looping: 0
   prewarm: 0
-  playOnAwake: 1
+  playOnAwake: 0
   useUnscaledTime: 0
   autoRandomSeed: 1
   useRigidbodyForVelocity: 1
@@ -25193,6 +25198,18 @@ PrefabInstance:
     - target: {fileID: 3037102309950884903, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111482743175618186, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111482743175618186, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8111482743175618186, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f92acfa269407274f92730b62bc44be0, type: 3}
