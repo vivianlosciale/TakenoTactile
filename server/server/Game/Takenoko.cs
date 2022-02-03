@@ -39,7 +39,7 @@ public class Takenoko
 
     private void PlayATurn()
     {
-        RollDice();
+        //RollDice();
         PickACard();
         _currentPlayer.WaitForEndTurn();
     }

@@ -17,6 +17,7 @@ public class Server
     private readonly List<PlayerRoom> _players;
     private readonly TableRoom _table;
     private readonly Takenoko _game;
+    private Thread _gameThread;
 
 
     public Server()
@@ -75,10 +76,11 @@ public class Server
      */
     public void StartGame()
     {
-        if (_players.Count >= 2)
+        if (_players.Count >= 1)
         {
             _ws.RemoveWebSocketService(LoginPath);
-            new Takenoko(_table, _players).StartGame();
+            _gameThread = new Thread(new Takenoko(_table, _players).StartGame);
+            _gameThread.Start();
         }
     }
 }

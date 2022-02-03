@@ -34,6 +34,7 @@ public class TableRoom : SocketRoom
     public void WaitForCardPick()
     {
         _pickCard = false;
+        SendEvent(MessageQuery.WaitingPickCard);
         while (!_pickCard) WaitSeconds(1);
     }
 }

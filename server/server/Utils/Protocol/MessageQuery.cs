@@ -19,6 +19,7 @@ public enum MessageQuery
     // TABLE
     TableConnection,
     APlayerJoined,
+    WaitingPickCard,
     StopGame,
 }
 
