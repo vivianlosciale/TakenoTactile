@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: 1217564740}
   - component: {fileID: 1217564739}
   m_Layer: 0
-  m_Name: Wind
+  m_Name: WIND
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5826,7 +5826,7 @@ GameObject:
   - component: {fileID: 1278975788}
   - component: {fileID: 1278975787}
   m_Layer: 0
-  m_Name: Thunder
+  m_Name: THUNDER
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10631,7 +10631,7 @@ GameObject:
   - component: {fileID: 1326686267}
   - component: {fileID: 1326686266}
   m_Layer: 0
-  m_Name: Sun
+  m_Name: SUN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15435,7 +15435,7 @@ GameObject:
   - component: {fileID: 1419484353}
   - component: {fileID: 1419484352}
   m_Layer: 0
-  m_Name: Rain
+  m_Name: RAIN
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20323,10 +20323,10 @@ MonoBehaviour:
       - m_Target: {fileID: 1540088701}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 2
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 919132147482652252}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -20347,7 +20347,7 @@ GameObject:
   - component: {fileID: 1751430426}
   - component: {fileID: 1751430425}
   m_Layer: 0
-  m_Name: Cloud
+  m_Name: CLOUD
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25139,11 +25139,49 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 14
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
---- !u!1 &919132147482652252 stripped
+--- !u!1 &1773358615
 GameObject:
-  m_CorrespondingSourceObject: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-  m_PrefabInstance: {fileID: 3291934552369150145}
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1773358617}
+  - component: {fileID: 1773358616}
+  m_Layer: 0
+  m_Name: ExecuteOnMainThread
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1773358616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773358615}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df20bdf267a37ed4bbbaf959102a0c93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &1773358617
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773358615}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -4.0472383, y: 20.238792, z: -0.15783691}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 17
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &3291934552369150145
 PrefabInstance:
   m_ObjectHideFlags: 0

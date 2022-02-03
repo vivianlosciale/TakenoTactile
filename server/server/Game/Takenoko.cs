@@ -1,5 +1,6 @@
 using server.Game.Board;
 using server.Game.Board.Cards;
+using server.Game.Board.Dice;
 using server.SocketRooms;
 using server.Utils.Protocol;
 
@@ -39,15 +40,20 @@ public class Takenoko
 
     private void PlayATurn()
     {
-        //RollDice();
+        Console.WriteLine("======== Start turn of player " + _currentPlayer.GetNumber() + " ========");
+        _table.SendCurrentPlayerNumber(_currentPlayer.GetNumber() + 1);
+        RollDice();
         PickACard();
+        VictoryCard card = _gameState.PickCard();
+        _currentPlayer.GiveCard(card);
         _currentPlayer.WaitForEndTurn();
+        Console.WriteLine("========  End turn of player " + _currentPlayer.GetNumber() + "  ========");
     }
 
     private void PickACard()
     {
         _currentPlayer.SendEvent(MessageQuery.PickCard);
-        _table.WaitForCardPick();
+        _table.WaitForCardPick(_currentPlayer.GetNumber() + 1);
         VictoryCard card = _gameState.PickCard();
         _currentPlayer.GiveCard(card);
     }
@@ -55,8 +61,9 @@ public class Takenoko
     private void RollDice()
     {
         _currentPlayer.SendEvent(MessageQuery.RollDice);
-        int diceFace = _currentPlayer.GetDiceResult();
-        Console.WriteLine("The player rolled a " + diceFace);
+        DiceFaces diceFace = _currentPlayer.GetDiceResult();
+        Console.WriteLine("The player "+ _currentPlayer.GetNumber() +" rolled a " + diceFace);
+        _table.SendEventWithMessage(MessageQuery.RollDice, diceFace.ToString());
     }
 
     private bool GameFinished()

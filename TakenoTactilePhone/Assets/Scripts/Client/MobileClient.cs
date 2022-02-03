@@ -1,4 +1,5 @@
 ﻿
+using System;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -7,7 +8,7 @@ public class MobileClient : MonoBehaviour
     private WebSocket _serverSocket; // pour parler avec le serveur
     private MessageSender _messageSender;
     public GameObject phoneCamera;
-    public GameObject GameManager;
+    private GameActions _gameActions;
 
     /*
      * Deactivate the camera gameObject.
@@ -37,10 +38,24 @@ public class MobileClient : MonoBehaviour
     {
         var move = gameObject.GetComponent<MoveObject>();
         move.MoveToAnotherScene();
-        GameManager = GameObject.FindWithTag(TagManager.GameManager.ToString());
+        //GameManager = GameObject.FindWithTag(TagManager.GameManager.ToString());
     }
-    
-    
+
+    public void SetGameActions(GameActions gameActions)
+    {
+        _gameActions = gameActions;
+    }
+
+    public void SendDiceResult(DiceFaces result)
+    {
+        _messageSender.Send(MessageQuery.RollDice, result.ToString());
+    }
+
+    public void EndTurn()
+    {
+        _messageSender.Send(MessageQuery.FinishTurn);
+    }
+
     /*
      * Retrieve my private path and connect to it
      */
@@ -60,6 +75,7 @@ public class MobileClient : MonoBehaviour
         if (!parser.GetDest().Equals(Device.GetIPv4())) return;
         _serverSocket.Close();
         _serverSocket = new WebSocket(parser.GetMessageBody());
+        _messageSender = new MessageSender(_serverSocket);
         _serverSocket.Connect();
         _serverSocket.OnMessage += ReceiveGameMessages;
     }
@@ -72,7 +88,6 @@ public class MobileClient : MonoBehaviour
         var parser = new MessageParser(args.Data);
         var popUpManager = GameObject.FindGameObjectWithTag(TagManager.PopUpManager.ToString());
         var popUpSystem = popUpManager.GetComponent<PopUpSystem>();
-        var gameActions = GameManager.GetComponent<GameActions>();
         switch(parser.GetQuery())
         {
             case MessageQuery.StartGame:
@@ -84,7 +99,16 @@ public class MobileClient : MonoBehaviour
                 //subscribe to ontrigger event du DiceChecker
                 //on retrieve le result
                 //on renvoie 
-                gameActions.StartTurn();
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.StartTurn();
+                });
+                break;
+            case MessageQuery.PickCard:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.AddCardToHand(parser.GetMessageBody());
+                });
                 break;
             default:
                 break;

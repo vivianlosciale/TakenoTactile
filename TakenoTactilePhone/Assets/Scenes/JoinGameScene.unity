@@ -852,6 +852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   phoneCamera: {fileID: 1545199738}
+  GameManager: {fileID: 0}
 --- !u!114 &1316004182
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -972,7 +973,7 @@ PrefabInstance:
     - target: {fileID: 8302338505738217855, guid: 85f96f2161f59d147bfc0ebe7fa34ddb, type: 3}
       propertyPath: client
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1316004181}
     - target: {fileID: 8302338505738217855, guid: 85f96f2161f59d147bfc0ebe7fa34ddb, type: 3}
       propertyPath: display
       value: 
@@ -1083,7 +1084,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1835164569
 RectTransform:
   m_ObjectHideFlags: 0

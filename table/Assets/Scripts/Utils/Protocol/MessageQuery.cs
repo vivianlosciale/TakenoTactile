@@ -8,12 +8,14 @@ public enum MessageQuery
     AcceptConnection,
     StartGame,
     PickCard,
+    RollDice,
 
     // TABLE
     TableConnection,
     APlayerJoined,
     WaitingPickCard,
     StopGame,
+    CurrentPlayerNumber,
 }
 
 public static class QueryMethods

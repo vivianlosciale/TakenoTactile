@@ -8,6 +8,7 @@ TagManager:
   - MobileClient
   - DiceCheckerFloor
   - GameManager
+  - CardsInHand
   layers:
   - Default
   - TransparentFX

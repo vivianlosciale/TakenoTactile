@@ -1,6 +1,9 @@
 using System;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
+using UnityEngine;
 
 public class Device
 {
@@ -17,5 +20,4 @@ public class Device
         }
         throw new Exception("No network adapters with an IPv4 address in the system!");
     }
-    
 }

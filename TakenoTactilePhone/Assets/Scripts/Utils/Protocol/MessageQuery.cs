@@ -6,8 +6,9 @@ public enum MessageQuery
     None,
     Ping,
     AcceptConnection,
-    StartGame, 
-    
+    StartGame,
+    PickCard,
+
     // PLAYERS
     PlayerBroadcast,
     PlayerConnection,
@@ -16,7 +17,8 @@ public enum MessageQuery
     ValidateObjective, //nom de la carte, on demande l'autorisation
     RollDice, // on donne un entier
     ChooseTile, //TODO
-    
+    FinishTurn,
+
     // TABLE
     TableConnection,
     APlayerJoined,

@@ -1,4 +1,4 @@
-using System;
+﻿namespace server.Game.Board.Dice;
 
 public enum DiceFaces
 {
@@ -13,7 +13,7 @@ public enum DiceFaces
 
 public static class DiceFacesMethods
 {
-    public static string ToString(DiceFaces diceFace)
+    public static string ToString( DiceFaces diceFace)
     {
         string? res = Enum.GetName(typeof(DiceFaces), diceFace);
         if (res == null) return "NONE";

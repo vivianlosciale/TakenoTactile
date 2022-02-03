@@ -635,6 +635,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   osc: {fileID: 548628623}
+  text: {fileID: 0}
 --- !u!4 &397248416
 Transform:
   m_ObjectHideFlags: 0
@@ -937,7 +938,7 @@ GameObject:
   - component: {fileID: 723995793}
   m_Layer: 0
   m_Name: TableClient
-  m_TagString: Untagged
+  m_TagString: TableClient
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1432,8 +1433,6 @@ GameObject:
   - component: {fileID: 1341235142}
   - component: {fileID: 1341235141}
   - component: {fileID: 1341235143}
-  - component: {fileID: 1341235144}
-  - component: {fileID: 1341235145}
   m_Layer: 5
   m_Name: Play
   m_TagString: Untagged
@@ -1554,55 +1553,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &1341235144
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341235139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfbb7ca7928ea874aa5ec7e818eedb77, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  tableClient: {fileID: 723995794}
---- !u!114 &1341235145
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1341235139}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c25362dc658f13b4889dfa3e11a4f67b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  OnClickDown:
-    m_PersistentCalls:
-      m_Calls: []
-  OnClickUp:
-    m_PersistentCalls:
-      m_Calls: []
-  OnClick:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1341235144}
-        m_TargetAssemblyTypeName: TestEvent, Assembly-CSharp
-        m_MethodName: StartGame
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-  OnDrag:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!1 &1469598955
 GameObject:
   m_ObjectHideFlags: 0

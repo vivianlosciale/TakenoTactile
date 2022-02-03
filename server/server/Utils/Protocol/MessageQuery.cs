@@ -15,11 +15,13 @@ public enum MessageQuery
     GameIsFull,
     RollDice,
     ValidateObjective,
+    FinishTurn,
     
     // TABLE
     TableConnection,
     APlayerJoined,
     WaitingPickCard,
+    CurrentPlayerNumber,
     StopGame,
 }
 

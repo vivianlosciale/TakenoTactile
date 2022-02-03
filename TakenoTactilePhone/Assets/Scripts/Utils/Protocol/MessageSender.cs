@@ -1,4 +1,5 @@
 using System;
+using UnityEngine;
 using WebSocketSharp;
 
 public class MessageSender
@@ -9,6 +10,10 @@ public class MessageSender
     public MessageSender(WebSocket room)
     {
         _room = room;
+    }
+    public void Send(MessageQuery query)
+    {
+        Send(QueryMethods.ToString(query));
     }
 
     public void Send(MessageQuery query, string dest, string message)
@@ -33,9 +38,9 @@ public class MessageSender
             catch (Exception)
             {
                 tries++;
-                Console.WriteLine("Message sent try "+tries+": "+message);
+                Debug.Log("Message sent try "+tries+": "+message);
             }
         }
-        Console.Write("Message sent failed!");
+        Debug.Log("Message sent failed!");
     }
 }

@@ -31,10 +31,16 @@ public class TableRoom : SocketRoom
         }
     }
 
-    public void WaitForCardPick()
+    public void WaitForCardPick(int currentPlayer)
     {
         _pickCard = false;
         SendEvent(MessageQuery.WaitingPickCard);
+        Console.WriteLine("The table waiting for picking card");
         while (!_pickCard) WaitSeconds(1);
+    }
+
+    public void SendCurrentPlayerNumber(int currentPlayer)
+    {
+        SendEventWithMessage(MessageQuery.CurrentPlayerNumber, currentPlayer.ToString());
     }
 }

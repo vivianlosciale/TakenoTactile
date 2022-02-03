@@ -8,5 +8,6 @@
      MobileClient,
      SceneChanger,
      DiceCheckerFloor,
-     GameManager
- }
+     GameManager,
+     CardsInHand,
+}

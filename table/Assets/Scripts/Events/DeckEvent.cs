@@ -11,10 +11,19 @@ public class DeckEvent : MonoBehaviour
     {
         Debug.Log("This is a onEnter event");
     }
-    public void PickCard(GameObject board)
+
+    public void Start()
+    {
+        tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+        //tableClient.SetDeckEvent(this);
+    }
+
+    public void PickCard()
     {
         if (tableClient.CanPickCard())
         {
+            Debug.Log("Player : " + tableClient.GetCurrentPlayer());
+            GameObject board = GameObject.Find("BoardP1");
             Transform pointPosition = board.transform.GetChild(0).transform;
             StartCoroutine(TranslateCard(pointPosition));
             tableClient.PickCard();
