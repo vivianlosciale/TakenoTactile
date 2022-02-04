@@ -25,22 +25,16 @@ public class TableRoom : SocketRoom
                 Console.WriteLine("Table said: " + message.GetBody());
                 break;
             case MessageQuery.PickCard:
-                Console.WriteLine("Table asked for a card pick.");
+                //Console.WriteLine("Table asked for a card pick.");
                 _pickCard = true;
                 break;
         }
     }
 
-    public void WaitForCardPick(int currentPlayer)
+    public void WaitForCardPick()
     {
         _pickCard = false;
         SendEvent(MessageQuery.WaitingPickCard);
-        Console.WriteLine("The table waiting for picking card");
         while (!_pickCard) WaitSeconds(1);
-    }
-
-    public void SendCurrentPlayerNumber(int currentPlayer)
-    {
-        SendEventWithMessage(MessageQuery.CurrentPlayerNumber, currentPlayer.ToString());
     }
 }

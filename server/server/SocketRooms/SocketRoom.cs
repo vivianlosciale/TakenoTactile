@@ -22,7 +22,7 @@ public class SocketRoom : WebSocketBehavior
         Sender.Send(query);
     }
     
-    public void SendEventWithMessage(MessageQuery query, string message)
+    public void SendEvent(MessageQuery query, string message)
     {
         Sender.Send(query, message);
     }

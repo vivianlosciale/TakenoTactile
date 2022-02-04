@@ -1,22 +1,22 @@
-﻿namespace server.Game.Board.Dice;
+﻿namespace server.Utils.Game;
 
 public enum DiceFaces
 {
-    NONE,
-    SUN,
-    WIND,
-    THUNDER,
-    QUESTIONMARK,
-    CLOUD,
-    RAIN
+    None,
+    Sun,
+    Wind,
+    Thunder,
+    Questionary,
+    Cloud,
+    Rain
 }
 
 public static class DiceFacesMethods
 {
-    public static string ToString( DiceFaces diceFace)
+    public static string ToString(DiceFaces diceFace)
     {
         string? res = Enum.GetName(typeof(DiceFaces), diceFace);
-        if (res == null) return "NONE";
+        if (res == null) return "None";
         return res;
     }
 
@@ -28,7 +28,7 @@ public static class DiceFacesMethods
         }
         catch (Exception)
         {
-            return DiceFaces.NONE;
+            return DiceFaces.None;
         }
     }
 }

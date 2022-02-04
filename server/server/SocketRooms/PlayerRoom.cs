@@ -1,6 +1,6 @@
 using server.Game;
 using server.Game.Board.Cards;
-using server.Game.Board.Dice;
+using server.Utils.Game;
 using server.Utils.Protocol;
 using WebSocketSharp;
 
@@ -13,8 +13,9 @@ public class PlayerRoom : SocketRoom
     private readonly List<VictoryCard> _victoryCards = new();
     private bool _isPlaying;
     private bool _finishedGame = false;
-    private DiceFaces _diceRoll = DiceFaces.NONE;
+    private DiceFaces _diceRoll = DiceFaces.None;
     private bool _endTurn;
+    private readonly List<Powers> _chosenPowers = new();
 
     public PlayerRoom(Takenoko game, int playerNumber)
     {
@@ -46,7 +47,7 @@ public class PlayerRoom : SocketRoom
                 Console.WriteLine("Client "+_playerNumber+" said: " + message.GetBody());
                 break;
             case MessageQuery.RollDice:
-                Console.WriteLine("Client "+_playerNumber+" rolled the dice");
+                //Console.WriteLine("Player "+_playerNumber+" rolled the dice");
                 _diceRoll = DiceFacesMethods.ToDiceFace(message.GetBody());
                 break;
             case MessageQuery.ValidateObjective:
@@ -54,7 +55,7 @@ public class PlayerRoom : SocketRoom
                 ValidateCard(message.GetBody());
                 break;
             case MessageQuery.FinishTurn:
-                Console.WriteLine("Client " + _playerNumber + " have finish his turn");
+                //Console.WriteLine("Player " + _playerNumber + " finished their turn");
                 _endTurn = true;
                 break;
         }
@@ -77,23 +78,31 @@ public class PlayerRoom : SocketRoom
 
     public DiceFaces GetDiceResult()
     {
-        _diceRoll = DiceFaces.NONE;
-        Console.WriteLine("Wait for Dice Result of player " + _playerNumber);
-        while (_diceRoll.Equals(DiceFaces.NONE)) WaitSeconds(1);
+        _diceRoll = DiceFaces.None;
+        Console.WriteLine("Waiting for player " + _playerNumber + " to roll the dice...");
+        while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
         return _diceRoll;
     }
 
     public void GiveCard(VictoryCard card)
     {
         _victoryCards.Add(card);
-        Console.WriteLine("Sending card " + card.GetName() + " at player " + _playerNumber);
-        Sender.Send(MessageQuery.PickCard,card.GetName());
+        Console.WriteLine("Sending card " + card.GetName() + " to player " + _playerNumber);
+        Sender.Send(MessageQuery.ReceivedCard,card.GetName());
     }
 
     public void WaitForEndTurn()
     {
         _endTurn = false;
-        Console.WriteLine("Wait end turn of player " + _playerNumber);
+        Console.WriteLine("Waiting for player " + _playerNumber + " to end their turn...");
         while (!_endTurn) WaitSeconds(1);
+    }
+
+    public List<Powers> ChosePowers(DiceFaces diceFace)
+    {
+        _chosenPowers.Clear();
+        _chosenPowers.Add(Powers.PickCard); // TODO remove
+        // TODO
+        return new List<Powers>(_chosenPowers);
     }
 }

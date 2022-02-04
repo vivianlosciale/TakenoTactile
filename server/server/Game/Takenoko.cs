@@ -1,7 +1,8 @@
 using server.Game.Board;
 using server.Game.Board.Cards;
-using server.Game.Board.Dice;
+using server.Game.PowerActions;
 using server.SocketRooms;
+using server.Utils.Game;
 using server.Utils.Protocol;
 
 namespace server.Game;
@@ -40,28 +41,36 @@ public class Takenoko
 
     private void PlayATurn()
     {
-        Console.WriteLine("======== Start turn of player " + _currentPlayer.GetNumber() + " ========");
-        _table.SendCurrentPlayerNumber(_currentPlayer.GetNumber() + 1);
-        RollDice();
-        PickACard();
+        Console.WriteLine("\n======== Player " + _currentPlayer.GetNumber() + " turn ========");
+        _table.SendEvent(MessageQuery.CurrentPlayerNumber,_currentPlayer.GetNumber().ToString());
+        DiceFaces diceFace = PlayDice();
+        PlayPower(diceFace);
         _currentPlayer.WaitForEndTurn();
-        Console.WriteLine("========  End turn of player " + _currentPlayer.GetNumber() + "  ========");
     }
 
-    private void PickACard()
+    private DiceFaces PlayDice()
     {
-        _currentPlayer.SendEvent(MessageQuery.PickCard);
-        _table.WaitForCardPick(_currentPlayer.GetNumber() + 1);
-        VictoryCard card = _gameState.PickCard();
-        _currentPlayer.GiveCard(card);
+        DiceFaces face = RollDice();
+        // TODO Dice Powers
+        return face;
     }
-
-    private void RollDice()
+    
+    private DiceFaces RollDice()
     {
         _currentPlayer.SendEvent(MessageQuery.RollDice);
         DiceFaces diceFace = _currentPlayer.GetDiceResult();
-        Console.WriteLine("The player "+ _currentPlayer.GetNumber() +" rolled a " + diceFace);
-        _table.SendEventWithMessage(MessageQuery.RollDice, diceFace.ToString());
+        Console.WriteLine("Player "+_currentPlayer.GetNumber()+" rolled '"+DiceFacesMethods.ToString(diceFace)+"'");
+        _table.SendEvent(MessageQuery.RollDice, diceFace.ToString());
+        return diceFace;
+    }
+
+    private void PlayPower(DiceFaces diceFace)
+    {
+        List<Powers> chosenPowers = _currentPlayer.ChosePowers(diceFace);
+        foreach (Powers power in chosenPowers)
+        {
+            Power.GetPower(power).Use(_currentPlayer,_table,_gameState);
+        }
     }
 
     private bool GameFinished()

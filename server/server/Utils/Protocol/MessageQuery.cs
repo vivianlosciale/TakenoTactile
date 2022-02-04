@@ -16,6 +16,7 @@ public enum MessageQuery
     RollDice,
     ValidateObjective,
     FinishTurn,
+    ReceivedCard,
     
     // TABLE
     TableConnection,

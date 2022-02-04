@@ -17,7 +17,7 @@ public class Server
     private readonly List<PlayerRoom> _players;
     private readonly TableRoom _table;
     private readonly Takenoko _game;
-    private Thread _gameThread;
+    private Thread? _gameThread;
 
 
     public Server()
@@ -60,7 +60,7 @@ public class Server
         if (_players.Count < 4)
         {
             string privatePlayerPath = PlayerPath + _players.Count;
-            PlayerRoom playerRoom = new PlayerRoom(_game, _players.Count);
+            PlayerRoom playerRoom = new PlayerRoom(_game, _players.Count + 1);
             _ws.AddWebSocketService(privatePlayerPath, () => playerRoom);
             _players.Add(playerRoom);
             _table.SendEvent(MessageQuery.APlayerJoined);

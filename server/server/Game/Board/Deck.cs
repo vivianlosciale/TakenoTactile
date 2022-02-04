@@ -17,8 +17,9 @@ public class Deck
         _victoryCards.Add(new FoodVictoryCard("card_panda_6",6,new FoodCondition(1,1,1)));
     }
 
-    public VictoryCard PickCard()
+    public VictoryCard? PickCard()
     {
+        if (_victoryCards.Count == 0) return null;
         Random r = new Random(1234567890);
         VictoryCard card = _victoryCards[r.Next()%_victoryCards.Count];
         _victoryCards.Remove(card);
