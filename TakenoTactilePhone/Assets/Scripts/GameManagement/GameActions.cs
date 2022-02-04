@@ -57,11 +57,13 @@ public class GameActions : MonoBehaviour
     {
         popUpManager.SetActive(true);
         popUpText.GetComponent<TextMeshProUGUI>().SetText("It is now your turn.");
+        popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
         popUpButton.GetComponent<Button>().onClick.AddListener(() =>
             {
                 turnStarted = true;
                 Debug.Log("TURN STARTED ON CLICK");
-                InvokeDice(); 
+                InvokeDice();
+                popUpManager.GetComponent<PopUpSystem>().HidePopUp();
             }
             );
     }
