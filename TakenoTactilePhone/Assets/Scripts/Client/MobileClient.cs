@@ -101,6 +101,8 @@ public class MobileClient : MonoBehaviour
                 //on renvoie 
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
+                    // on fait apparatire le message
+                    // 
                     _gameActions.StartTurn();
                 });
                 break;

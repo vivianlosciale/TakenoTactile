@@ -3101,6 +3101,9 @@ MonoBehaviour:
   uiElements: {fileID: 431272103}
   cardPrefab: {fileID: 6428136534542418397, guid: e1f24782d4512d24aa9ea311f229b832, type: 3}
   endTurn: {fileID: 178525143}
+  popUpManager: {fileID: 1792536884}
+  popUpText: {fileID: 1257706209}
+  popUpButton: {fileID: 350952461}
 --- !u!1 &2097287997
 GameObject:
   m_ObjectHideFlags: 0

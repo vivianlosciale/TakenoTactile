@@ -2,13 +2,13 @@ using System;
 
 public enum DiceFaces
 {
-    NONE,
-    SUN,
-    WIND,
-    THUNDER,
-    QUESTIONMARK,
-    CLOUD,
-    RAIN
+    None,
+    Sun,
+    Wind,
+    Thunder,
+    Questionmark,
+    Cloud,
+    Rain
 }
 
 public static class DiceFacesMethods
@@ -28,7 +28,7 @@ public static class DiceFacesMethods
         }
         catch (Exception)
         {
-            return DiceFaces.NONE;
+            return DiceFaces.None;
         }
     }
 }
