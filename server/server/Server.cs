@@ -76,7 +76,7 @@ public class Server
      */
     public void StartGame()
     {
-        if (_players.Count >= 1)
+        if (_players.Count >= 2)
         {
             _ws.RemoveWebSocketService(LoginPath);
             _gameThread = new Thread(new Takenoko(_table, _players).StartGame);

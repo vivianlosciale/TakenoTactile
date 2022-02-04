@@ -44,8 +44,6 @@ public class Takenoko
         _table.SendCurrentPlayerNumber(_currentPlayer.GetNumber() + 1);
         RollDice();
         PickACard();
-        VictoryCard card = _gameState.PickCard();
-        _currentPlayer.GiveCard(card);
         _currentPlayer.WaitForEndTurn();
         Console.WriteLine("========  End turn of player " + _currentPlayer.GetNumber() + "  ========");
     }
