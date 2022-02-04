@@ -106,7 +106,7 @@ public class MobileClient : MonoBehaviour
                     _gameActions.StartTurn();
                 });
                 break;
-            case MessageQuery.PickCard:
+            case MessageQuery.ReceivedCard:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.AddCardToHand(parser.GetMessageBody());

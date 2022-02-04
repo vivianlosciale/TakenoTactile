@@ -18,6 +18,8 @@ public class GameActions : MonoBehaviour
     public GameObject popUpManager;
     public GameObject popUpText;
     public GameObject popUpButton;
+    public GameObject hand;
+    
     
     void Start()
     {
@@ -45,6 +47,7 @@ public class GameActions : MonoBehaviour
     private void SendResultToServer(DiceFaces result)
     {
         uiElements.SetActive(true);
+        hand.SetActive(true);
         diceRoller.SetActive(false);
         checker.ResetDice();
         mobileClient.SendDiceResult(result);
@@ -66,6 +69,7 @@ public class GameActions : MonoBehaviour
     private void InvokeDice()
     {
         uiElements.SetActive(false);
+        hand.SetActive(false);
         diceRoller.SetActive(true);
         diceChecker = GameObject.FindWithTag(TagManager.DiceCheckerFloor.ToString());
         checker = diceChecker.GetComponent<DiceChecker>();
@@ -80,10 +84,15 @@ public class GameActions : MonoBehaviour
 
     public void AddCardToHand(string cardName)
     {
-        GameObject cardsInHand = GameObject.FindWithTag(TagManager.CardsInHand.ToString());
-        GameObject newCard = Instantiate(cardPrefab);
-        newCard.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Images/Cards/" + cardName);
-        newCard.transform.SetParent(cardsInHand.transform);
+        GameObject hand = GameObject.FindWithTag(TagManager.Hand.ToString());
+        GameObject newCard = Instantiate(cardPrefab, hand.transform);
+        Material newMat = new Material(Resources.Load<Material>("Models/Material/card_face"));
+        var texture = Resources.Load<Texture2D>("Images/Cards/" + cardName);
+        newMat.mainTexture = texture;
+        newMat.SetTexture("_EmissionMap", texture);
+        var materials = newCard.GetComponent<MeshRenderer>().materials;
+        materials[1] = newMat;
+        newCard.GetComponent<MeshRenderer>().materials = materials;
         endTurn.SetActive(true);
     }
 

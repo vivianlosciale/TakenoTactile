@@ -7,7 +7,7 @@ public enum MessageQuery
     Ping,
     AcceptConnection,
     StartGame,
-    PickCard,
+    ReceivedCard,
 
     // PLAYERS
     PlayerBroadcast,
