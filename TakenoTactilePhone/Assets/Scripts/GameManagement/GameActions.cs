@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -14,6 +15,9 @@ public class GameActions : MonoBehaviour
     private MobileClient mobileClient;
     public GameObject cardPrefab;
     public GameObject endTurn;
+    public GameObject popUpManager;
+    public GameObject popUpText;
+    public GameObject popUpButton;
     
     void Start()
     {
@@ -26,11 +30,11 @@ public class GameActions : MonoBehaviour
         if (turnStarted)
         {
             DiceFaces result = RetrieveResult();
-            if (!result.Equals(DiceFaces.NONE))
+            if (!result.Equals(DiceFaces.None))
             {
-                if (result.Equals(DiceFaces.QUESTIONMARK))
+                if (result.Equals(DiceFaces.Questionmark))
                 {
-                    result = DiceFaces.CLOUD;
+                    result = DiceFaces.Cloud;
                 }
                 turnStarted = false;
                 SendResultToServer(result);
@@ -42,13 +46,21 @@ public class GameActions : MonoBehaviour
     {
         uiElements.SetActive(true);
         diceRoller.SetActive(false);
+        checker.ResetDice();
         mobileClient.SendDiceResult(result);
     }
 
     public void StartTurn()
     {
-        turnStarted = true;
-        InvokeDice();
+        popUpManager.SetActive(true);
+        popUpText.GetComponent<TextMeshProUGUI>().SetText("It is now your turn.");
+        popUpButton.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                turnStarted = true;
+                Debug.Log("TURN STARTED ON CLICK");
+                InvokeDice(); 
+            }
+            );
     }
 
     private void InvokeDice()
@@ -61,7 +73,7 @@ public class GameActions : MonoBehaviour
 
     private DiceFaces RetrieveResult()
     {
-        if (!checker.wasTriggered) return DiceFaces.NONE;
+        if (!checker.wasTriggered) return DiceFaces.None;
         Debug.Log("Dice result was : " + checker.result );
         return checker.result;
     }

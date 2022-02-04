@@ -16,11 +16,13 @@ public class DiceInteraction : MonoBehaviour
     float lowPassFilterFactor;
     Vector3 lowPassValue;
 
-    private bool shookOnce = false;
-    private bool stopShaking = false;
+    public bool shookOnce = false;
+    public bool stopShaking = false;
     
     private void Start()
     {
+        stopShaking = false;
+        shookOnce = false;
         cameraZDistance = Camera.main.WorldToScreenPoint(transform.position).z;
         lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
         shakeDetectionThreshold *= shakeDetectionThreshold;
