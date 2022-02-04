@@ -70,7 +70,7 @@ public class GameState
         return false;
     }
 
-    public VictoryCard PickCard()
+    public VictoryCard? PickCard()
     {
         return _deck.PickCard();
     }
