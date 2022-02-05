@@ -23,7 +23,7 @@ public class DeckEvent : MonoBehaviour
         if (tableClient.CanPickCard())
         {
             Debug.Log("Player : " + tableClient.GetCurrentPlayer());
-            GameObject board = GameObject.Find("BoardP1");
+            GameObject board = GameObject.Find("BoardP" + tableClient.GetCurrentPlayer());
             Transform pointPosition = board.transform.GetChild(0).transform;
             StartCoroutine(TranslateCard(pointPosition));
             tableClient.PickCard();

@@ -67,7 +67,7 @@ public class TableClient : MonoBehaviour
 
     public int GetCurrentPlayer()
     {
-        return 0;
+        return _currentPlayer;
     }
 
     public void SetDeckEvent(DeckEvent deckEvent)
@@ -156,6 +156,7 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _currentPlayer = int.Parse(message.GetBody());
+                    Debug.Log(_currentPlayer);
                 });
                 break;
             default:
