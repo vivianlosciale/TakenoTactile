@@ -1,14 +1,10 @@
-using server.Game.Board;
-using server.SocketRooms;
 using server.Utils.Game;
 
-namespace server.Game.PowerActions;
+namespace server.Game.GameActions.PowerActions;
 
-public abstract class Power
+public abstract class PowerAction : GameAction
 {
-    public abstract void Use(PlayerRoom player, TableRoom table, GameState game);
-
-    public static Power GetPower(Powers power)
+    public static PowerAction GetPower(Powers power)
     {
         switch (power)
         {

@@ -1,9 +1,9 @@
 using server.Game.Board;
 using server.SocketRooms;
 
-namespace server.Game.PowerActions;
+namespace server.Game.GameActions.PowerActions;
 
-public class MoveFarmer: Power
+public class MoveFarmer: PowerAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {

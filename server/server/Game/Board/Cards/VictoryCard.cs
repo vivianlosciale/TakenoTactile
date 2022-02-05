@@ -12,6 +12,7 @@ public abstract class VictoryCard
     }
 
     public abstract bool IsValid(GameState gameState);
+    public abstract void Validate(GameState gameState);
 
     public string GetName()
     {

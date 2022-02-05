@@ -9,7 +9,7 @@ public class Field
     
     public Field()
     {
-        Tile firstTile = new Tile(TileColor.None, new Lake());
+        Tile firstTile = new Tile("Initial", TileColor.None, new Lake());
         firstTile.AddIrrigation(RelativePosition.TopRight);
         firstTile.AddIrrigation(RelativePosition.Right);
         firstTile.AddIrrigation(RelativePosition.BottomRight);
@@ -34,11 +34,11 @@ public class Field
         _tiles[p.I][p.J] = tile;
         foreach (RelativePosition relative in Position.Neighbors)
         {
-            GetTile(p.GetPositionAt(relative))?.AddNeighbor(relative, tile);
+            GetTile(p.GetPositionAt(relative))?.AddNeighbor(Position.Opposite(relative), tile);
         }
     }
 
-    public Tile? GetTile(Position p)
+    private Tile? GetTile(Position p)
     {
         if (_tiles.ContainsKey(p.I))
         {
@@ -48,5 +48,13 @@ public class Field
             }
         }
         return null;
+    }
+
+    public bool GrowAt(Position position)
+    {
+        Tile? tile = GetTile(position);
+        if (tile == null || !tile.CanGrow()) return false;
+        tile.Grow();
+        return true;
     }
 }

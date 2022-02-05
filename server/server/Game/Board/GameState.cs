@@ -1,4 +1,6 @@
 using server.Game.Board.Cards;
+using server.Game.Board.Field;
+using server.Game.Board.Tiles;
 using server.SocketRooms;
 
 namespace server.Game.Board;
@@ -73,5 +75,15 @@ public class GameState
     public VictoryCard? PickCard()
     {
         return _deck.PickCard();
+    }
+
+    public Tile? PickTile()
+    {
+        return _deck.PickTile();
+    }
+
+    public bool GrowAt(Position position)
+    {
+        return _field.GrowAt(position);
     }
 }

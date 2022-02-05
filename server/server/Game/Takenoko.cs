@@ -1,6 +1,7 @@
 using server.Game.Board;
 using server.Game.Board.Cards;
-using server.Game.PowerActions;
+using server.Game.GameActions.DiceActions;
+using server.Game.GameActions.PowerActions;
 using server.SocketRooms;
 using server.Utils.Game;
 using server.Utils.Protocol;
@@ -14,6 +15,7 @@ public class Takenoko
     private readonly List<PlayerRoom> _players;
     private readonly GameState _gameState;
     private PlayerRoom _currentPlayer;
+    private readonly int _neededValidations;
 
     public Takenoko(TableRoom table, List<PlayerRoom> players)
     {
@@ -21,6 +23,7 @@ public class Takenoko
         _players = players;
         _gameState = new GameState(_players);
         _currentPlayer = new PlayerRoom(this,-1);
+        _neededValidations = 5;
     }
 
     public void StartGame()
@@ -32,7 +35,7 @@ public class Takenoko
         {
             player.SendEvent(MessageQuery.StartGame);
         }
-        while (!(_gameState.APlayerWon() || GameFinished()))
+        while (!_gameState.APlayerWon())
         {
             PlayATurn();
             _currentPlayer = _gameState.NextPlayerTurn();
@@ -43,44 +46,38 @@ public class Takenoko
     {
         Console.WriteLine("\n======== Player " + _currentPlayer.GetNumber() + " turn ========");
         _table.SendEvent(MessageQuery.CurrentPlayerNumber,_currentPlayer.GetNumber().ToString());
-        DiceFaces diceFace = PlayDice();
-        PlayPower(diceFace);
+        PlayDice();
+        PlayPower();
         _currentPlayer.WaitForEndTurn();
     }
-
-    private DiceFaces PlayDice()
-    {
-        DiceFaces face = RollDice();
-        // TODO Dice Powers
-        return face;
-    }
     
-    private DiceFaces RollDice()
+    private void PlayDice()
     {
         _currentPlayer.SendEvent(MessageQuery.RollDice);
         DiceFaces diceFace = _currentPlayer.GetDiceResult();
         Console.WriteLine("Player "+_currentPlayer.GetNumber()+" rolled '"+DiceFacesMethods.ToString(diceFace)+"'");
         _table.SendEvent(MessageQuery.RollDice, diceFace.ToString());
-        return diceFace;
+        DiceAction.GetPower(diceFace).Use(_currentPlayer,_table,_gameState);
     }
 
-    private void PlayPower(DiceFaces diceFace)
+    private void PlayPower()
     {
-        List<Powers> chosenPowers = _currentPlayer.ChosePowers(diceFace);
+        List<Powers> chosenPowers = _currentPlayer.ChosePowers();
         foreach (Powers power in chosenPowers)
         {
-            Power.GetPower(power).Use(_currentPlayer,_table,_gameState);
+            PowerAction.GetPower(power).Use(_currentPlayer,_table,_gameState);
         }
-    }
-
-    private bool GameFinished()
-    {
-        return false;
-        // TODO
     }
 
     public bool ValidateCard(VictoryCard card)
     {
-        return card.IsValid(_gameState);
+        bool result = card.IsValid(_gameState);
+        if (result) card.Validate(_gameState);
+        return result;
+    }
+
+    public int GetNeededValidations()
+    {
+        return _neededValidations;
     }
 }

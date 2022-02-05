@@ -2,7 +2,7 @@ namespace server.Game.Board.Field;
 
 public class Position
 {
-    public static RelativePosition[] Neighbors =
+    public static readonly RelativePosition[] Neighbors =
     {
         RelativePosition.TopRight,
         RelativePosition.Right,
@@ -11,6 +11,11 @@ public class Position
         RelativePosition.Left,
         RelativePosition.TopLeft
     };
+
+    public static RelativePosition Opposite(RelativePosition position)
+    {
+        return Neighbors[((int)position+(Neighbors.Length/2))%Neighbors.Length];
+    }
     
     public readonly int I;
     public readonly int J;

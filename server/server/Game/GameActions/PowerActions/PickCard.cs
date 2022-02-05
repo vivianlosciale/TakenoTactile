@@ -3,9 +3,9 @@ using server.Game.Board.Cards;
 using server.SocketRooms;
 using server.Utils.Protocol;
 
-namespace server.Game.PowerActions;
+namespace server.Game.GameActions.PowerActions;
 
-public class PickCard: Power
+public class PickCard: PowerAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {

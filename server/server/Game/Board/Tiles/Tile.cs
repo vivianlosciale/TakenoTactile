@@ -5,6 +5,7 @@ namespace server.Game.Board.Tiles;
 
 public class Tile
 {
+    private readonly string _name;
     private readonly TileColor _color;
     private int _growthAmount;
     private readonly bool _hasPermanentUpgrade;
@@ -12,18 +13,18 @@ public class Tile
     private readonly Tile?[] _neighbors = { null , null , null , null , null , null };
     private readonly bool[] _irrigation = { false, false, false, false, false, false};
 
-    public Tile(TileColor color, UpgradeStrategy upgrade)
-    {
-        _color = color;
-        _hasPermanentUpgrade = true;
-        _upgrade = upgrade;
-    }
+    public Tile(string name, TileColor color, UpgradeStrategy upgrade):
+        this(name, color, true, upgrade) {}
 
-    public Tile(TileColor color)
+    public Tile(string name, TileColor color):
+        this(name, color, false, new NoUpgrade()) {}
+
+    private Tile(string name, TileColor color, bool hasPermanentUpgrade, UpgradeStrategy upgrade)
     {
+        _name = name;
         _color = color;
-        _hasPermanentUpgrade = false;
-        _upgrade = new NoUpgrade();
+        _hasPermanentUpgrade = hasPermanentUpgrade;
+        _upgrade = upgrade;
     }
 
     public TileColor GetColor()
@@ -60,9 +61,14 @@ public class Tile
     {
         if (_neighbors[(int)position] != null)
         {
-            Console.Error.WriteLine("Neighbor at position "+(int)position+" already assigned!");
+            Console.Error.WriteLine("Neighbor "+position+" already assigned!");
+            return;
         }
         _neighbors[(int)position] = neighbor;
+        if (_irrigation[(int)position])
+        {
+            neighbor.AddIrrigation(Position.Opposite(position));
+        }
     }
 
     public void AddIrrigation(RelativePosition position)
@@ -70,6 +76,7 @@ public class Tile
         if (_irrigation[(int)position])
         {
             Console.Error.WriteLine("Irrigation at position "+(int)position+" already assigned!");
+            return;
         }
         _irrigation[(int)position] = true;
     }

@@ -1,9 +1,9 @@
 using server.Game.Board;
 using server.SocketRooms;
 
-namespace server.Game.PowerActions;
+namespace server.Game.GameActions.PowerActions;
 
-public class MovePanda: Power
+public class MovePanda: PowerAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {

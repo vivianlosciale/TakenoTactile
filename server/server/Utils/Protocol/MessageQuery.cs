@@ -8,6 +8,8 @@ public enum MessageQuery
     AcceptConnection,
     StartGame, 
     PickCard,
+    WaitingChoseRain,
+    ImpossibleAction,
     
     // PLAYERS
     PlayerBroadcast,
@@ -17,12 +19,16 @@ public enum MessageQuery
     ValidateObjective,
     FinishTurn,
     ReceivedCard,
+    ChosePower,
+    InvalidObjective,
     
     // TABLE
     TableConnection,
     APlayerJoined,
     WaitingPickCard,
     CurrentPlayerNumber,
+    ChosenTile,
+    Rain,
     StopGame,
 }
 
