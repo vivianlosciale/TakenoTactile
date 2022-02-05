@@ -6,12 +6,6 @@ public class DeckEvent : MonoBehaviour
 
     public TableClient tableClient;
 
-    // Start is called before the first frame update
-    public void test()
-    {
-        Debug.Log("This is a onEnter event");
-    }
-
     public void Start()
     {
         tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();

@@ -6,19 +6,12 @@ public class PawnEvent : MonoBehaviour
 
     public void OnActionBox()
     {
-        if(maxPawn == 0)
-        {
-            Debug.LogError("Can't place more than 2 pawns");
-        }
-        else
-        {
-            maxPawn--;
-        }
+        Debug.Log("onenter");
     }
 
     public void LeaveActionBox()
     {
-        maxPawn++;
+        Debug.Log("onexit");
     }
     
 }

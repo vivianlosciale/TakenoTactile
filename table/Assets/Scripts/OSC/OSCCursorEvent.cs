@@ -32,6 +32,11 @@ class OSCCursorEvent : OSCEvent
             {
                 OnLongClick.Invoke();
             }
+            if (!detections.Contains(tuio))
+            {
+                OnCollisionEnter.Invoke();
+                detections.Add(tuio);
+            }
         }
     }
 }

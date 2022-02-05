@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 class OSCObjectEvent : OSCEvent
 {
+
     public override void RunFunction(TuioEntity tuio)
     {
+
         if (tuio is TuioObject)
         {
             if (tuio.IsDrag())

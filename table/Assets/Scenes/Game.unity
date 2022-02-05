@@ -304,6 +304,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BoardP2
       objectReference: {fileID: 0}
+    - target: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3037102309950884903, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -636,6 +640,10 @@ PrefabInstance:
     - target: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_Name
       value: BoardP3
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3037102309950884903, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_RootOrder
@@ -5767,6 +5775,10 @@ PrefabInstance:
     - target: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_Name
       value: BoardP4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3037102309950884903, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_RootOrder
