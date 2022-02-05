@@ -856,7 +856,7 @@ GameObject:
   - component: {fileID: 1217564740}
   - component: {fileID: 1217564739}
   m_Layer: 0
-  m_Name: WIND
+  m_Name: Wind
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5826,7 +5826,7 @@ GameObject:
   - component: {fileID: 1278975788}
   - component: {fileID: 1278975787}
   m_Layer: 0
-  m_Name: THUNDER
+  m_Name: Thunder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10631,7 +10631,7 @@ GameObject:
   - component: {fileID: 1326686267}
   - component: {fileID: 1326686266}
   m_Layer: 0
-  m_Name: SUN
+  m_Name: Sun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15435,7 +15435,7 @@ GameObject:
   - component: {fileID: 1419484353}
   - component: {fileID: 1419484352}
   m_Layer: 0
-  m_Name: RAIN
+  m_Name: Rain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20347,7 +20347,7 @@ GameObject:
   - component: {fileID: 1751430426}
   - component: {fileID: 1751430425}
   m_Layer: 0
-  m_Name: CLOUD
+  m_Name: Cloud
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
