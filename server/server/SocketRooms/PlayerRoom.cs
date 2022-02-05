@@ -74,7 +74,6 @@ public class PlayerRoom : SocketRoom
 
     private void InitGameVariables()
     {
-        _isPlaying = false;
         _endTurn = false;
         _canPlayPowerTwice = false;
         _powerUses = 2;
