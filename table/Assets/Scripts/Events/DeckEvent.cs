@@ -36,7 +36,7 @@ public class DeckEvent : MonoBehaviour
         for (int i = 0; i < nbOfCard; i++)
         {
             GameObject instance = Instantiate(prefab, transform.position, Quaternion.Euler(90, 0, 60));
-            instance.AddComponent<TileMovement>().SetPosition(pointPosition.position);
+            instance.AddComponent<DeckTileMovement>().SetPosition(pointPosition.position);
             yield return new WaitForSeconds(0.5f);
         }
 

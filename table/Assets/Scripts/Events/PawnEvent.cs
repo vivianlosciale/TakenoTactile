@@ -3,15 +3,25 @@ using UnityEngine;
 public class PawnEvent : MonoBehaviour
 {
     private int maxPawn = 2;
+    bool error = false;
 
     public void OnActionBox()
     {
-        Debug.Log("onenter");
+        if (maxPawn == 0)
+        {
+            Debug.LogError("Can't put more ActionBox");
+            error = true;
+        }
+        else
+            maxPawn--;
     }
 
     public void LeaveActionBox()
     {
-        Debug.Log("onexit");
+        if (!error)
+            maxPawn++;
+        else
+            error = !error;
     }
-    
+
 }

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3037102309950884903}
   - component: {fileID: 2128566416984179586}
   - component: {fileID: 4210540922120435528}
+  - component: {fileID: 8255415279115301603}
   m_Layer: 0
   m_Name: Board
   m_TagString: Untagged
@@ -31,10 +32,10 @@ Transform:
   m_Children:
   - {fileID: 3291934553137323457}
   - {fileID: 3291934551702170935}
-  - {fileID: 3291934551747151890}
-  - {fileID: 3291934553127445134}
-  - {fileID: 3291934553018803107}
   - {fileID: 3291934552580350923}
+  - {fileID: 3291934553018803107}
+  - {fileID: 3291934553127445134}
+  - {fileID: 3291934551747151890}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
@@ -87,6 +88,18 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8255415279115301603
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2408903365948102301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d631f9d6b7b82d74291daf51b103c61c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3291934551702170932
 GameObject:
   m_ObjectHideFlags: 0
@@ -97,7 +110,6 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934551702170935}
   - component: {fileID: 3291934551702170934}
-  - component: {fileID: 5252951490704339980}
   - component: {fileID: 4996505042479146799}
   m_Layer: 0
   m_Name: BoxTiles
@@ -133,18 +145,6 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5252951490704339980
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3291934551702170932}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d631f9d6b7b82d74291daf51b103c61c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &4996505042479146799
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,7 +169,7 @@ MonoBehaviour:
   OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5252951490704339980}
+      - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
         m_MethodName: OnActionBox
         m_Mode: 1
@@ -184,7 +184,7 @@ MonoBehaviour:
   OnCollisionExit:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 5252951490704339980}
+      - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
         m_MethodName: LeaveActionBox
         m_Mode: 1
@@ -206,6 +206,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934551747151890}
   - component: {fileID: 3291934551747151893}
+  - component: {fileID: 7083897774279875513}
   m_Layer: 0
   m_Name: BoxCards
   m_TagString: Untagged
@@ -221,11 +222,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3291934551747151891}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00138, y: -0.0011, z: -0}
+  m_LocalPosition: {x: 0.00138, y: -0.0011, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3037102309950884903}
-  m_RootOrder: 2
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3291934551747151893
 BoxCollider:
@@ -240,6 +241,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7083897774279875513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3291934551747151891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: OnActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCollisionExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: LeaveActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3291934552580350920
 GameObject:
   m_ObjectHideFlags: 0
@@ -250,6 +302,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934552580350923}
   - component: {fileID: 3291934552580350922}
+  - component: {fileID: 4004757005828025072}
   m_Layer: 0
   m_Name: BoxWater
   m_TagString: Untagged
@@ -265,11 +318,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3291934552580350920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00715, y: -0.0011, z: -0}
+  m_LocalPosition: {x: 0.00715, y: -0.0011, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3037102309950884903}
-  m_RootOrder: 5
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3291934552580350922
 BoxCollider:
@@ -284,6 +337,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4004757005828025072
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3291934552580350920}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: OnActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCollisionExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: LeaveActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3291934553018803104
 GameObject:
   m_ObjectHideFlags: 0
@@ -294,6 +398,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934553018803107}
   - component: {fileID: 3291934553018803106}
+  - component: {fileID: 8065250457439855832}
   m_Layer: 0
   m_Name: BoxGardener
   m_TagString: Untagged
@@ -309,11 +414,11 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3291934553018803104}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.00526, y: -0.0011, z: -0}
+  m_LocalPosition: {x: 0.00526, y: -0.0011, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3037102309950884903}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3291934553018803106
 BoxCollider:
@@ -328,6 +433,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &8065250457439855832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3291934553018803104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: OnActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCollisionExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: LeaveActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3291934553127445135
 GameObject:
   m_ObjectHideFlags: 0
@@ -338,6 +494,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3291934553127445134}
   - component: {fileID: 3291934553127445137}
+  - component: {fileID: 4888939349204485046}
   m_Layer: 0
   m_Name: BoxPanda
   m_TagString: Untagged
@@ -357,7 +514,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3037102309950884903}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &3291934553127445137
 BoxCollider:
@@ -372,6 +529,57 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.002, y: 0.0025, z: 0.005}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4888939349204485046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3291934553127445135}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9d701a470507ba42aff0d5e1224797c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: OnActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnCollisionExit:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 8255415279115301603}
+        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
+        m_MethodName: LeaveActionBox
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &3291934553137323070
 GameObject:
   m_ObjectHideFlags: 0

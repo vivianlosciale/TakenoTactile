@@ -13,6 +13,9 @@ GameObject:
   - component: {fileID: 133655658845101453}
   - component: {fileID: 9159654001779486647}
   - component: {fileID: 1504235640828709664}
+  - component: {fileID: 5202573576442470930}
+  - component: {fileID: 2097108744387506125}
+  - component: {fileID: 6898325854725525259}
   m_Layer: 0
   m_Name: PlaceHolder
   m_TagString: Untagged
@@ -61,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6f21501cc3b8c874f905e373f20f7727, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -109,3 +112,72 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.01, y: 0.01732051, z: 0}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &5202573576442470930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934906737681333336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 170c0b5a6348a084ba8146d9bb4d6670, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnClickDown:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClickUp:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDrag:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionEnter:
+    m_PersistentCalls:
+      m_Calls: []
+  OnCollisionExit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnClick:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2097108744387506125}
+        m_TargetAssemblyTypeName: PlaceHolderEvent, Assembly-CSharp
+        m_MethodName: PlaceTileToBoard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnLongClick:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &2097108744387506125
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934906737681333336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6cc2415460fb5704bb16b2efbd5c4b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6898325854725525259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1934906737681333336}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 54992b340c6bbe1498b704641f1df786, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

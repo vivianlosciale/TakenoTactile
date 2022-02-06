@@ -12,7 +12,7 @@ public class PlaceHolder
         this.position = position;
         processed = false;
         used = false;
-        this.GameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/placeHolder"), transform);
+        GameObject = GameObject.Instantiate(Resources.Load<GameObject>("Prefabs/placeHolder"), transform);
         GameObject.name = $"({position.x},{position.y})";
         GameObject.transform.localPosition = new Vector3(1.9f * (position.y - (float)position.x / 2), -position.x * 1.6f, 0);
         GameObject.SetActive(false);

@@ -5,7 +5,7 @@ public class PlaceHolderBoard : MonoBehaviour
 {
     private readonly int sizeColumn = 5;
     private readonly int sizeLine = 10;
-    List<PlaceHolder> placeHolderPositions;
+    public List<PlaceHolder> placeHolderPositions;
     void Awake()
     {
         placeHolderPositions = new List<PlaceHolder>();
@@ -25,7 +25,7 @@ public class PlaceHolderBoard : MonoBehaviour
             even = !even;
         }
         placeHolderPositions.Find(e => e.position == new Vector2Int(0, 0)).used = true;
-        ActivateNeighborsSlot(GetActiveSlot());
+        ActivateNeighborsSlot();
     }
 
     private void GeneratePlaceHolder(int i, int j)
@@ -56,7 +56,8 @@ public class PlaceHolderBoard : MonoBehaviour
             {
                 if (!neighbors[i].processed)
                 {
-                    if (!neighbors[i].used)
+                    List<PlaceHolder> tmpNeighbors = GetNeighbors(neighbors[i]);
+                    if (!neighbors[i].used && isValid(tmpNeighbors))
                         foundNeighbors.Add(neighbors[i]);
                     else
                         toProcess.Enqueue(neighbors[i]);
@@ -67,8 +68,28 @@ public class PlaceHolderBoard : MonoBehaviour
         return foundNeighbors;
     }
 
-    private void ActivateNeighborsSlot(List<PlaceHolder> neighbors)
+    private bool isValid(List<PlaceHolder> tmpNeighbors)
     {
+        int neighborsPosed = 0;
+        foreach (PlaceHolder p in tmpNeighbors)
+        {
+            if (p.position == new Vector2Int(0, 0))
+                return true;
+            if (p.used)
+                neighborsPosed++;
+        }
+        return neighborsPosed >= 2;
+    }
+
+    public void DeactivateAllSlot()
+    {
+        foreach (PlaceHolder p in placeHolderPositions)
+            p.GameObject.SetActive(false);
+    }
+
+    public void ActivateNeighborsSlot()
+    {
+        List<PlaceHolder> neighbors = GetActiveSlot();
         foreach (PlaceHolder p in neighbors)
             p.GameObject.SetActive(true);
     }
@@ -83,7 +104,7 @@ public class PlaceHolderBoard : MonoBehaviour
         neighbors.Add(placeHolderPositions.Find(e => e.position == new Vector2Int(position.x, position.y + 1)));
         neighbors.Add(placeHolderPositions.Find(e => e.position == new Vector2Int(position.x, position.y - 1)));
         neighbors.Add(placeHolderPositions.Find(e => e.position == new Vector2Int(position.x + 1, position.y)));
-        Debug.Log(neighbors.Count);
+        neighbors.RemoveAll(e => e == null);
         return neighbors;
     }
 }

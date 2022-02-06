@@ -1,16 +1,17 @@
 ﻿using System;
 using UnityEngine;
 
-class TileMovement : MonoBehaviour
+class BoardTileMovement : MonoBehaviour
 {
     Vector3 pointPosition;
+    private float speed = 9.5f;
     private void FixedUpdate()
     {
-        float step = 6.0f * Time.deltaTime;
+        float step = speed * Time.deltaTime;
         transform.position = Vector3.MoveTowards(transform.position, pointPosition, step);
         if(Vector3.Distance(transform.position, pointPosition) < 0.1f)
         {
-            Destroy(gameObject);
+            Destroy(this);
         }
     }
 
