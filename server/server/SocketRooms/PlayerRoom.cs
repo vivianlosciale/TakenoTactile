@@ -16,16 +16,12 @@ public class PlayerRoom : SocketRoom
     
     private bool _isPlaying;
     private bool _endTurn;
-    private bool _canPlayPowerTwice;
-    private int _powerUses;
     private DiceFaces _diceRoll = DiceFaces.None;
-    private readonly List<Powers> _chosenPowers = new();
 
     public PlayerRoom(Takenoko game, int playerNumber)
     {
         _game = game;
         _playerNumber = playerNumber;
-        InitGameVariables();
     }
     
     public int GetNumber()
@@ -59,26 +55,11 @@ public class PlayerRoom : SocketRoom
                 Console.WriteLine("Player "+_playerNumber+" wants to validate the objective '"+message.GetBody()+"'");
                 ValidateCard(message.GetBody());
                 break;
-            case MessageQuery.ChosePower:
-                Powers power = PowersMethods.ToPowers(message.GetBody());
-                if (!_canPlayPowerTwice && _chosenPowers.Contains(power)) break;
-                _chosenPowers.Add(power);
-                Console.WriteLine("Power '"+message.GetBody()+"' selected!");
-                break;
             case MessageQuery.FinishTurn:
                 //Console.WriteLine("Player " + _playerNumber + " finished their turn");
                 _endTurn = true;
                 break;
         }
-    }
-
-    private void InitGameVariables()
-    {
-        _endTurn = false;
-        _canPlayPowerTwice = false;
-        _powerUses = 2;
-        _diceRoll = DiceFaces.None;
-        _chosenPowers.Clear();
     }
     
     public bool FinishedGame()
@@ -101,6 +82,7 @@ public class PlayerRoom : SocketRoom
 
     public DiceFaces GetDiceResult()
     {
+        _diceRoll = DiceFaces.None;
         Console.WriteLine("Waiting for player " + _playerNumber + " to roll the dice...");
         while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
         return _diceRoll;
@@ -115,33 +97,8 @@ public class PlayerRoom : SocketRoom
 
     public void WaitForEndTurn()
     {
+        _endTurn = false;
         Console.WriteLine("Waiting for player " + _playerNumber + " to end their turn...");
         while (!_endTurn) WaitSeconds(1);
-        InitGameVariables();
-    }
-
-    public List<Powers> ChosePowers()
-    {
-        _chosenPowers.Add(Powers.PickCard); // TODO remove
-        
-        /* TODO add
-        
-        Console.WriteLine("Waiting for player " + _playerNumber + " to chose " + _powerUses + " powers...");
-        Sender.Send(MessageQuery.ChosePower, _powerUses.ToString());
-        while (_chosenPowers.Count < _powerUses) WaitSeconds(1);
-        
-         */
-        
-        return new List<Powers>(_chosenPowers);
-    }
-
-    public void AddPowerUses(int supUses)
-    {
-        _powerUses += supUses;
-    }
-
-    public void CanPlayPowerTwice(bool value)
-    {
-        _canPlayPowerTwice = value;
     }
 }

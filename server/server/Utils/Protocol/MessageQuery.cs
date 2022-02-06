@@ -6,8 +6,9 @@ public enum MessageQuery
     None,
     Ping,
     AcceptConnection,
-    StartGame, 
-    PickCard,
+    StartGame,
+    WaitingPickCard,
+    WaitingPickTile,
     WaitingChoseRain,
     ImpossibleAction,
     
@@ -19,14 +20,14 @@ public enum MessageQuery
     ValidateObjective,
     FinishTurn,
     ReceivedCard,
-    ChosePower,
     InvalidObjective,
     
     // TABLE
     TableConnection,
     APlayerJoined,
-    WaitingPickCard,
     CurrentPlayerNumber,
+    ChosePower,
+    PickCard,
     ChosenTile,
     Rain,
     StopGame,
