@@ -1,6 +1,6 @@
 namespace server.Utils.Game;
 
-public enum Powers
+public enum Actions
 {
     MoveFarmer,
     MovePanda,
@@ -11,22 +11,22 @@ public enum Powers
 
 public static class PowersMethods
 {
-    public static string ToString(Powers diceFace)
+    public static string ToString(Actions action)
     {
-        string? res = Enum.GetName(typeof(Powers), diceFace);
+        string? res = Enum.GetName(typeof(Actions), action);
         if (res == null) return "PickCard";
         return res;
     }
 
-    public static Powers ToPowers(string power)
+    public static Actions ToPowers(string action)
     {
         try
         {
-            return (Powers)Enum.Parse(typeof(DiceFaces), power);
+            return (Actions)Enum.Parse(typeof(Actions), action);
         }
         catch (Exception)
         {
-            return Powers.PickCard;
+            return Actions.PickCard;
         }
     }
 }

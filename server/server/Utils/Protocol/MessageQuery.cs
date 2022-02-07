@@ -5,12 +5,16 @@ public enum MessageQuery
     // COMMON
     None,
     Ping,
+    Error,
     AcceptConnection,
-    StartGame, 
-    PickCard,
+    StartGame,
+    WaitingPickCard,
+    WaitingPickTile,
     WaitingChoseRain,
     ImpossibleAction,
-    
+    ValidateChoice,
+    ChosenTile,
+
     // PLAYERS
     PlayerBroadcast,
     PlayerConnection,
@@ -19,15 +23,17 @@ public enum MessageQuery
     ValidateObjective,
     FinishTurn,
     ReceivedCard,
-    ChosePower,
+    ReceivedTiles,
     InvalidObjective,
     
     // TABLE
     TableConnection,
     APlayerJoined,
-    WaitingPickCard,
     CurrentPlayerNumber,
-    ChosenTile,
+    ChoseAction,
+    RemoveAction,
+    PickCard,
+    PickTiles,
     Rain,
     StopGame,
 }

@@ -83,4 +83,9 @@ public class Server
             _gameThread.Start();
         }
     }
+
+    public void SendError(int playerNumber, string body)
+    {
+        _players[playerNumber].SendEvent(MessageQuery.Error, body);
+    }
 }

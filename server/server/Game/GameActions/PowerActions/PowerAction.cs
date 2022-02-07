@@ -4,15 +4,15 @@ namespace server.Game.GameActions.PowerActions;
 
 public abstract class PowerAction : GameAction
 {
-    public static PowerAction GetPower(Powers power)
+    public static PowerAction GetPower(Actions action)
     {
-        switch (power)
+        switch (action)
         {
-            case Powers.MoveFarmer:
+            case Actions.MoveFarmer:
                 return new MoveFarmer();
-            case Powers.MovePanda:
+            case Actions.MovePanda:
                 return new MovePanda();
-            case Powers.PlaceTile:
+            case Actions.PlaceTile:
                 return new PlaceTile();
             default:
                 return new PickCard();

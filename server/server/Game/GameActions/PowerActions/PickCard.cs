@@ -9,7 +9,7 @@ public class PickCard: PowerAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {
-        player.SendEvent(MessageQuery.PickCard);
+        player.SendEvent(MessageQuery.WaitingPickCard);
         Console.WriteLine("Waiting for player "+player.GetNumber()+" to pick a card...");
         table.WaitForCardPick();
         VictoryCard? card = game.PickCard();
