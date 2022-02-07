@@ -4,7 +4,7 @@ using UnityEngine;
 class BoardTileMovement : MonoBehaviour
 {
     Vector3 pointPosition;
-    private float speed = 9.5f;
+    private readonly float speed = 9.5f;
     private void FixedUpdate()
     {
         float step = speed * Time.deltaTime;

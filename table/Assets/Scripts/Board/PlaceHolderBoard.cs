@@ -33,7 +33,7 @@ public class PlaceHolderBoard : MonoBehaviour
             even = !even;
         }
         placeHolderPositions.Find(e => e.position == new Vector2Int(0, 0)).used = true;
-        //ActivateNeighborsSlot();
+        //ActivateNeighborsSlot("tiles_g1");
     }
 
     private void GeneratePlaceHolder(int i, int j)
@@ -65,7 +65,7 @@ public class PlaceHolderBoard : MonoBehaviour
                 if (!neighbors[i].processed)
                 {
                     List<PlaceHolder> tmpNeighbors = GetNeighbors(neighbors[i]);
-                    if (!neighbors[i].used && isValid(tmpNeighbors))
+                    if (!neighbors[i].used && IsValid(tmpNeighbors))
                         foundNeighbors.Add(neighbors[i]);
                     else
                         toProcess.Enqueue(neighbors[i]);
@@ -76,7 +76,7 @@ public class PlaceHolderBoard : MonoBehaviour
         return foundNeighbors;
     }
 
-    private bool isValid(List<PlaceHolder> tmpNeighbors)
+    private bool IsValid(List<PlaceHolder> tmpNeighbors)
     {
         int neighborsPosed = 0;
         foreach (PlaceHolder p in tmpNeighbors)
@@ -95,11 +95,15 @@ public class PlaceHolderBoard : MonoBehaviour
             p.GameObject.SetActive(false);
     }
 
-    public void ActivateNeighborsSlot()
+    public void ActivateNeighborsSlot(string texture)
     {
         List<PlaceHolder> neighbors = GetActiveSlot();
         foreach (PlaceHolder p in neighbors)
+        {
             p.GameObject.SetActive(true);
+            p.GameObject.GetComponent<PlaceHolderEvent>().texture = texture;
+        }
+
     }
 
     private List<PlaceHolder> GetNeighbors(PlaceHolder placeHolder)

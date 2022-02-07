@@ -254,9 +254,9 @@ public class TableClient : MonoBehaviour
             case MessageQuery.ChosenTile:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _placeHolderBoard.ActivateNeighborsSlot();
+                    _placeHolderBoard.ActivateNeighborsSlot(message.GetBody());
                     //TODO CHANGER LA CARTE
-                    //string cardName = message.GetBody();
+                    //string cardName = ;
                 });
                 break;
             default:

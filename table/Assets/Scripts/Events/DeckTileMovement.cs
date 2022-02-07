@@ -4,7 +4,7 @@ using UnityEngine;
 class DeckTileMovement : MonoBehaviour
 {
     Vector3 pointPosition;
-    private float speed = 6.0f;
+    private readonly float speed = 6.0f;
     private void FixedUpdate()
     {
         float step = speed * Time.deltaTime;

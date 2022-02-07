@@ -2,19 +2,19 @@
 
 class PlaceHolderMaterial : MonoBehaviour
 {
-    float alpha = 1.0f;
-    bool down = true;
-    private float speed = 0.005f;
+    private float _alpha = 1.0f;
+    private bool _down = true;
+    private readonly float _speed = 0.005f;
     private void Update()
     {
         Color c = transform.GetComponent<MeshRenderer>().material.color;
-        c.a = alpha;
+        c.a = _alpha;
         transform.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
-        if (down)
-            alpha -= speed;
+        if (_down)
+            _alpha -= _speed;
         else
-            alpha += speed;
-        if (alpha < 0.0f || alpha > 1.0f)
-            down = !down;
+            _alpha += _speed;
+        if (_alpha < 0.0f || _alpha > 1.0f)
+            _down = !_down;
     }
 }
