@@ -190,14 +190,13 @@ public class TableClient : MonoBehaviour
     private void OnMessage(object sender, MessageEventArgs e)
     {
         MessageParser message = new MessageParser(e.Data);
+        Debug.Log("Server says: " + message.GetFullMessage());
         switch (message.GetQuery())
         {
             case MessageQuery.Ping:
-                Debug.Log("Server says: " + message.GetMessage());
                 _sender.Send(MessageQuery.Ping, "Received!");
                 break;
             case MessageQuery.AcceptConnection:
-                Debug.Log("Server says: " + message.GetMessage());
                 _loginServerSocket.Close();
                 _serverSocket = new WebSocket(message.GetBody());
                 _serverSocket.Connect();
@@ -205,66 +204,59 @@ public class TableClient : MonoBehaviour
                 _sender = new MessageSender(_serverSocket);
                 break;
             case MessageQuery.APlayerJoined:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     AddPlayerToGame(int.Parse(message.GetBody()));
                 });
                 break;
             case MessageQuery.StartGame:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     ChangeScene(GAME_SCENE, HOME_SCENE);
                 });
                 break;
             case MessageQuery.WaitingPickTiles:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _canPickTile = true;
                 });
                 break;
             case MessageQuery.WaitingPickCard:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _canPickCard = true;
                 });
                 break;
             case MessageQuery.RollDice:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     GameObject.Find(message.GetBody()).GetComponent<ParticleSystem>().Play();
                 });
                 break;
             case MessageQuery.CurrentPlayerNumber:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _currentPlayer = players[int.Parse(message.GetBody())];
                 });
                 break;
             case MessageQuery.ChoseAction:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _currentPlayer.ChangeChoseAction();
                 });
                 break;
             case MessageQuery.ValidateChoice:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _currentPlayer.ChangeChoseAction();
                 });
                 break;
             case MessageQuery.ChosenTile:
-                Debug.Log("Server says: " + message.GetMessage());
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _placeHolderBoard.ActivateNeighborsSlot();
+                    //TODO CHANGER LA CARTE
+                    //string cardName = message.GetBody();
                 });
                 break;
             default:
