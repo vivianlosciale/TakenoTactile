@@ -8,6 +8,6 @@ public class SunAction: DiceAction
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {
         Console.WriteLine("Player " + player.GetNumber() + " has now 3 actions to make!");
-        table.AddPowerUses(1);
+        player.AddPowerUses(1);
     }
 }

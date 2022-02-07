@@ -9,9 +9,8 @@ public class TableRoom : SocketRoom
     private readonly Server _server;
     private PositionDto? _tilePosition;
     private bool _pickCard;
-    private bool _canPlayPowerTwice;
-    private int _powerUses;
-    private readonly List<Powers> _chosenPowers = new();
+    private PlayerRoom? _currentPlayer;
+    private readonly List<Actions> _chosenPowers = new();
 
     public TableRoom(Server server)
     {
@@ -29,16 +28,29 @@ public class TableRoom : SocketRoom
             case MessageQuery.Ping:
                 Console.WriteLine("Table said: " + message.GetBody());
                 break;
+            case MessageQuery.Error:
+                int playerNumber = int.Parse(message.GetDest());
+                _server.SendError(playerNumber, message.GetBody());
+                break;
             case MessageQuery.PickCard:
-                //Console.WriteLine("Table asked for a card pick.");
                 _pickCard = true;
                 break;
-            case MessageQuery.ChosePower:
-                Powers power = PowersMethods.ToPowers(message.GetBody());
-                if (!_canPlayPowerTwice && _chosenPowers.Contains(power)) break;
-                _chosenPowers.Add(power);
+            case MessageQuery.ChoseAction:
+                Actions action = PowersMethods.ToPowers(message.GetBody());
+                if (_currentPlayer == null || _currentPlayer.ValidateChoice()) break;
+                if (!_currentPlayer.CanPlayPowerTwice() && _chosenPowers.Contains(action)) break;
+                _chosenPowers.Add(action);
                 Console.WriteLine("Power '"+message.GetBody()+"' selected!");
-                if (_chosenPowers.Count < _powerUses) Sender.Send(MessageQuery.ChosePower);
+                if (_chosenPowers.Count >= _currentPlayer.GetPowerUses())
+                {
+                    _currentPlayer.SendEvent(MessageQuery.ValidateChoice, "true");
+                }
+                break;
+            case MessageQuery.RemoveAction:
+                if (_currentPlayer == null || _currentPlayer.ValidateChoice()) break;
+                _chosenPowers.Remove(PowersMethods.ToPowers(message.GetBody()));
+                _currentPlayer.SendEvent(MessageQuery.ValidateChoice, "false");
+                Console.WriteLine("Power '"+message.GetBody()+"' removed!");
                 break;
             case MessageQuery.ChosenTile:
                 _tilePosition = PositionDto.ToPosition(message.GetBody());
@@ -53,22 +65,25 @@ public class TableRoom : SocketRoom
         while (!_pickCard) WaitSeconds(1);
     }
 
-    public List<Powers> ChosePowers()
+    public List<Actions> ChosePowers(PlayerRoom player)
     {
-        _canPlayPowerTwice = false;
-        _powerUses = 2;
+        _currentPlayer = player;
         _chosenPowers.Clear();
-        _chosenPowers.Add(Powers.PickCard); // TODO remove
+        _chosenPowers.Add(Actions.PickCard); // TODO remove
         
         /* TODO add
         
-        Console.WriteLine("Waiting for the current player to chose " + _powerUses + " powers...");
+        Console.WriteLine("Waiting for the current player to chose " + _currentPlayer.GetPowerUses() + " powers...");
         Sender.Send(MessageQuery.ChosePower);
-        while (_chosenPowers.Count < _powerUses) WaitSeconds(1);
+        player.SendEvent(MessageQuery.ChosePower);
+        player.SetValidate(false);
+        while (_chosenPowers.Count < _currentPlayer.GetPowerUses() || !player.ValidateChoice()) WaitSeconds(1);
+        player.ResetPowerUses();
+        Sender.Send(MessageQuery.ValidateChoice);
         
-         */
+        */
         
-        return new List<Powers>(_chosenPowers);
+        return new List<Actions>(_chosenPowers);
     }
 
     public PositionDto WaitForSelectTile()
@@ -76,15 +91,5 @@ public class TableRoom : SocketRoom
         _tilePosition = null;
         while (_tilePosition == null) WaitSeconds(1);
         return _tilePosition;
-    }
-
-    public void AddPowerUses(int supUses)
-    {
-        _powerUses += supUses;
-    }
-
-    public void CanPlayPowerTwice(bool value)
-    {
-        _canPlayPowerTwice = value;
     }
 }

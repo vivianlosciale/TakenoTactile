@@ -62,8 +62,8 @@ public class Takenoko
 
     private void PlayPower()
     {
-        List<Powers> chosenPowers = _table.ChosePowers();
-        foreach (Powers power in chosenPowers)
+        List<Actions> chosenPowers = _table.ChosePowers(_currentPlayer);
+        foreach (Actions power in chosenPowers)
         {
             PowerAction.GetPower(power).Use(_currentPlayer,_table,_gameState);
         }

@@ -16,6 +16,9 @@ public class PlayerRoom : SocketRoom
     
     private bool _isPlaying;
     private bool _endTurn;
+    private bool _validate;
+    private bool _canPlayPowerTwice;
+    private int _powerUses = 2;
     private DiceFaces _diceRoll = DiceFaces.None;
 
     public PlayerRoom(Takenoko game, int playerNumber)
@@ -54,6 +57,10 @@ public class PlayerRoom : SocketRoom
             case MessageQuery.ValidateObjective:
                 Console.WriteLine("Player "+_playerNumber+" wants to validate the objective '"+message.GetBody()+"'");
                 ValidateCard(message.GetBody());
+                break;
+            case MessageQuery.ValidateChoice:
+                Console.WriteLine("Choice validated!");
+                _validate = true;
                 break;
             case MessageQuery.FinishTurn:
                 //Console.WriteLine("Player " + _playerNumber + " finished their turn");
@@ -100,5 +107,41 @@ public class PlayerRoom : SocketRoom
         _endTurn = false;
         Console.WriteLine("Waiting for player " + _playerNumber + " to end their turn...");
         while (!_endTurn) WaitSeconds(1);
+    }
+
+    public bool ValidateChoice()
+    {
+        return _validate;
+    }
+
+    public void SetValidate(bool value)
+    {
+        _validate = value;
+    }
+
+    public void AddPowerUses(int supUses)
+    {
+        _powerUses += supUses;
+    }
+
+    public void CanPlayPowerTwice(bool value)
+    {
+        _canPlayPowerTwice = value;
+    }
+
+    public bool CanPlayPowerTwice()
+    {
+        return _canPlayPowerTwice;
+    }
+
+    public int GetPowerUses()
+    {
+        return _powerUses;
+    }
+
+    public void ResetPowerUses()
+    {
+        _canPlayPowerTwice = false;
+        _powerUses = 2;
     }
 }
