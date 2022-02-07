@@ -6,6 +6,14 @@ public class PlaceHolderBoard : MonoBehaviour
     private readonly int sizeColumn = 5;
     private readonly int sizeLine = 10;
     public List<PlaceHolder> placeHolderPositions;
+    public TableClient _tableClient;
+
+    public void Start()
+    {
+        _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+        _tableClient.SetPlaceHolderBoard(this);
+    }
+
     void Awake()
     {
         placeHolderPositions = new List<PlaceHolder>();
@@ -25,7 +33,7 @@ public class PlaceHolderBoard : MonoBehaviour
             even = !even;
         }
         placeHolderPositions.Find(e => e.position == new Vector2Int(0, 0)).used = true;
-        ActivateNeighborsSlot();
+        //ActivateNeighborsSlot();
     }
 
     private void GeneratePlaceHolder(int i, int j)

@@ -16,6 +16,12 @@ public enum MessageQuery
     WaitingPickCard,
     StopGame,
     CurrentPlayerNumber,
+    ChoseAction,
+    RemoveAction,
+    WaitingPickTiles,
+    PickTiles,
+    ChosenTile,
+    ValidateChoice,
 }
 
 public static class QueryMethods

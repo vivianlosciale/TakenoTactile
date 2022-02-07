@@ -2,6 +2,13 @@ using UnityEngine;
 
 public class PlaceHolderEvent : MonoBehaviour
 {
+    private TableClient _tableClient;
+
+    public void Start()
+    {
+        _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+    }
+
     public void PlaceTileToBoard()
     {
         transform.parent.GetComponent<PlaceHolderBoard>().DeactivateAllSlot();
@@ -10,5 +17,6 @@ public class PlaceHolderEvent : MonoBehaviour
         tile.AddComponent<BoardTileMovement>().SetPosition(transform.position);
         PlaceHolder p = transform.parent.GetComponent<PlaceHolderBoard>().placeHolderPositions.Find(e => e.GameObject == gameObject);
         p.used = true;
+        _tableClient.SendTilePosition(p.position);
     }
 }

@@ -1028,7 +1028,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb57961d2bb11d743825a1171760cba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerCountContainer: {fileID: 0}
   adresseInput: {fileID: 148695310}
 --- !u!4 &723995795
 Transform:
@@ -1505,7 +1504,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1341235140
 RectTransform:
   m_ObjectHideFlags: 0

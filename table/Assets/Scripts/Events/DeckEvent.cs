@@ -4,29 +4,43 @@ using UnityEngine;
 public class DeckEvent : MonoBehaviour
 {
 
-    public TableClient tableClient;
+    public TableClient _tableClient;
 
     public void Start()
     {
-        tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+        _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         //tableClient.SetDeckEvent(this);
+    }
+
+    public void PickTile()
+    {
+        Debug.Log("Can : " + _tableClient.CanPickCard());
+        if (_tableClient.CanPickTile())
+        {
+            Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
+            GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
+            Transform pointPosition = board.transform.GetChild(0).transform;
+            StartCoroutine(TranslateCard(pointPosition));
+            _tableClient.PickTile();
+        }
     }
 
     public void PickCard()
     {
-        if (tableClient.CanPickCard())
+        Debug.Log("Can : " + _tableClient.CanPickCard());
+        if (_tableClient.CanPickCard())
         {
-            Debug.Log("Player : " + tableClient.GetCurrentPlayer());
-            GameObject board = GameObject.Find("BoardP" + tableClient.GetCurrentPlayer());
+            Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
+            GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
             Transform pointPosition = board.transform.GetChild(0).transform;
             StartCoroutine(TranslateCard(pointPosition));
-            tableClient.PickCard();
+            _tableClient.PickCard();
         }
     }
 
     public void StartGame()
     {
-        tableClient.StartGame();
+        _tableClient.StartGame();
     }
 
     private IEnumerator TranslateCard(Transform pointPosition)
