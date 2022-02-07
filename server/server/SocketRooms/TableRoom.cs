@@ -58,7 +58,6 @@ public class TableRoom : SocketRoom
                 Console.WriteLine("Power '"+message.GetBody()+"' removed!");
                 break;
             case MessageQuery.ChosenTile:
-                Console.WriteLine("ChosenTile: "+message.GetFullMessage());
                 _tilePosition = PositionDto.ToPosition(message.GetBody());
                 break;
         }
