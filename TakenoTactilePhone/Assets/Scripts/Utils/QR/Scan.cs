@@ -7,7 +7,7 @@ public class Scan : MonoBehaviour
 {
 
     public RawImage display;
-    public Text text;
+    //public Text text;
     public MobileClient client;
 
     private int _currentCamIndex;
@@ -23,7 +23,7 @@ public class Scan : MonoBehaviour
 
         _camTexture.Play();
 
-        text.color = Color.white;
+        //text.color = Color.white;
     }
 
     private void Update()
@@ -52,7 +52,7 @@ public class Scan : MonoBehaviour
             if (result != null)
             {
                 Debug.Log("DECODED TEXT FROM QR: " + result.Text);
-                text.text = result.Text;
+               // text.text = result.Text;
                 client.Connect(result.Text);
             }
         }

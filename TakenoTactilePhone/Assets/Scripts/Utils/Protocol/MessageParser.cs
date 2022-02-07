@@ -10,7 +10,7 @@ public class MessageParser
     public MessageParser(string message)
     {
         _message = message;
-        string[] split = message.Split('-');
+        string[] split = message.Split(MessageSender.Separator);
         _query = split[0];
         if (split.Length > 2)
         {

@@ -9,6 +9,7 @@ public class MobileClient : MonoBehaviour
     private MessageSender _messageSender;
     public GameObject phoneCamera;
     private GameActions _gameActions;
+    private PopUpSystem _popUpSystem;
 
     /*
      * Deactivate the camera gameObject.
@@ -21,7 +22,6 @@ public class MobileClient : MonoBehaviour
         ConnectToPrivatePath(address);
         StartGame();
     }
-    
     
     /*
     * Deactivate the camera gameObject.
@@ -38,7 +38,6 @@ public class MobileClient : MonoBehaviour
     {
         var move = gameObject.GetComponent<MoveObject>();
         move.MoveToAnotherScene();
-        //GameManager = GameObject.FindWithTag(TagManager.GameManager.ToString());
     }
 
     public void SetGameActions(GameActions gameActions)
@@ -46,14 +45,29 @@ public class MobileClient : MonoBehaviour
         _gameActions = gameActions;
     }
 
+    public void SetPopUpSystem(PopUpSystem popUpSystem)
+    {
+        this._popUpSystem = popUpSystem;
+    }
+
     public void SendDiceResult(DiceFaces result)
     {
         _messageSender.Send(MessageQuery.RollDice, result.ToString());
     }
 
+    public void ValidateChoice()
+    {
+        _messageSender.Send(MessageQuery.ValidateChoice);
+    }
+
     public void EndTurn()
     {
         _messageSender.Send(MessageQuery.FinishTurn);
+    }
+
+    public void SendChosenTile(String tileName)
+    {
+        _messageSender.Send(MessageQuery.ChosenTile, tileName);
     }
 
     /*
@@ -86,24 +100,23 @@ public class MobileClient : MonoBehaviour
     private void ReceiveGameMessages(object sender, MessageEventArgs args)
     {
         var parser = new MessageParser(args.Data);
-        var popUpManager = GameObject.FindGameObjectWithTag(TagManager.PopUpManager.ToString());
-        var popUpSystem = popUpManager.GetComponent<PopUpSystem>();
+        
+        //GameObject tileSelector = GameObject.FindWithTag(TagManager.TileSelector.ToString());
+        Debug.Log("--------- RECEIVED : " + parser.GetFullMessage());
+        Debug.Log("GAME ACTIONS IS : " + _gameActions);
         switch(parser.GetQuery())
         {
-            case MessageQuery.StartGame:
-                break;
-            case MessageQuery.PlayerBroadcast:
-                break;
             case MessageQuery.RollDice:
-                //Do Action Roll Dice
-                //subscribe to ontrigger event du DiceChecker
-                //on retrieve le result
-                //on renvoie 
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    // on fait apparatire le message
-                    // 
                     _gameActions.StartTurn();
+                });
+                break;
+            case MessageQuery.ValidateChoice:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    Debug.Log("BOOLEAN PARSED : " + bool.Parse(parser.GetMessageBody()));
+                    _gameActions.ValidateChoice(bool.Parse(parser.GetMessageBody()));
                 });
                 break;
             case MessageQuery.ReceivedCard:
@@ -112,9 +125,29 @@ public class MobileClient : MonoBehaviour
                     _gameActions.AddCardToHand(parser.GetMessageBody());
                 });
                 break;
-            default:
+            case MessageQuery.WaitingPickTiles:
+                _popUpSystem.PopUp("Please pick your tiles.");
+                break;
+            case MessageQuery.ReceivedTiles :
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.HidePopUp();
+                    _gameActions.DisplayTilesToChoose(parser.GetMessageBody());
+                });
+                break;
+            case MessageQuery.TilePlaced :
+                var tileSelectorGo = GameObject.FindWithTag(TagManager.TileSelector.ToString());
+                var tileSelector = tileSelectorGo.GetComponent<TileSelector>();
+                tileSelector.DestroyChildren();
+                tileSelectorGo.SetActive(false);
+                break;
+            case MessageQuery.ChoseAction :
+                _popUpSystem.PopUp("You must now choose your actions on the table.");
+                break;
+            case MessageQuery.ImpossibleAction:
+                _popUpSystem.PopUp("You cannot do this now.");
                 break;
         }
     }
-    
+
 }

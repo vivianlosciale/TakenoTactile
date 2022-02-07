@@ -7,21 +7,25 @@ public enum MessageQuery
     Ping,
     AcceptConnection,
     StartGame,
-    ReceivedCard,
-
+    WaitingPickCard, //on reçoit : on attend qu'on pioche une carte objectif
+    WaitingPickTiles, //on reçoit : on attend qu'on pioche une tuile sur la table
+    WaitingChoseRain, // on reçoit
+    ImpossibleAction, // on reçoit 
+    
     // PLAYERS
     PlayerBroadcast,
     PlayerConnection,
     GameIsFull,
-    //les actions du joueur : lancer le dé
-    ValidateObjective, //nom de la carte, on demande l'autorisation
-    RollDice, // on donne un entier
-    ChooseTile, //TODO
-    FinishTurn,
-
-    // TABLE
-    TableConnection,
-    APlayerJoined,
+    RollDice, // on reçoit
+    ValidateObjective, // on envoie
+    FinishTurn, // on envoie : Quand on a fini notre tour
+    ReceivedCard, // on reçoit : la carte objectif qu'on vient de piocher sur la table
+    ReceivedTiles, // on reçoit : les 3 tuiles qu'on vient de piocher
+    ChosenTile, //on envoie : la tuile qu'on a choisie 
+    TilePlaced,
+    InvalidObjective,
+    ValidateChoice, // on reçoit et on renvoie
+    ChoseAction,
 }
 
 public static class QueryMethods

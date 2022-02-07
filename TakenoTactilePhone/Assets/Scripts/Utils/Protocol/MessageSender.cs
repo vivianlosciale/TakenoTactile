@@ -5,6 +5,8 @@ using WebSocketSharp;
 public class MessageSender
 {
 
+    public const char Separator = '#';
+    
     private readonly WebSocket _room;
 
     public MessageSender(WebSocket room)
@@ -16,14 +18,14 @@ public class MessageSender
         Send(QueryMethods.ToString(query));
     }
 
-    public void Send(MessageQuery query, string dest, string message)
-    {
-        Send(QueryMethods.ToString(query)+"-"+dest+"-"+message);
-    }
-
     public void Send(MessageQuery query, string message)
     {
-        Send(QueryMethods.ToString(query)+"-"+message);
+        Send(QueryMethods.ToString(query)+Separator+message);
+    }
+
+    public void Send(MessageQuery query, string dest, string message)
+    {
+        Send(QueryMethods.ToString(query)+Separator+dest+Separator+message);
     }
 
     public void Send(string message)

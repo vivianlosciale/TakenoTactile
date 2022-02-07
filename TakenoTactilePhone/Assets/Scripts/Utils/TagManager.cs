@@ -6,6 +6,7 @@
      PopUpManager,
      MobileClient,
      DiceCheckerFloor,
+     TileSelector,
      GameManager,
      Hand,
 }

@@ -9,6 +9,8 @@ TagManager:
   - DiceCheckerFloor
   - GameManager
   - Hand
+  - TagChooser
+  - TileSelector
   layers:
   - Default
   - TransparentFX
