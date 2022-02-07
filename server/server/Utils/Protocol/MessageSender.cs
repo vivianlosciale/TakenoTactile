@@ -5,6 +5,8 @@ namespace server.Utils.Protocol;
 public class MessageSender
 {
 
+    public const char Separator = '#';
+
     private readonly SocketRoom _room;
 
     public MessageSender(SocketRoom room)
@@ -19,12 +21,12 @@ public class MessageSender
 
     public void Send(MessageQuery query, string message)
     {
-        Send(QueryMethods.ToString(query)+"-"+message);
+        Send(QueryMethods.ToString(query)+Separator+message);
     }
 
     public void Send(MessageQuery query, string dest, string message)
     {
-        Send(QueryMethods.ToString(query)+"-"+dest+"-"+message);
+        Send(QueryMethods.ToString(query)+Separator+dest+Separator+message);
     }
 
     public void Send(string message)

@@ -14,6 +14,22 @@ public class Deck
         _victoryCards.Add(new FoodVictoryCard("card_panda_4",4,new FoodStorage(0,2,0)));
         _victoryCards.Add(new FoodVictoryCard("card_panda_5",5,new FoodStorage(0,0,2)));
         _victoryCards.Add(new FoodVictoryCard("card_panda_6",6,new FoodStorage(1,1,1)));
+        
+        _tiles.Add(new Tile("tiles_g1", TileColor.Green));
+        _tiles.Add(new Tile("tiles_g2", TileColor.Green));
+        _tiles.Add(new Tile("tiles_g3", TileColor.Green));
+        _tiles.Add(new Tile("tiles_g4", TileColor.Green));
+        _tiles.Add(new Tile("tiles_g5", TileColor.Green));
+        _tiles.Add(new Tile("tiles_y1", TileColor.Yellow));
+        _tiles.Add(new Tile("tiles_y2", TileColor.Yellow));
+        _tiles.Add(new Tile("tiles_y3", TileColor.Yellow));
+        _tiles.Add(new Tile("tiles_y4", TileColor.Yellow));
+        _tiles.Add(new Tile("tiles_y5", TileColor.Yellow));
+        _tiles.Add(new Tile("tiles_r1", TileColor.Pink));
+        _tiles.Add(new Tile("tiles_r2", TileColor.Pink));
+        _tiles.Add(new Tile("tiles_r3", TileColor.Pink));
+        _tiles.Add(new Tile("tiles_r4", TileColor.Pink));
+        _tiles.Add(new Tile("tiles_r5", TileColor.Pink));
     }
 
     public VictoryCard? PickCard()

@@ -92,4 +92,9 @@ public class Tile
         _upgrade = upgrade;
         return oldUpgrade;
     }
+
+    public override string ToString()
+    {
+        return _name;
+    }
 }

@@ -1,5 +1,6 @@
 using server.Game;
 using server.Game.Board.Cards;
+using server.Game.Board.Tiles;
 using server.Utils.Game;
 using server.Utils.Protocol;
 using WebSocketSharp;
@@ -19,6 +20,7 @@ public class PlayerRoom : SocketRoom
     private bool _validate;
     private bool _canPlayPowerTwice;
     private int _powerUses = 2;
+    private string _chosenTile = string.Empty;
     private DiceFaces _diceRoll = DiceFaces.None;
 
     public PlayerRoom(Takenoko game, int playerNumber)
@@ -61,6 +63,10 @@ public class PlayerRoom : SocketRoom
             case MessageQuery.ValidateChoice:
                 Console.WriteLine("Choice validated!");
                 _validate = true;
+                break;
+            case MessageQuery.ChosenTile:
+                _chosenTile = message.GetBody();
+                Console.WriteLine("Chosen tile is '"+_chosenTile+"'");
                 break;
             case MessageQuery.FinishTurn:
                 //Console.WriteLine("Player " + _playerNumber + " finished their turn");
@@ -107,6 +113,20 @@ public class PlayerRoom : SocketRoom
         _endTurn = false;
         Console.WriteLine("Waiting for player " + _playerNumber + " to end their turn...");
         while (!_endTurn) WaitSeconds(1);
+    }
+
+    public Tile SelectTile(List<Tile> pickedTiles)
+    {
+        Console.WriteLine("Waiting for player " + _playerNumber + " to chose a tile...");
+        Sender.Send(MessageQuery.ReceivedTiles, MultiNames.ToMessage(pickedTiles));
+        _chosenTile = string.Empty;
+        while (_chosenTile == string.Empty) WaitSeconds(1);
+        Console.WriteLine("The player chose the tile '"+_chosenTile+"'");
+        foreach (var tile in pickedTiles)
+        {
+            if (tile.ToString().Equals(_chosenTile)) return tile;
+        }
+        return pickedTiles[0];
     }
 
     public bool ValidateChoice()

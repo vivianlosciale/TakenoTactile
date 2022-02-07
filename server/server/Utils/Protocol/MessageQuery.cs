@@ -9,11 +9,12 @@ public enum MessageQuery
     AcceptConnection,
     StartGame,
     WaitingPickCard,
-    WaitingPickTile,
+    WaitingPickTiles,
     WaitingChoseRain,
     ImpossibleAction,
     ValidateChoice,
     ChosenTile,
+    ChoseAction,
 
     // PLAYERS
     PlayerBroadcast,
@@ -24,13 +25,13 @@ public enum MessageQuery
     FinishTurn,
     ReceivedCard,
     ReceivedTiles,
+    TilePlaced,
     InvalidObjective,
     
     // TABLE
     TableConnection,
     APlayerJoined,
     CurrentPlayerNumber,
-    ChoseAction,
     RemoveAction,
     PickCard,
     PickTiles,
@@ -42,6 +43,7 @@ public static class QueryMethods
 {
     public static string ToString( MessageQuery query)
     {
+        
         string? res = Enum.GetName(typeof(MessageQuery), query);
         if (res == null) return "None";
         return res;

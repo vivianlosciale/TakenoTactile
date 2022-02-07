@@ -13,6 +13,7 @@ public class PositionDto
 
     public static PositionDto ToPosition(string value)
     {
+        Console.WriteLine("Position string value: " + value);
         string[] seq = value.Split(',');
         return new PositionDto(int.Parse(seq[0]), int.Parse(seq[1]));
     }

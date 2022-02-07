@@ -2,15 +2,15 @@ using System.Text;
 
 namespace server.Utils.Game;
 
-public class MultiNames
+public static class MultiNames
 {
-    public static string ToMessage(List<string> names)
+    public static string ToMessage<T>(List<T> names)
     {
         if (names.Count == 0) return "";
-        StringBuilder result = new(names[0]);
+        StringBuilder result = new(names[0]?.ToString());
         for (int i = 1; i < names.Count; i++)
         {
-            result.Append(names[i]).Append(',');
+            result.Append(',').Append(names[i]);
         }
         return result.ToString();
     }

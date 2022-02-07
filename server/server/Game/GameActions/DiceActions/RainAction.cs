@@ -13,8 +13,15 @@ public class RainAction: DiceAction
         /* TODO add
         
         player.SendEvent(MessageQuery.WaitingChoseRain);
+        WaitChoice(player, table, game);
+        
+        */
+    }
+
+    private void WaitChoice(PlayerRoom player, TableRoom table, GameState game)
+    {
         table.SendEvent(MessageQuery.WaitingChoseRain);
-        PositionDto chosenPosition = table.WaitForSelectTile();
+        PositionDto chosenPosition = table.WaitForSelectPosition();
         if (game.GrowAt(new Position(chosenPosition.I, chosenPosition.J)))
         {
             table.SendEvent(MessageQuery.Rain, chosenPosition.ToString());
@@ -22,8 +29,7 @@ public class RainAction: DiceAction
         else
         {
             player.SendEvent(MessageQuery.ImpossibleAction);
+            WaitChoice(player, table, game);
         }
-        
-        */
     }
 }

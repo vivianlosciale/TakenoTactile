@@ -60,10 +60,10 @@ public class Server
         if (_players.Count < 4)
         {
             string privatePlayerPath = PlayerPath + _players.Count;
-            PlayerRoom playerRoom = new PlayerRoom(_game, _players.Count + 1);
+            PlayerRoom playerRoom = new PlayerRoom(_game, _players.Count);
             _ws.AddWebSocketService(privatePlayerPath, () => playerRoom);
             _players.Add(playerRoom);
-            _table.SendEvent(MessageQuery.APlayerJoined);
+            _table.SendEvent(MessageQuery.APlayerJoined, playerRoom.GetNumber().ToString()); // TODO
             return _socketAddress + privatePlayerPath;
         }
         return null;
@@ -76,7 +76,7 @@ public class Server
      */
     public void StartGame()
     {
-        if (_players.Count >= 2)
+        if (_players.Count >= 1)
         {
             _ws.RemoveWebSocketService(LoginPath);
             _gameThread = new Thread(new Takenoko(_table, _players).StartGame);

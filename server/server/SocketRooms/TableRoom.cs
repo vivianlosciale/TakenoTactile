@@ -9,6 +9,7 @@ public class TableRoom : SocketRoom
     private readonly Server _server;
     private PositionDto? _tilePosition;
     private bool _pickCard;
+    private bool _pickTiles;
     private PlayerRoom? _currentPlayer;
     private readonly List<Actions> _chosenPowers = new();
 
@@ -35,6 +36,9 @@ public class TableRoom : SocketRoom
             case MessageQuery.PickCard:
                 _pickCard = true;
                 break;
+            case MessageQuery.PickTiles:
+                _pickTiles = true;
+                break;
             case MessageQuery.ChoseAction:
                 Actions action = PowersMethods.ToPowers(message.GetBody());
                 if (_currentPlayer == null || _currentPlayer.ValidateChoice()) break;
@@ -43,6 +47,7 @@ public class TableRoom : SocketRoom
                 Console.WriteLine("Power '"+message.GetBody()+"' selected!");
                 if (_chosenPowers.Count >= _currentPlayer.GetPowerUses())
                 {
+                    Console.WriteLine("The player chose '"+MultiNames.ToMessage(_chosenPowers)+"'");
                     _currentPlayer.SendEvent(MessageQuery.ValidateChoice, "true");
                 }
                 break;
@@ -53,6 +58,7 @@ public class TableRoom : SocketRoom
                 Console.WriteLine("Power '"+message.GetBody()+"' removed!");
                 break;
             case MessageQuery.ChosenTile:
+                Console.WriteLine("ChosenTile: "+message.GetFullMessage());
                 _tilePosition = PositionDto.ToPosition(message.GetBody());
                 break;
         }
@@ -65,28 +71,28 @@ public class TableRoom : SocketRoom
         while (!_pickCard) WaitSeconds(1);
     }
 
+    public void WaitForTilesPick()
+    {
+        _pickTiles = false;
+        SendEvent(MessageQuery.WaitingPickTiles);
+        while (!_pickTiles) WaitSeconds(1);
+    }
+
     public List<Actions> ChosePowers(PlayerRoom player)
     {
         _currentPlayer = player;
         _chosenPowers.Clear();
-        _chosenPowers.Add(Actions.PickCard); // TODO remove
-        
-        /* TODO add
-        
         Console.WriteLine("Waiting for the current player to chose " + _currentPlayer.GetPowerUses() + " powers...");
-        Sender.Send(MessageQuery.ChosePower);
-        player.SendEvent(MessageQuery.ChosePower);
+        Sender.Send(MessageQuery.ChoseAction);
+        player.SendEvent(MessageQuery.ChoseAction);
         player.SetValidate(false);
         while (_chosenPowers.Count < _currentPlayer.GetPowerUses() || !player.ValidateChoice()) WaitSeconds(1);
         player.ResetPowerUses();
         Sender.Send(MessageQuery.ValidateChoice);
-        
-        */
-        
         return new List<Actions>(_chosenPowers);
     }
 
-    public PositionDto WaitForSelectTile()
+    public PositionDto WaitForSelectPosition()
     {
         _tilePosition = null;
         while (_tilePosition == null) WaitSeconds(1);

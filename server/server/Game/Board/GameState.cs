@@ -86,4 +86,9 @@ public class GameState
     {
         return _field.GrowAt(position);
     }
+
+    public void PlaceTile(Position position, Tile tile)
+    {
+        _field.AddTile(position, tile);
+    }
 }
