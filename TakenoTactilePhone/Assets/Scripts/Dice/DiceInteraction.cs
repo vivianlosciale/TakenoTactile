@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DiceInteraction : MonoBehaviour
 {
-    private float moveSpeed = 10.0f;
+    //private float moveSpeed = 10.0f;
     private float range = 5.0f;
     private float force = 17.5f;
     float cameraZDistance;

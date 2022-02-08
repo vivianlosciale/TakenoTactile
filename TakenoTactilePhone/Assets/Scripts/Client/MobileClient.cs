@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -47,7 +46,7 @@ public class MobileClient : MonoBehaviour
 
     public void SetPopUpSystem(PopUpSystem popUpSystem)
     {
-        this._popUpSystem = popUpSystem;
+        _popUpSystem = popUpSystem;
     }
 
     public void SendDiceResult(DiceFaces result)
@@ -70,6 +69,11 @@ public class MobileClient : MonoBehaviour
         _messageSender.Send(MessageQuery.ChosenTile, tileName);
     }
 
+    public void SendChosenObjective(String objectiveName)
+    {
+        _messageSender.Send(MessageQuery.ValidateObjective, objectiveName);
+    }
+    
     /*
      * Retrieve my private path and connect to it
      */
@@ -101,12 +105,10 @@ public class MobileClient : MonoBehaviour
     {
         var parser = new MessageParser(args.Data);
         
-        //GameObject tileSelector = GameObject.FindWithTag(TagManager.TileSelector.ToString());
         Debug.Log("--------- RECEIVED : " + parser.GetFullMessage());
-        Debug.Log("GAME ACTIONS IS : " + _gameActions);
         switch(parser.GetQuery())
         {
-            case MessageQuery.RollDice:
+            case MessageQuery.WaitingDiceResult:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.StartTurn();
@@ -119,16 +121,26 @@ public class MobileClient : MonoBehaviour
                     _gameActions.ValidateChoice(bool.Parse(parser.GetMessageBody()));
                 });
                 break;
+            case MessageQuery.WaitingPickCard:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Please pick a card.");
+                });
+                break;
             case MessageQuery.ReceivedCard:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
+                    _popUpSystem.HidePopUp();
                     _gameActions.AddCardToHand(parser.GetMessageBody());
                 });
                 break;
             case MessageQuery.WaitingPickTiles:
-                _popUpSystem.PopUp("Please pick your tiles.");
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Please pick your tiles.");
+                });
                 break;
-            case MessageQuery.ReceivedTiles :
+            case MessageQuery.WaitingChoseTile :
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _popUpSystem.HidePopUp();
@@ -136,18 +148,44 @@ public class MobileClient : MonoBehaviour
                 });
                 break;
             case MessageQuery.TilePlaced :
-                var tileSelectorGo = GameObject.FindWithTag(TagManager.TileSelector.ToString());
-                var tileSelector = tileSelectorGo.GetComponent<TileSelector>();
-                tileSelector.DestroyChildren();
-                tileSelectorGo.SetActive(false);
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.TilePlaced();
+                });
                 break;
-            case MessageQuery.ChoseAction :
-                _popUpSystem.PopUp("You must now choose your actions on the table.");
+            case MessageQuery.WaitingChoseAction :
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("You must now choose your actions on the table.");
+                });
                 break;
-            case MessageQuery.ImpossibleAction:
-                _popUpSystem.PopUp("You cannot do this now.");
+            case MessageQuery.WaitingEndTurn:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.WaitingEndTurn();
+                });
+                break;
+            case MessageQuery.InvalidObjective:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    GetHandManagement().UpdateCardsPosition();
+                    _popUpSystem.PopUp("You can not validate this card yet.");
+                });
+                break;
+            case MessageQuery.ValidateObjective:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Your card was validated.");
+                    _gameActions.ValidateObjective(parser.GetMessageBody());
+                });
                 break;
         }
+    }
+
+    private HandManagement GetHandManagement()
+    {
+        var handGo = GameObject.FindWithTag(TagManager.Hand.ToString());
+        return handGo.GetComponent<HandManagement>();
     }
 
 }

@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public class GameActions : MonoBehaviour
@@ -80,27 +79,29 @@ public class GameActions : MonoBehaviour
 
     public void AddCardToHand(string cardName)
     {
-        CreateMaterial(cardPrefab, hand.transform, "Tiles", cardName );
-        /*GameObject newCard = Instantiate(cardPrefab, hand.transform);
-        Material newMat = new Material(Resources.Load<Material>("Models/Material/card_face"));
-        var texture = Resources.Load<Texture2D>("Images/Cards/" + cardName);
-        newMat.mainTexture = texture;
-        newMat.SetTexture("_EmissionMap", texture);
-        var materials = newCard.GetComponent<MeshRenderer>().materials;
-        materials[1] = newMat;
-        newCard.GetComponent<MeshRenderer>().materials = materials;
-        endTurn.SetActive(true);*/
+        CreateMaterial(cardPrefab, hand.transform, "Cards", cardName );
+        hand.GetComponent<HandManagement>().UpdateCardsPosition();
     }
 
     public void DisplayTilesToChoose(string tileNames)
     {
         tileSelector.SetActive(true);
+        hand.SetActive(false);
         List<string> tiles = MultiNames.ToNames(tileNames);
         foreach (var tile in tiles)
         {
             CreateTile(tile);
         }
         tileSelector.GetComponent<TileSelector>().PlaceTiles();
+    }
+
+    public void TilePlaced()
+    {
+        tileSelector.GetComponent<TileSelector>().DestroyChildren();
+        tileSelector.SetActive(false);
+        Debug.Log("TILE SELECTOR DEACTIVATED");
+        hand.SetActive(true);
+        Debug.Log("HAND ACTIVATED");
     }
 
     public void ValidateChoice(bool b)
@@ -114,25 +115,25 @@ public class GameActions : MonoBehaviour
             _popUpSystem.HidePopUp();
         }
     }
-    
+
+    public void ValidateObjective(string objectiveName)
+    {
+        hand.GetComponent<HandManagement>().ObjectiveWasValidated(objectiveName);
+    }
     private void CreateTile(string tileName)
     {
         CreateMaterial(tilePrefab, tileSelector.transform, "Tiles", tileName );
-        /*GameObject newTile = Instantiate(tilePrefab, tileSelector.transform);
-        newTile.name = tileName;
-        Material newMat = new Material(Resources.Load<Material>("Models/Material/tiles_face"));
-        var texture = Resources.Load<Texture2D>("Images/Tiles/" + tileName);
-        newMat.mainTexture = texture;
-        newMat.SetTexture("_EmissionMap", texture);
-        var materials = newTile.GetComponent<MeshRenderer>().materials;
-        materials[1] = newMat;
-        newTile.GetComponent<MeshRenderer>().materials = materials;*/
     }
 
     public void EndTurn()
     {
         _mobileClient.EndTurn();
         endTurn.SetActive(false);
+    }
+
+    public void WaitingEndTurn()
+    {
+        endTurn.SetActive(true);
     }
 
     private void CreateMaterial(GameObject prefab, Transform parentTransform, string type, string objectName)

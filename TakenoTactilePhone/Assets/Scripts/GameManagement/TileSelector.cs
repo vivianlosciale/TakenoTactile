@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class TileSelector : MonoBehaviour
@@ -6,60 +7,57 @@ public class TileSelector : MonoBehaviour
         
         public void Update()
         {
-                if (Input.touchCount > 0)
+                Vector3 v = default(Vector3);
+                if (Input.touchCount > 0 )
                 {
-                        Touch touch = Input.GetTouch(0);
-                        Ray ray = Camera.main.ScreenPointToRay(touch.position);  
+                        v = Input.GetTouch(0).position;
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                        v = Input.mousePosition;
+                }
+                if (v != default)
+                {
+                        Debug.Log("------------------------TOUCH IN HAND MANAGEMENT");
+                        Ray ray = Camera.main.ScreenPointToRay(v);  
                         RaycastHit hit;  
                         if (Physics.Raycast(ray, out hit)) {
+                                Debug.Log("---------------------------CLICKED ELEMENT : " +hit.transform.name);
                                 SelectTile(hit.transform.name);
                         }
-                        
                 }
-                
-                else if (Input.GetMouseButtonDown(0)) {  
-                        Debug.Log("MOUSE CLICKED");
-                        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);  
-                        RaycastHit hit;
-                        if (Physics.Raycast(ray, out hit)) {  
-                                Debug.Log("CLICKED ELEMENT : " +hit.transform.name);
-                                SelectTile(hit.transform.name);
-                        }  
-                }  
         }
 
-        private void SelectTile(String name)
+        private void SelectTile(String tileName)
         {
-                GameObject tile0 = transform.GetChild(0).gameObject;
-                GameObject tile1 = transform.GetChild(1).gameObject;
-                GameObject tile2 = transform.GetChild(2).gameObject;
-                if(name == tile0.name) {
-                        Destroy(tile1);
-                        Destroy(tile2);
-                        tile0.transform.localPosition = new Vector3(0, 0, 0);
-                        Debug.Log("TILE 0 SELECTED");
-                        SendResult(name);
+                List<GameObject> childrenTiles = new List<GameObject>();
+                int childrenNumber = transform.childCount;
+                for (int i = 0; i < childrenNumber; i++)
+                {
+                        childrenTiles.Add(transform.GetChild(i).gameObject);
                 }
-                else if(name == tile1.name) {
-                        Destroy(tile0);
-                        Destroy(tile2);
-                        tile1.transform.localPosition = new Vector3(0, 0, 0);
-                        Debug.Log("TILE 1 SELECTED");
-                        SendResult(name);
-                }
-                else if(name == tile2.name) {
-                        Destroy(tile1);
-                        Destroy(tile0);
-                        tile2.transform.localPosition = new Vector3(0, 0, 0);
-                        Debug.Log("TILE 2 SELECTED");
-                        SendResult(name);
+
+                bool selectedTile = false;
+                foreach (var child in childrenTiles)
+                {
+                        if (tileName == child.name && !selectedTile)
+                        {
+                                child.transform.localPosition = new Vector3(0, 0, 0);  
+                                Debug.Log("TILE SELECTED : " + tileName);
+                                selectedTile = true;
+                                SendResult(tileName);
+                        }
+                        else
+                        {
+                               child.SetActive(false); 
+                        }
                 }
         }
 
-        private void SendResult(string name)
+        private void SendResult(string tileName)
         {
                 GameObject.FindWithTag(TagManager.MobileClient.ToString())
-                        .GetComponent<MobileClient>().SendChosenTile(name);
+                        .GetComponent<MobileClient>().SendChosenTile(tileName);
         }
         public void PlaceTiles()
         {
@@ -75,10 +73,9 @@ public class TileSelector : MonoBehaviour
         public void DestroyChildren()
         {
                 int childCount = transform.childCount;
-                for (int i = 0; i < childCount; i++)
+                for (int i = childCount - 1; i > 0; i--)
                 {
-                        Destroy(transform.GetChild(i));
+                        Destroy(transform.GetChild(i).gameObject);
                 }
         }
-        
 }

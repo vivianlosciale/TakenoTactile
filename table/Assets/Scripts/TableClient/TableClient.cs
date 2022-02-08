@@ -104,7 +104,7 @@ public class TableClient : MonoBehaviour
     {
         string res = PositionDto.ToString(position.x, position.y);
         Debug.Log("Entre temps " + res + " Entre temps");
-        _sender.Send(MessageQuery.ChosenTile, res);
+        _sender.Send(MessageQuery.ChosenPosition , res);
     }
 
     /*
@@ -251,7 +251,7 @@ public class TableClient : MonoBehaviour
                     _currentPlayer.ChangeChoseAction();
                 });
                 break;
-            case MessageQuery.ChosenTile:
+            case MessageQuery.WaitingPlaceTile :
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _placeHolderBoard.ActivateNeighborsSlot(message.GetBody());

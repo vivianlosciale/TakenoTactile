@@ -20,7 +20,8 @@ public enum MessageQuery
     RemoveAction,
     WaitingPickTiles,
     PickTiles,
-    ChosenTile,
+    WaitingPlaceTile,
+    ChosenPosition,
     ValidateChoice,
 }
 

@@ -41,23 +41,11 @@ public class PopUpSystem : MonoBehaviour
             () =>
             {
                 _gameActions.turnStarted = true;
-                Debug.Log("TURN STARTED ON CLICK");
                 _gameActions.InvokeDice();
                 HidePopUp();
             },
             "Got it!"
             );
-        /*popUpBox.SetActive(true);
-        popUpText.text = "It is now your turn.";
-        popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        popUpButton.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                _gameActions.turnStarted = true;
-                Debug.Log("TURN STARTED ON CLICK");
-                _gameActions.InvokeDice();
-                HidePopUp();
-            }
-        );*/
     }
 
     public void ValidateYourActionsPopUp()
@@ -70,15 +58,6 @@ public class PopUpSystem : MonoBehaviour
             },
             "Validate"
             );
-        /*popUpBox.SetActive(true);
-        popUpText.text = "Please validate your actions.";
-        popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        popUpButton.GetComponent<Button>().onClick.AddListener(() =>
-            {
-                _mobileClient.ValidateChoice();
-                HidePopUp();
-            }
-        );*/
     }
 
     private void NewPopUp(string message, UnityAction action, string buttonText)
