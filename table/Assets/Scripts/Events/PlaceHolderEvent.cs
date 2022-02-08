@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlaceHolderEvent : MonoBehaviour
 {
     private TableClient _tableClient;
+    [HideInInspector]
     public string texture;
 
     public void Start()

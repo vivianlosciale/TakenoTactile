@@ -4,7 +4,7 @@ using UnityEngine;
 public class DeckEvent : MonoBehaviour
 {
 
-    public TableClient _tableClient;
+    private TableClient _tableClient;
 
     public void Start()
     {
@@ -14,18 +14,18 @@ public class DeckEvent : MonoBehaviour
 
     public void PickTile()
     {
-        Debug.Log("Can : " + _tableClient.CanPickCard());
+        Debug.Log("Can : " + _tableClient.CanPickTile());
         if (_tableClient.CanPickTile())
         {
             Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
             GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
             Transform pointPosition = board.transform.GetChild(0).transform;
-            StartCoroutine(TranslateCard(pointPosition));
+            StartCoroutine(TranslateTile(pointPosition));
             _tableClient.PickTile();
         }
     }
 
-    public void PickCard()
+    public void PickCard(Material mat)
     {
         Debug.Log("Can : " + _tableClient.CanPickCard());
         if (_tableClient.CanPickCard())
@@ -33,9 +33,17 @@ public class DeckEvent : MonoBehaviour
             Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
             GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
             Transform pointPosition = board.transform.GetChild(0).transform;
-            StartCoroutine(TranslateCard(pointPosition));
+            TranslateCard(pointPosition, mat);
             _tableClient.PickCard();
         }
+    }
+
+    private void TranslateCard(Transform pointPosition, Material mat)
+    {
+        GameObject prefab = Resources.Load("Models/Cards") as GameObject;
+        GameObject instance = Instantiate(prefab, transform.position, Quaternion.Euler(90, 0, -90));
+        instance.GetComponent<MeshRenderer>().material = mat;
+        instance.AddComponent<DeckTileMovement>().SetPosition(pointPosition.position);
     }
 
     public void StartGame()
@@ -43,7 +51,7 @@ public class DeckEvent : MonoBehaviour
         _tableClient.StartGame();
     }
 
-    private IEnumerator TranslateCard(Transform pointPosition)
+    private IEnumerator TranslateTile(Transform pointPosition)
     {
         int nbOfCard = 3;
         GameObject prefab = Resources.Load("Models/Tiles") as GameObject;
