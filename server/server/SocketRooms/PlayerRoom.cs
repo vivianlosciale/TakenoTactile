@@ -17,9 +17,9 @@ public class PlayerRoom : SocketRoom
     
     private bool _isPlaying;
     private bool _endTurn;
-    private bool _validate;
-    private bool _canPlayPowerTwice;
-    private int _powerUses = 2;
+    public bool Validate;
+    public bool CanPlayPowerTwice;
+    public int PowerUses = 2;
     private string _chosenTile = string.Empty;
     private DiceFaces _diceRoll = DiceFaces.None;
 
@@ -53,24 +53,23 @@ public class PlayerRoom : SocketRoom
                 Console.WriteLine("Player "+_playerNumber+" said: " + message.GetBody());
                 break;
             case MessageQuery.RollDice:
-                //Console.WriteLine("Player "+_playerNumber+" rolled the dice");
                 _diceRoll = DiceFacesMethods.ToDiceFace(message.GetBody());
                 break;
             case MessageQuery.ValidateObjective:
-                Console.WriteLine("Player "+_playerNumber+" wants to validate the objective '"+message.GetBody()+"'");
                 ValidateCard(message.GetBody());
                 break;
             case MessageQuery.ValidateChoice:
                 Console.WriteLine("Choice validated!");
-                _validate = true;
+                Validate = true;
                 break;
             case MessageQuery.ChosenTile:
                 _chosenTile = message.GetBody();
-                Console.WriteLine("Chosen tile is '"+_chosenTile+"'");
                 break;
             case MessageQuery.FinishTurn:
-                //Console.WriteLine("Player " + _playerNumber + " finished their turn");
                 _endTurn = true;
+                break;
+            default:
+                Console.WriteLine("Unknown query: "+message.GetFullMessage());
                 break;
         }
     }
@@ -79,9 +78,24 @@ public class PlayerRoom : SocketRoom
     {
         return _validatedCards.Count >= _game.GetNeededValidations();
     }
+
+    private void ResetPowerUses()
+    {
+        CanPlayPowerTwice = false;
+        PowerUses = 2;
+        Validate = false;
+    }
+
+    public void GiveCard(VictoryCard card)
+    {
+        _victoryCards.Add(card);
+        Console.WriteLine("Sending card " + card.GetName() + " to player " + _playerNumber);
+        Sender.Send(MessageQuery.ReceivedCard,card.GetName());
+    }
     
     private void ValidateCard(string cardName)
     {
+        Console.WriteLine("Player "+_playerNumber+" wants to validate the objective '"+cardName+"'");
         foreach (VictoryCard card in _victoryCards)
         {
             if (!card.GetName().Equals(cardName)) continue;
@@ -93,33 +107,29 @@ public class PlayerRoom : SocketRoom
         _victoryCards.RemoveAll(_validatedCards.Contains);
     }
 
-    public DiceFaces GetDiceResult()
+    public DiceFaces WaitingDiceResult()
     {
         _diceRoll = DiceFaces.None;
+        Sender.Send(MessageQuery.WaitingDiceResult);
         Console.WriteLine("Waiting for player " + _playerNumber + " to roll the dice...");
         while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
         return _diceRoll;
     }
 
-    public void GiveCard(VictoryCard card)
-    {
-        _victoryCards.Add(card);
-        Console.WriteLine("Sending card " + card.GetName() + " to player " + _playerNumber);
-        Sender.Send(MessageQuery.ReceivedCard,card.GetName());
-    }
-
     public void WaitForEndTurn()
     {
         _endTurn = false;
+        Sender.Send(MessageQuery.WaitingEndTurn);
         Console.WriteLine("Waiting for player " + _playerNumber + " to end their turn...");
         while (!_endTurn) WaitSeconds(1);
+        ResetPowerUses();
     }
 
-    public Tile SelectTile(List<Tile> pickedTiles)
+    public Tile WaitingChoseTile(List<Tile> pickedTiles)
     {
-        Console.WriteLine("Waiting for player " + _playerNumber + " to chose a tile...");
-        Sender.Send(MessageQuery.ReceivedTiles, MultiNames.ToMessage(pickedTiles));
         _chosenTile = string.Empty;
+        Sender.Send(MessageQuery.WaitingChoseTile, MultiNames.ToMessage(pickedTiles));
+        Console.WriteLine("Waiting for player " + _playerNumber + " to chose a tile...");
         while (_chosenTile == string.Empty) WaitSeconds(1);
         Console.WriteLine("The player chose the tile '"+_chosenTile+"'");
         foreach (var tile in pickedTiles)
@@ -127,41 +137,5 @@ public class PlayerRoom : SocketRoom
             if (tile.ToString().Equals(_chosenTile)) return tile;
         }
         return pickedTiles[0];
-    }
-
-    public bool ValidateChoice()
-    {
-        return _validate;
-    }
-
-    public void SetValidate(bool value)
-    {
-        _validate = value;
-    }
-
-    public void AddPowerUses(int supUses)
-    {
-        _powerUses += supUses;
-    }
-
-    public void CanPlayPowerTwice(bool value)
-    {
-        _canPlayPowerTwice = value;
-    }
-
-    public bool CanPlayPowerTwice()
-    {
-        return _canPlayPowerTwice;
-    }
-
-    public int GetPowerUses()
-    {
-        return _powerUses;
-    }
-
-    public void ResetPowerUses()
-    {
-        _canPlayPowerTwice = false;
-        _powerUses = 2;
     }
 }

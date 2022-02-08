@@ -53,8 +53,7 @@ public class Takenoko
     
     private void PlayDice()
     {
-        _currentPlayer.SendEvent(MessageQuery.RollDice);
-        DiceFaces diceFace = _currentPlayer.GetDiceResult();
+        DiceFaces diceFace = _currentPlayer.WaitingDiceResult();
         Console.WriteLine("Player "+_currentPlayer.GetNumber()+" rolled '"+DiceFacesMethods.ToString(diceFace)+"'");
         _table.SendEvent(MessageQuery.RollDice, diceFace.ToString());
         DiceAction.GetPower(diceFace).Use(_currentPlayer,_table,_gameState);

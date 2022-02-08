@@ -41,23 +41,23 @@ public class TableRoom : SocketRoom
                 break;
             case MessageQuery.ChoseAction:
                 Actions action = PowersMethods.ToPowers(message.GetBody());
-                if (_currentPlayer == null || _currentPlayer.ValidateChoice()) break;
-                if (!_currentPlayer.CanPlayPowerTwice() && _chosenPowers.Contains(action)) break;
+                if (_currentPlayer == null || _currentPlayer.Validate) break;
+                if (!_currentPlayer.CanPlayPowerTwice && _chosenPowers.Contains(action)) break;
                 _chosenPowers.Add(action);
                 Console.WriteLine("Power '"+message.GetBody()+"' selected!");
-                if (_chosenPowers.Count >= _currentPlayer.GetPowerUses())
+                if (_chosenPowers.Count >= _currentPlayer.PowerUses)
                 {
                     Console.WriteLine("The player chose '"+MultiNames.ToMessage(_chosenPowers)+"'");
                     _currentPlayer.SendEvent(MessageQuery.ValidateChoice, "true");
                 }
                 break;
             case MessageQuery.RemoveAction:
-                if (_currentPlayer == null || _currentPlayer.ValidateChoice()) break;
+                if (_currentPlayer == null || _currentPlayer.Validate) break;
                 _chosenPowers.Remove(PowersMethods.ToPowers(message.GetBody()));
                 _currentPlayer.SendEvent(MessageQuery.ValidateChoice, "false");
                 Console.WriteLine("Power '"+message.GetBody()+"' removed!");
                 break;
-            case MessageQuery.ChosenTile:
+            case MessageQuery.ChosenPosition:
                 _tilePosition = PositionDto.ToPosition(message.GetBody());
                 break;
         }
@@ -67,6 +67,7 @@ public class TableRoom : SocketRoom
     {
         _pickCard = false;
         SendEvent(MessageQuery.WaitingPickCard);
+        Console.WriteLine("Waiting for the current player to pick a card...");
         while (!_pickCard) WaitSeconds(1);
     }
 
@@ -74,6 +75,7 @@ public class TableRoom : SocketRoom
     {
         _pickTiles = false;
         SendEvent(MessageQuery.WaitingPickTiles);
+        Console.WriteLine("Waiting for the current player to pick tiles...");
         while (!_pickTiles) WaitSeconds(1);
     }
 
@@ -81,12 +83,10 @@ public class TableRoom : SocketRoom
     {
         _currentPlayer = player;
         _chosenPowers.Clear();
-        Console.WriteLine("Waiting for the current player to chose " + _currentPlayer.GetPowerUses() + " powers...");
-        Sender.Send(MessageQuery.ChoseAction);
-        player.SendEvent(MessageQuery.ChoseAction);
-        player.SetValidate(false);
-        while (_chosenPowers.Count < _currentPlayer.GetPowerUses() || !player.ValidateChoice()) WaitSeconds(1);
-        player.ResetPowerUses();
+        Sender.Send(MessageQuery.WaitingChoseAction);
+        player.SendEvent(MessageQuery.WaitingChoseAction);
+        Console.WriteLine("Waiting for the current player to chose " + _currentPlayer.PowerUses + " powers...");
+        while (_chosenPowers.Count < _currentPlayer.PowerUses || !player.Validate) WaitSeconds(1);
         Sender.Send(MessageQuery.ValidateChoice);
         return new List<Actions>(_chosenPowers);
     }

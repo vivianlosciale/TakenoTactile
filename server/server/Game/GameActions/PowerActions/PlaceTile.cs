@@ -19,8 +19,8 @@ public class PlaceTile: PowerAction
             player.SendEvent(MessageQuery.Error, "No more tiles in the deck!");
             return;
         }
-        Tile selectedTile = player.SelectTile(pickedTiles);
-        table.SendEvent(MessageQuery.ChosenTile, selectedTile.ToString());
+        Tile selectedTile = player.WaitingChoseTile(pickedTiles);
+        table.SendEvent(MessageQuery.WaitingPlaceTile, selectedTile.ToString());
         PositionDto selectedPosition = table.WaitForSelectPosition();
         player.SendEvent(MessageQuery.TilePlaced);
         game.PlaceTile(new Position(selectedPosition.I, selectedPosition.J), selectedTile);

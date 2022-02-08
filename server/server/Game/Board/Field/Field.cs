@@ -38,7 +38,7 @@ public class Field
         }
     }
 
-    private Tile? GetTile(Position p)
+    public Tile? GetTile(Position p)
     {
         if (_tiles.ContainsKey(p.I))
         {

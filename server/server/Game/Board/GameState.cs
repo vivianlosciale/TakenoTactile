@@ -41,16 +41,6 @@ public class GameState
         return _foodStorages[_players.IndexOf(GetCurrentPlayerRoom())]; 
     }
 
-    public Field.Field GetField()
-    {
-        return _field;
-    }
-
-    public Deck GetDeck()
-    {
-        return _deck;
-    }
-
     public PlayerRoom NextPlayerTurn()
     {
         PlayerRoom currentPlayer = GetCurrentPlayerRoom();
@@ -82,9 +72,9 @@ public class GameState
         return _deck.PickTile();
     }
 
-    public bool GrowAt(Position position)
+    public Tile? GetTile(Position position)
     {
-        return _field.GrowAt(position);
+        return _field.GetTile(position);
     }
 
     public void PlaceTile(Position position, Tile tile)

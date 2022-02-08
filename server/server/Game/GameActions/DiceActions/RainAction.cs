@@ -1,5 +1,6 @@
 using server.Game.Board;
 using server.Game.Board.Field;
+using server.Game.Board.Tiles;
 using server.SocketRooms;
 using server.Utils.Game;
 using server.Utils.Protocol;
@@ -13,23 +14,26 @@ public class RainAction: DiceAction
         /* TODO add
         
         player.SendEvent(MessageQuery.WaitingChoseRain);
-        WaitChoice(player, table, game);
-        
-        */
-    }
-
-    private void WaitChoice(PlayerRoom player, TableRoom table, GameState game)
-    {
         table.SendEvent(MessageQuery.WaitingChoseRain);
+        
         PositionDto chosenPosition = table.WaitForSelectPosition();
-        if (game.GrowAt(new Position(chosenPosition.I, chosenPosition.J)))
+        Tile? tile = game.GetTile(new Position(chosenPosition.I, chosenPosition.J));
+        
+        if (tile == null)
         {
-            table.SendEvent(MessageQuery.Rain, chosenPosition.ToString());
-        }
-        else
-        {
-            player.SendEvent(MessageQuery.ImpossibleAction);
+            player.SendEvent(MessageQuery.Error, "No tile at position ("+chosenPosition+")");
             WaitChoice(player, table, game);
         }
+        
+        else if (tile.CanGrow())
+        {
+            tile.Grow();
+            player.SendEvent(MessageQuery.RainPower, "true");
+            table.SendEvent(MessageQuery.RainPower, chosenPosition.ToString());
+        }
+        
+        else player.SendEvent(MessageQuery.RainPower, "false");
+        
+        */
     }
 }
