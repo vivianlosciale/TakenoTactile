@@ -648,11 +648,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.08
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 6.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -731,13 +731,13 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1540088701}
+      - m_Target: {fileID: 610975800}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 2100000, guid: dc57e676e27d48e4d9cccb8866ff1b41, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -746,6 +746,18 @@ MonoBehaviour:
   OnLongClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &610975800
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 610975798}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85120b6778c5b2f4ba711e607f1b6a89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &701592569
 GameObject:
   m_ObjectHideFlags: 0
@@ -901,11 +913,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.08
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 6.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -980,13 +992,13 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1540088701}
+      - m_Target: {fileID: 980503494}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 2100000, guid: 53fcf5ac1f09d3d4f837ed2b6b5ddfbe, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -995,6 +1007,18 @@ MonoBehaviour:
   OnLongClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &980503494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 980503492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85120b6778c5b2f4ba711e607f1b6a89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1151335740
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1008,11 +1032,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -10.08
+      value: -10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 6
+      value: 6.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 9a26eec1c6687be468938cb53cb9edd3, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1091,13 +1115,13 @@ MonoBehaviour:
   OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1540088701}
+      - m_Target: {fileID: 1151335743}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 1
+        m_Mode: 2
         m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_ObjectArgument: {fileID: 2100000, guid: 2a68dfab158028c4f84002dfc1221500, type: 2}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 
@@ -1106,6 +1130,18 @@ MonoBehaviour:
   OnLongClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1151335743
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151335741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 85120b6778c5b2f4ba711e607f1b6a89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1217564738
 GameObject:
   m_ObjectHideFlags: 0
@@ -20559,7 +20595,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 85120b6778c5b2f4ba711e607f1b6a89, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _tableClient: {fileID: 0}
 --- !u!114 &1540088705
 MonoBehaviour:
   m_ObjectHideFlags: 0
