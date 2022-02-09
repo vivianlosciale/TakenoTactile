@@ -24,6 +24,8 @@ public class TableClient : MonoBehaviour
 
     private PlaceHolderBoard _placeHolderBoard;
 
+    private Loading _loading;
+
     private static string GAME_SCENE = "Game";
     private static string HOME_SCENE = "Takenotest";
 
@@ -209,6 +211,7 @@ public class TableClient : MonoBehaviour
                     int player = int.Parse(message.GetBody());
                     AddPlayerToGame(player);
                     GameObject.Find("P" + player).SetActive(false);
+                    _loading.AddPlayer();
                 });
                 break;
             case MessageQuery.StartGame:
