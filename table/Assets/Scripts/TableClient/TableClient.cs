@@ -206,7 +206,9 @@ public class TableClient : MonoBehaviour
             case MessageQuery.APlayerJoined:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    AddPlayerToGame(int.Parse(message.GetBody()));
+                    int player = int.Parse(message.GetBody());
+                    AddPlayerToGame(player);
+                    GameObject.Find("P" + player).SetActive(false);
                 });
                 break;
             case MessageQuery.StartGame:

@@ -6,8 +6,19 @@ using ZXing.QrCode;
 public class QRCreator : MonoBehaviour
 {
     public InputField addressInput;
-    public RawImage QRImage;
+
+    public GameObject players;
+    public RawImage[] QRImages;
     public string address;
+
+    private void Start()
+    {
+        QRImages = players.GetComponentsInChildren<RawImage>();
+        foreach (RawImage qr in QRImages)
+        {
+            qr.gameObject.SetActive(false);
+        }
+    }
 
     private static Color32[] Encode(string textForEncoding, int width, int height)
     {
@@ -34,16 +45,19 @@ public class QRCreator : MonoBehaviour
 
     public void DisplayQR()
     {
-        try
+        for(int i = 0; i < 4; i++)
         {
-            Texture2D myQr = generateQR(addressInput.text);
-            QRImage.texture = myQr;
-            address = addressInput.text;
-            QRImage.gameObject.SetActive(true);
-        } 
-        catch(System.ArgumentException e)   
-        {
-            Debug.LogWarning("Please specify an IP address [" + e.Message + "]");
+            try
+            {
+                Texture2D myQr = generateQR(addressInput.text + "," + i);
+                QRImages[i].texture = myQr;
+                address = addressInput.text;
+                QRImages[i].gameObject.SetActive(true);
+            }
+            catch (System.ArgumentException e)
+            {
+                Debug.LogWarning("Please specify an IP address [" + e.Message + "]");
+            }
         }
     }
 }
