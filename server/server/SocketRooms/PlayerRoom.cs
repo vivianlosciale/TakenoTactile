@@ -1,4 +1,5 @@
 using server.Game;
+using server.Game.Board;
 using server.Game.Board.Cards;
 using server.Game.Board.Tiles;
 using server.Utils.Game;
@@ -14,14 +15,16 @@ public class PlayerRoom : SocketRoom
     
     private readonly List<VictoryCard> _victoryCards = new();
     private readonly List<VictoryCard> _validatedCards = new();
+    private readonly FoodStorage _foodStorage = new ();
     
     private bool _isPlaying;
     private bool _endTurn;
+    private string _chosenTile = string.Empty;
+    private DiceFaces _diceRoll = DiceFaces.None;
+    
     public bool Validate;
     public bool CanPlayPowerTwice;
     public int PowerUses = 2;
-    private string _chosenTile = string.Empty;
-    private DiceFaces _diceRoll = DiceFaces.None;
 
     public PlayerRoom(Takenoko game, int playerNumber)
     {
@@ -32,6 +35,11 @@ public class PlayerRoom : SocketRoom
     public int GetNumber()
     {
         return _playerNumber;
+    }
+
+    public FoodStorage GetFoodStorage()
+    {
+        return _foodStorage;
     }
 
     public void SetPlaying(bool playing)
@@ -64,6 +72,12 @@ public class PlayerRoom : SocketRoom
                 break;
             case MessageQuery.ChosenTile:
                 _chosenTile = message.GetBody();
+                break;
+            case MessageQuery.WaitingFoodStorage:
+                Sender.Send(MessageQuery.FoodStorage, BambooDto.ToString(
+                    _foodStorage.GetGreenAmount(),
+                    _foodStorage.GetYellowAmount(),
+                    _foodStorage.GetPinkAmount()));
                 break;
             case MessageQuery.FinishTurn:
                 _endTurn = true;

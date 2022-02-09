@@ -2,6 +2,8 @@ namespace server.Utils.Game;
 
 public class PositionDto
 {
+    private const char Separator = ',';
+    
     public readonly int I;
     public readonly int J;
 
@@ -13,13 +15,13 @@ public class PositionDto
 
     public static PositionDto ToPosition(string value)
     {
-        string[] seq = value.Split(',');
+        string[] seq = value.Split(Separator);
         return new PositionDto(int.Parse(seq[0]), int.Parse(seq[1]));
     }
 
     public static string ToString(int i, int j)
     {
-        return i.ToString() + ',' + j;
+        return i.ToString() + Separator + j;
     }
 
     public override string ToString()

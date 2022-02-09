@@ -9,45 +9,29 @@ public class GameState
 {
     private readonly Deck _deck;
     private readonly List<PlayerRoom> _players;
-    private readonly FoodStorage[] _foodStorages;
     private readonly Field.Field _field;
+    private PlayerRoom _currentPlayer;
 
     public GameState(List<PlayerRoom> players)
     {
         _players = players;
-        _foodStorages = new FoodStorage[_players.Count];
-        for (int i = 0; i < _foodStorages.Length; i++)
-        {
-            _foodStorages[i] = new FoodStorage();
-        }
+        _currentPlayer = players[0];
         _deck = new Deck();
         _field = new Field.Field();
     }
 
-    private PlayerRoom GetCurrentPlayerRoom()
-    {
-        foreach (PlayerRoom player in _players)
-        {
-            if (player.IsPlaying())
-            {
-                return player;
-            }
-        }
-        return _players[0];
-    }
-
     public FoodStorage GetCurrentPlayerFoodStorage()
     {
-        return _foodStorages[_players.IndexOf(GetCurrentPlayerRoom())]; 
+        return _currentPlayer.GetFoodStorage(); 
     }
 
     public PlayerRoom NextPlayerTurn()
     {
-        PlayerRoom currentPlayer = GetCurrentPlayerRoom();
-        PlayerRoom nextPlayer = _players[(_players.IndexOf(currentPlayer) + 1) % _players.Count];
-        nextPlayer.SetPlaying(true);
-        currentPlayer.SetPlaying(false);
-        return nextPlayer;
+        PlayerRoom oldPlayer = _currentPlayer;
+        _currentPlayer = _players[(_players.IndexOf(oldPlayer) + 1) % _players.Count];
+        _currentPlayer.SetPlaying(true);
+        oldPlayer.SetPlaying(false);
+        return _currentPlayer;
     }
 
     public bool APlayerWon()
