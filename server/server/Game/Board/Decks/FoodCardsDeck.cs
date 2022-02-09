@@ -2,9 +2,9 @@ using server.Game.Board.Cards;
 
 namespace server.Game.Board.Decks;
 
-public class CardDeck: Deck<VictoryCard>
+public class FoodCardsDeck: Deck<FoodVictoryCard>
 {
-    public CardDeck()
+    public FoodCardsDeck()
     {
         Items.Add(new FoodVictoryCard("card_panda_3",3,new FoodStorage(2,0,0)));
         Items.Add(new FoodVictoryCard("card_panda_4",4,new FoodStorage(0,2,0)));

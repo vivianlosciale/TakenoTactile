@@ -8,7 +8,7 @@ public class TableRoom : SocketRoom
 {
     private readonly Server _server;
     private PositionDto? _tilePosition;
-    private bool _pickCard;
+    private CardTypes _pickCard;
     private bool _pickTiles;
     private PlayerRoom? _currentPlayer;
     private readonly List<Actions> _chosenPowers = new();
@@ -34,7 +34,7 @@ public class TableRoom : SocketRoom
                 _server.SendError(playerNumber, message.GetBody());
                 break;
             case MessageQuery.PickCard:
-                _pickCard = true;
+                _pickCard = CardTypesMethods.ToPowers(message.GetBody());
                 break;
             case MessageQuery.PickTiles:
                 _pickTiles = true;
@@ -63,12 +63,13 @@ public class TableRoom : SocketRoom
         }
     }
 
-    public void WaitForCardPick()
+    public CardTypes WaitForCardPick()
     {
-        _pickCard = false;
+        _pickCard = CardTypes.None;
         SendEvent(MessageQuery.WaitingPickCard);
         Console.WriteLine("Waiting for the current player to pick a card...");
-        while (!_pickCard) WaitSeconds(1);
+        while (_pickCard.Equals(CardTypes.None)) WaitSeconds(1);
+        return _pickCard;
     }
 
     public void WaitForTilesPick()
@@ -86,10 +87,22 @@ public class TableRoom : SocketRoom
         Sender.Send(MessageQuery.WaitingChoseAction);
         player.SendEvent(MessageQuery.WaitingChoseAction);
         Console.WriteLine("Waiting for the current player to chose " + _currentPlayer.PowerUses + " powers...");
-        while (_chosenPowers.Count < _currentPlayer.PowerUses || !player.Validate) WaitSeconds(1);
+        while (_chosenPowers.Count < _currentPlayer.PowerUses)
+        {
+            _currentPlayer.Validate = false;
+            _chosenPowers.Clear();
+            // TODO send message to mobile to notify a miss validation
+            WaitValidation();
+        }
         Console.WriteLine("Choices are made!");
         Sender.Send(MessageQuery.ValidateChoice);
         return new List<Actions>(_chosenPowers);
+    }
+
+    private void WaitValidation()
+    {
+        if(_currentPlayer == null) return;
+        while (!_currentPlayer.Validate) WaitSeconds(1);
     }
 
     public PositionDto WaitForSelectPosition()

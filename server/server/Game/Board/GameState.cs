@@ -1,17 +1,20 @@
 using server.Game.Board.Cards;
 using server.Game.Board.Decks;
-using server.Game.Board.Field;
+using server.Game.Board.Fields;
 using server.Game.Board.Tiles;
 using server.SocketRooms;
+using server.Utils.Game;
 
 namespace server.Game.Board;
 
 public class GameState
 {
-    private readonly CardDeck _victoryCardDeck = new();
+    private readonly FieldCardsDeck _fieldCardsDeck = new();
+    private readonly FoodCardsDeck _foodCardsDeck = new();
+    private readonly GrowthCardsDeck _growthCardsDeck = new();
     private readonly TileDeck _tilesDeck = new();
     private readonly List<PlayerRoom> _players;
-    private readonly Field.Field _field = new();
+    private readonly Field _field = new();
     private PlayerRoom? _currentPlayer;
 
     public GameState(List<PlayerRoom> players)
@@ -47,9 +50,18 @@ public class GameState
         return false;
     }
 
-    public VictoryCard? PickCard()
+    public VictoryCard? PickCard(CardTypes type)
     {
-        return _victoryCardDeck.Pick();
+        switch (type)
+        {
+            case CardTypes.Bamboo:
+                return _growthCardsDeck.Pick();
+            case CardTypes.Land:
+                return _fieldCardsDeck.Pick();
+            case CardTypes.Panda:
+            default:
+                return _foodCardsDeck.Pick();
+        }
     }
 
     public Tile? PickTile()

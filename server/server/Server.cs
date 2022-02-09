@@ -46,6 +46,7 @@ public class Server
      */
     public string SetTable()
     {
+        if (_ws.WebSocketServices.Paths.Contains(TablePath)) return string.Empty;
         _ws.AddWebSocketService(TablePath, () => _table);
         return _socketAddress + TablePath;
     }

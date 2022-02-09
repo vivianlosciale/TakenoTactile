@@ -1,7 +1,7 @@
 using server.Game.Board.Tiles;
 using server.Game.Board.Upgrades;
 
-namespace server.Game.Board.Field;
+namespace server.Game.Board.Fields;
 
 public class Field
 {
@@ -34,7 +34,10 @@ public class Field
         _tiles[p.I][p.J] = tile;
         foreach (RelativePosition relative in Position.Neighbors)
         {
-            GetTile(p.GetPositionAt(relative))?.AddNeighbor(Position.Opposite(relative), tile);
+            Tile? neighbor = GetTile(p.GetPositionAt(relative));
+            if (neighbor == null) continue;
+            tile.AddNeighbor(relative, neighbor);
+            neighbor.AddNeighbor(Position.Opposite(relative), tile);
         }
     }
 

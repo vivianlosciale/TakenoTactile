@@ -23,7 +23,10 @@ public class LoginRoom : SocketRoom
     private void ConnectTable(string dest)
     {
         string tableRoot = _server.SetTable();
-        Sender.Send(MessageQuery.AcceptConnection, dest, tableRoot);
+        if (tableRoot != string.Empty)
+        {
+            Sender.Send(MessageQuery.AcceptConnection, dest, tableRoot);
+        }
     }
 
     protected override void OnMessage(MessageEventArgs e)

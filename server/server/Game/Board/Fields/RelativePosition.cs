@@ -1,4 +1,4 @@
-namespace server.Game.Board.Field;
+namespace server.Game.Board.Fields;
 
 public enum RelativePosition
 {

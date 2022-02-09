@@ -1,5 +1,5 @@
 using server.Game.Board;
-using server.Game.Board.Field;
+using server.Game.Board.Fields;
 using server.Game.Board.Tiles;
 using server.SocketRooms;
 using server.Utils.Game;
@@ -22,7 +22,7 @@ public class RainAction: DiceAction
         if (tile == null)
         {
             player.SendEvent(MessageQuery.Error, "No tile at position ("+chosenPosition+")");
-            WaitChoice(player, table, game);
+            Use(player, table, game);
         }
         
         else if (tile.CanGrow())

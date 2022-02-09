@@ -1,4 +1,4 @@
-using server.Game.Board.Field;
+using server.Game.Board.Fields;
 using server.Game.Board.Upgrades;
 
 namespace server.Game.Board.Tiles;
@@ -57,13 +57,24 @@ public class Tile
         _growthAmount--;
     }
 
+    public Tile? GetNeighbor(RelativePosition position)
+    {
+        return _neighbors[(int)position];
+    }
+
+    public List<Tile> GetNeighbors()
+    {
+        List<Tile> neighbors = new List<Tile>();
+        foreach (Tile? neighbor in _neighbors)
+        {
+            if (neighbor != null) neighbors.Add(neighbor);
+        }
+        return neighbors;
+    }
+
     public void AddNeighbor(RelativePosition position, Tile neighbor)
     {
-        if (_neighbors[(int)position] != null)
-        {
-            Console.Error.WriteLine("Neighbor "+position+" already assigned!");
-            return;
-        }
+        if (_neighbors[(int)position] != null) return;
         _neighbors[(int)position] = neighbor;
         if (_irrigation[(int)position])
         {
