@@ -17,12 +17,13 @@ public class TileDeck: Deck<Tile>
         Items.Add(new Tile("tiles_y3", TileColor.Yellow));
         Items.Add(new Tile("tiles_y4", TileColor.Yellow));
         Items.Add(new Tile("tiles_y5", TileColor.Yellow));
-        
+        Items.Add(new Tile("tiles_y6", TileColor.Yellow));
+
         Items.Add(new Tile("tiles_r1", TileColor.Pink));
         Items.Add(new Tile("tiles_r2", TileColor.Pink));
         Items.Add(new Tile("tiles_r3", TileColor.Pink));
         Items.Add(new Tile("tiles_r4", TileColor.Pink));
-        Items.Add(new Tile("tiles_r5", TileColor.Pink));
+        
         
         Shuffle();
     }
