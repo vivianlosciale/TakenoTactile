@@ -12,34 +12,47 @@ public class Reserv : MonoBehaviour
     public GameObject bambooP;
     public GameObject bambooY;
 
+    public GameObject hand;
+    public GameObject ARCamera;
+    private bool ARActive;
+
     public GameObject imageTarget;
 
     // Start is called before the first frame update
     void Start()
     {
+        ARActive = false;
+
         for (int i = 0; i < nbBambooG; i++)
         {
-            var bambooGtmp = Instantiate(bambooG, new Vector3(transform.position.x, transform.position.y + i * 0.035f - 1, transform.position.z), transform.rotation);
-            bambooGtmp.transform.parent = imageTarget.transform;
-            bambooGtmp.transform.Rotate(new Vector3(-90, 0, 0));
+            var bambooGtmp = Instantiate(bambooG, imageTarget.transform);
+            bambooGtmp.transform.localPosition = new Vector3(0, i * 0.035f - 1, 0);
+            //bambooGtmp.transform.Rotate(new Vector3(-90, 0, 0));
         }
         for (int i = 0; i < nbBambooP; i++)
         {
-            var bambooPtmp = Instantiate(bambooP, new Vector3(transform.position.x + 0.03f, transform.position.y + i * 0.035f - 1, transform.position.z - 0.03f), transform.rotation);
-            bambooPtmp.transform.parent = imageTarget.transform;
-            bambooPtmp.transform.Rotate(new Vector3(-90, 0, 0));
+            var bambooPtmp = Instantiate(bambooP, imageTarget.transform);
+            bambooPtmp.transform.localPosition = new Vector3(0.03f, i * 0.035f - 1,  0.03f);
+           // bambooPtmp.transform.Rotate(new Vector3(-90, 0, 0));
         }
         for (int i = 0; i < nbBambooY; i++)
         {
-            var bambooYtmp = Instantiate(bambooY, new Vector3(transform.position.x - 0.03f, transform.position.y + i * 0.035f - 1, transform.position.z - 0.03f), transform.rotation);
-            bambooYtmp.transform.parent = imageTarget.transform;
-            bambooYtmp.transform.Rotate(new Vector3(-90, 0, 0));
+            var bambooYtmp = Instantiate(bambooY, imageTarget.transform);
+            bambooYtmp.transform.localPosition = new Vector3(0.03f, i * 0.035f - 1, 0.03f);
+            //bambooYtmp.transform.Rotate(new Vector3(-90, 0, 0));
         }
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        
+        ARCamera.SetActive(ARActive);
+        hand.SetActive(!ARActive);
+
+       
+    }
+
+    public void switchAR()
+    {
+        ARActive = !ARActive;
     }
 }
