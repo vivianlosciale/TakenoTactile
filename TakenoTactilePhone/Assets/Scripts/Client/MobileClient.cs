@@ -16,10 +16,10 @@ public class MobileClient : MonoBehaviour
      * Ask the server for the client's private communication path
      * Load Game Scene
      */
-    public void Connect(string address)
+    public void Connect(string address, string playerPlace)
     {
         DeactivateCamera();
-        ConnectToPrivatePath(address);
+        ConnectToPrivatePath(address, playerPlace);
         StartGame();
     }
     
@@ -83,13 +83,13 @@ public class MobileClient : MonoBehaviour
     /*
      * Retrieve my private path and connect to it
      */
-    private void ConnectToPrivatePath(string address)
+    private void ConnectToPrivatePath(string address, string playerPlace)
     {
         _serverSocket = new WebSocket(address);
         _messageSender = new MessageSender(_serverSocket);
         _serverSocket.Connect();
         _serverSocket.OnMessage += ReceiveConnectionPath;
-        _messageSender.Send(MessageQuery.PlayerConnection, Device.GetIPv4());
+        _messageSender.Send(MessageQuery.PlayerConnection, playerPlace, Device.GetIPv4());
     }
 
     private void ReceiveConnectionPath(object sender, MessageEventArgs args)

@@ -52,8 +52,9 @@ public class Scan : MonoBehaviour
             if (result != null)
             {
                 Debug.Log("DECODED TEXT FROM QR: " + result.Text);
-               // text.text = result.Text;
-                client.Connect(result.Text);
+                // text.text = result.Text;
+                string[] res = result.Text.Split(',');
+                client.Connect(res[0], res[1]);
             }
         }
         catch (Exception ex)
