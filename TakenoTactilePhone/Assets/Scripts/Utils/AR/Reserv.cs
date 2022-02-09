@@ -14,6 +14,7 @@ public class Reserv : MonoBehaviour
 
     public GameObject hand;
     public GameObject ARCamera;
+    public GameObject UI;
     private bool ARActive;
 
     public GameObject imageTarget;
@@ -47,12 +48,18 @@ public class Reserv : MonoBehaviour
     {
         ARCamera.SetActive(ARActive);
         hand.SetActive(!ARActive);
-
-       
+        UI.SetActive(!ARActive);
     }
 
     public void switchAR()
     {
+        if (ARActive)
+        {
+            foreach (Transform transform in imageTarget.transform)
+            {
+                Destroy(transform.gameObject);
+            }
+        }
         ARActive = !ARActive;
     }
 }
