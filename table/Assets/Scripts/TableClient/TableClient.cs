@@ -15,7 +15,6 @@ public class TableClient : MonoBehaviour
     
     public InputField adresseInput;
 
-    private int playerCount;
     private bool _canPickTile;
     private bool _canPickCard;
 
@@ -42,7 +41,6 @@ public class TableClient : MonoBehaviour
     {
         _table = this;
         _privateAddress = "ws://" + Device.GetIPv4() + ":8080";
-        playerCount = 0;
         players = new Player[4];
         _canPickTile = false;
         _canPickCard = false;
@@ -59,14 +57,7 @@ public class TableClient : MonoBehaviour
 
     internal Player GetPlayerFromPosition(int boardPosition)
     {
-        for(int i = 0; i < playerCount; i++)
-        {
-            if (players[i].GetBoardPosition() == boardPosition)
-            {
-                return players[i];
-            }
-        }
-        return null;
+        return players[boardPosition];
     }
 
     /*
@@ -140,8 +131,7 @@ public class TableClient : MonoBehaviour
      */
     private void AddPlayerToGame(int position)
     {
-        players[playerCount] = new Player(playerCount, position);
-        playerCount++;
+        players[position] = new Player(position);
     }
 
     /*

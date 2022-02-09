@@ -7,14 +7,12 @@ public class Player
 {
     public int id;
     private bool _canChoseAction;
-    private int boardPosition;
 
     private GameObject board;
 
-    public Player(int id, int boardPosition)
+    public Player(int id)
     {
         this.id = id;
-        this.boardPosition = boardPosition;
     }
 
     internal bool CanChoseAction()
@@ -25,11 +23,6 @@ public class Player
     internal void ChangeChoseAction()
     {
         _canChoseAction = !_canChoseAction;
-    }
-
-    public int GetBoardPosition()
-    {
-        return boardPosition;
     }
 
     public void SetBoard(GameObject board)
