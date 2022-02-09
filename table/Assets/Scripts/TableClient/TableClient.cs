@@ -23,7 +23,7 @@ public class TableClient : MonoBehaviour
 
     private PlaceHolderBoard _placeHolderBoard;
 
-    private Loading _loading;
+    public Loading _loading;
 
     private static string GAME_SCENE = "Game";
     private static string HOME_SCENE = "Takenotest";
