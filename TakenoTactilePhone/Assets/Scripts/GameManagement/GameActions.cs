@@ -175,4 +175,9 @@ public class GameActions : MonoBehaviour
         materials[1] = newMat;
         newObject.GetComponent<MeshRenderer>().materials = materials;
     }
+
+    public MobileClient GetMobileClient()
+    {
+        return this._mobileClient;
+    }
 }
