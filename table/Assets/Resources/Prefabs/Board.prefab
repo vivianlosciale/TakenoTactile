@@ -172,14 +172,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
-        m_Mode: 1
+        m_MethodName: OnActionBoxTest
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PlaceTile
           m_BoolArgument: 0
         m_CallState: 2
   OnCollisionExit:
@@ -187,14 +187,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
+        m_MethodName: LeaveActionBoxTest
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PlaceTile
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3291934551747151891
@@ -268,14 +268,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
-        m_Mode: 1
+        m_MethodName: OnActionBoxTest
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PickCard
           m_BoolArgument: 0
         m_CallState: 2
   OnCollisionExit:
@@ -283,14 +283,14 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
+        m_MethodName: LeaveActionBoxTest
+        m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: PickCard
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!1 &3291934552580350920
@@ -361,34 +361,10 @@ MonoBehaviour:
       m_Calls: []
   OnCollisionEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8255415279115301603}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8255415279115301603}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934553018803104
 GameObject:
   m_ObjectHideFlags: 0
@@ -457,34 +433,10 @@ MonoBehaviour:
       m_Calls: []
   OnCollisionEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8255415279115301603}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8255415279115301603}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934553127445135
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,34 +505,10 @@ MonoBehaviour:
       m_Calls: []
   OnCollisionEnter:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8255415279115301603}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
   OnCollisionExit:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 8255415279115301603}
-        m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBox
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &3291934553137323070
 GameObject:
   m_ObjectHideFlags: 0

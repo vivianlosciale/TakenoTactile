@@ -10,7 +10,7 @@ namespace server.SocketRooms;
 
 public class PlayerRoom : SocketRoom
 {
-    private readonly Takenoko _game;
+    private Takenoko _game;
     private readonly int _playerNumber;
     
     private readonly List<VictoryCard> _victoryCards = new();
@@ -40,6 +40,11 @@ public class PlayerRoom : SocketRoom
     public FoodStorage GetFoodStorage()
     {
         return _foodStorage;
+    }
+
+    public void SetGame(Takenoko game)
+    {
+        _game = game;
     }
 
     public void SetPlaying(bool playing)

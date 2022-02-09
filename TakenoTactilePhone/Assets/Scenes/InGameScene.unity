@@ -2530,7 +2530,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1752089584
 Transform:
   m_ObjectHideFlags: 0
@@ -2916,6 +2916,7 @@ MonoBehaviour:
   endTurn: {fileID: 178525143}
   hand: {fileID: 325368863}
   tileSelector: {fileID: 1752089583}
+  playerName: {fileID: 1641321713}
   turnStarted: 0
   cardPrefab: {fileID: 919132149155446097, guid: ecc8c2f1991e7e844b2811dba7f33332, type: 3}
   tilePrefab: {fileID: 919132149155446097, guid: 3c73fe55eb0d12c45bce87a3e5e53946, type: 3}

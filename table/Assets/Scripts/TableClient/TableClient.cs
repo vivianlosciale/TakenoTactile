@@ -112,7 +112,7 @@ public class TableClient : MonoBehaviour
      */
     internal void SendChoseActionToServer(Actions action, Player player)
     {
-        if (_currentPlayer.id == player.id)
+        if (_currentPlayer.id == player.id && player.CanChoseAction())
         {
             _sender.Send(MessageQuery.ChoseAction, action.ToString());
         } else
@@ -239,7 +239,7 @@ public class TableClient : MonoBehaviour
                     _currentPlayer = players[int.Parse(message.GetBody())];
                 });
                 break;
-            case MessageQuery.ChoseAction:
+            case MessageQuery.WaitingChoseAction:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _currentPlayer.ChangeChoseAction();

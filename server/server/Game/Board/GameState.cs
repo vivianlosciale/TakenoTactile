@@ -15,7 +15,8 @@ public class GameState
     public GameState(List<PlayerRoom> players)
     {
         _players = players;
-        _currentPlayer = players[0];
+        if (players.Count > 0)
+            _currentPlayer = players[0];
         _deck = new Deck();
         _field = new Field.Field();
     }

@@ -25636,54 +25636,6 @@ PrefabInstance:
       propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
       value: MovePanda
       objectReference: {fileID: 0}
-    - target: {fileID: 4996505042479146799, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4996505042479146799, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 4996505042479146799, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LeaveActionBoxTest
-      objectReference: {fileID: 0}
-    - target: {fileID: 4996505042479146799, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnActionBoxTest
-      objectReference: {fileID: 0}
-    - target: {fileID: 4996505042479146799, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: PlaceTile
-      objectReference: {fileID: 0}
-    - target: {fileID: 4996505042479146799, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: PlaceTile
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083897774279875513, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083897774279875513, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083897774279875513, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LeaveActionBoxTest
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083897774279875513, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnActionBoxTest
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083897774279875513, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: PickCard
-      objectReference: {fileID: 0}
-    - target: {fileID: 7083897774279875513, guid: f92acfa269407274f92730b62bc44be0, type: 3}
-      propertyPath: OnCollisionEnter.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_StringArgument
-      value: PickCard
-      objectReference: {fileID: 0}
     - target: {fileID: 8065250457439855832, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: OnCollisionExit.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
       value: 5

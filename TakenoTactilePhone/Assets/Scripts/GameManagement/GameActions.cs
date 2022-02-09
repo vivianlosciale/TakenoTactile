@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameActions : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class GameActions : MonoBehaviour
     public GameObject endTurn;
     public GameObject hand;
     public GameObject tileSelector;
+    public Text playerName;
     private PopUpSystem _popUpSystem;
     
     public bool turnStarted;
@@ -27,7 +29,18 @@ public class GameActions : MonoBehaviour
     {
         _mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
         _mobileClient.SetGameActions(this);
+        playerName.text = _mobileClient.GetPlayerName();
         _popUpSystem = GameObject.FindWithTag(TagManager.PopUpManager.ToString()).GetComponent<PopUpSystem>();
+/*        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
+        List<string> tiles = new List<string>();
+        tiles.Add("tiles_y1");
+        tiles.Add("tiles_g1");
+        tiles.Add("tiles_r1");
+        foreach (var tile in tiles)
+        {
+            CreateTile(tile);
+        }
+        tileSelector.GetComponent<TileSelector>().PlaceTiles();*/
     }
 
     void Update()
@@ -46,6 +59,19 @@ public class GameActions : MonoBehaviour
             }
         }
     }
+
+/*    public void CreateOtherChildren()
+    {
+        List<string> tiles = new List<string>();
+        tiles.Add("tiles_r2");
+        tiles.Add("tiles_y3");
+        tiles.Add("tiles_g3");
+        foreach (var tile in tiles)
+        {
+            CreateTile(tile);
+        }
+        tileSelector.GetComponent<TileSelector>().PlaceTiles();
+    }*/
 
     private void SendDiceResultToServer(DiceFaces result)
     {
@@ -85,7 +111,7 @@ public class GameActions : MonoBehaviour
 
     public void DisplayTilesToChoose(string tileNames)
     {
-        tileSelector.SetActive(true);
+        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
         hand.SetActive(false);
         List<string> tiles = MultiNames.ToNames(tileNames);
         foreach (var tile in tiles)
@@ -98,7 +124,7 @@ public class GameActions : MonoBehaviour
     public void TilePlaced()
     {
         tileSelector.GetComponent<TileSelector>().DestroyChildren();
-        tileSelector.SetActive(false);
+        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
         Debug.Log("TILE SELECTOR DEACTIVATED");
         hand.SetActive(true);
         Debug.Log("HAND ACTIVATED");

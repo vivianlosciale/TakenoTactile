@@ -71,13 +71,13 @@ public class MessageManager : MonoBehaviour
         TuioCursor tuioEvent = (TuioCursor)tuioEvents.Find(e => e.Id == id);
         if (tuioEvent == null)
         {
-            tuioEvent = new TuioCursor(id, xCoord, yCoord);
+            tuioEvent = new TuioCursor(id, xCoord, 1.0f-yCoord);
             tuioEvents.Add(tuioEvent);
             StartCoroutine(InstantiateType(tuioEvent));
         }
         else
         {
-            Vector2 p = new Vector2(xCoord, yCoord);
+            Vector2 p = new Vector2(xCoord, 1.0f - yCoord);
             tuioEvent.UpdateCoordinates(p);
         }
 
@@ -92,13 +92,13 @@ public class MessageManager : MonoBehaviour
         TuioObject tuioEvent = (TuioObject)tuioEvents.Find(e => e.Id == id);
         if (tuioEvent == null)
         {
-            tuioEvent = new TuioObject(id, xCoord, yCoord, value);
+            tuioEvent = new TuioObject(id, xCoord, 1.0f - yCoord, value);
             tuioEvents.Add(tuioEvent);
             StartCoroutine(InstantiateType(tuioEvent));
         }
         else
         {
-            Vector2 p = new Vector2(xCoord, yCoord);
+            Vector2 p = new Vector2(xCoord, 1.0f - yCoord);
             tuioEvent.UpdateCoordinates(p);
         }
 

@@ -4,28 +4,44 @@ using UnityEngine;
 
 public class TileSelector : MonoBehaviour
 {
-        
+        private bool _needed;
+
+        public void Start()
+        {
+            _needed = false;
+        }
+
+        public void ChangeNeeded()
+        {
+        _needed = !_needed;
+        }
+ 
         public void Update()
         {
+            if (_needed)
+            {
                 Vector3 v = default(Vector3);
-                if (Input.touchCount > 0 )
+                if (Input.touchCount > 0)
                 {
-                        v = Input.GetTouch(0).position;
+                    v = Input.GetTouch(0).position;
                 }
                 else if (Input.GetMouseButtonUp(0))
                 {
-                        v = Input.mousePosition;
+                    v = Input.mousePosition;
                 }
                 if (v != default)
                 {
-                        Debug.Log("------------------------TOUCH IN HAND MANAGEMENT");
-                        Ray ray = Camera.main.ScreenPointToRay(v);  
-                        RaycastHit hit;  
-                        if (Physics.Raycast(ray, out hit)) {
-                                Debug.Log("---------------------------CLICKED ELEMENT : " +hit.transform.name);
-                                SelectTile(hit.transform.name);
-                        }
+                    Debug.Log("------------------------TOUCH IN HAND MANAGEMENT");
+                    Ray ray = Camera.main.ScreenPointToRay(v);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
+                    {
+                        Debug.Log("---------------------------CLICKED ELEMENT : " + hit.transform.name);
+                        SelectTile(hit.transform.name);
+                    }
                 }
+            }
+                
         }
 
         private void SelectTile(String tileName)
@@ -72,10 +88,9 @@ public class TileSelector : MonoBehaviour
 
         public void DestroyChildren()
         {
-                int childCount = transform.childCount;
-                for (int i = childCount - 1; i > 0; i--)
-                {
-                        Destroy(transform.GetChild(i).gameObject);
-                }
+            foreach(Transform child in transform)
+            {
+                Destroy(child.gameObject);
+            }
         }
 }

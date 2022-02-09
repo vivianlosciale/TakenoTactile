@@ -24,6 +24,10 @@ public class Takenoko
         _gameState = new GameState(_players);
         _currentPlayer = new PlayerRoom(this,-1);
         _neededValidations = 5;
+        foreach (PlayerRoom player in players)
+        {
+            player.SetGame(this);
+        }
     }
 
     public void StartGame()
@@ -56,7 +60,7 @@ public class Takenoko
         DiceFaces diceFace = _currentPlayer.WaitingDiceResult();
         Console.WriteLine("Player "+_currentPlayer.GetNumber()+" rolled '"+DiceFacesMethods.ToString(diceFace)+"'");
         _table.SendEvent(MessageQuery.RollDice, diceFace.ToString());
-        DiceAction.GetPower(diceFace).Use(_currentPlayer,_table,_gameState);
+        //DiceAction.GetPower(diceFace).Use(_currentPlayer,_table,_gameState);
     }
 
     private void PlayPower()

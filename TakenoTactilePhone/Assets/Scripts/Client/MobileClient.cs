@@ -9,6 +9,7 @@ public class MobileClient : MonoBehaviour
     public GameObject phoneCamera;
     private GameActions _gameActions;
     private PopUpSystem _popUpSystem;
+    private string _playerName;
 
     /*
      * Deactivate the camera gameObject.
@@ -37,6 +38,11 @@ public class MobileClient : MonoBehaviour
     {
         var move = gameObject.GetComponent<MoveObject>();
         move.MoveToAnotherScene();
+    }
+
+    public string GetPlayerName()
+    {
+        return _playerName;
     }
 
     public void SetGameActions(GameActions gameActions)
@@ -96,6 +102,8 @@ public class MobileClient : MonoBehaviour
         _messageSender = new MessageSender(_serverSocket);
         _serverSocket.Connect();
         _serverSocket.OnMessage += ReceiveGameMessages;
+        string[] playerName = parser.GetMessageBody().Split('/');
+        _playerName = playerName[playerName.Length - 1];
     }
 
     /*
