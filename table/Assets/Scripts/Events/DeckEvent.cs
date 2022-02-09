@@ -25,7 +25,7 @@ public class DeckEvent : MonoBehaviour
         }
     }
 
-    public void PickCard(Material mat)
+    public void PickCard(string cardType)
     {
         Debug.Log("Can : " + _tableClient.CanPickCard());
         if (_tableClient.CanPickCard())
@@ -33,8 +33,9 @@ public class DeckEvent : MonoBehaviour
             Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
             GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
             Transform pointPosition = board.transform.GetChild(0).transform;
+            Material mat = Resources.Load<Material>("Models/Material/card_back_" + cardType);
             TranslateCard(pointPosition, mat);
-            _tableClient.PickCard();
+            _tableClient.PickCard(cardType);
         }
     }
 

@@ -734,13 +734,13 @@ MonoBehaviour:
       - m_Target: {fileID: 610975800}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 2
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: dc57e676e27d48e4d9cccb8866ff1b41, type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Panda
           m_BoolArgument: 0
         m_CallState: 2
   OnLongClick:
@@ -995,13 +995,13 @@ MonoBehaviour:
       - m_Target: {fileID: 980503494}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 2
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: 53fcf5ac1f09d3d4f837ed2b6b5ddfbe, type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Land
           m_BoolArgument: 0
         m_CallState: 2
   OnLongClick:
@@ -1118,13 +1118,13 @@ MonoBehaviour:
       - m_Target: {fileID: 1151335743}
         m_TargetAssemblyTypeName: DeckEvent, Assembly-CSharp
         m_MethodName: PickCard
-        m_Mode: 2
+        m_Mode: 5
         m_Arguments:
-          m_ObjectArgument: {fileID: 2100000, guid: 2a68dfab158028c4f84002dfc1221500, type: 2}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Material, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: 
+          m_StringArgument: Bamboo
           m_BoolArgument: 0
         m_CallState: 2
   OnLongClick:

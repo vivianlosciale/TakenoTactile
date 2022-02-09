@@ -63,9 +63,9 @@ public class TableClient : MonoBehaviour
     /*
      * Cards section
      */
-    internal void PickCard()
+    internal void PickCard(string cardType)
     {
-        _sender.Send(MessageQuery.PickCard);
+        _sender.Send(MessageQuery.PickCard, cardType);
         _canPickCard = false;
     }
 
