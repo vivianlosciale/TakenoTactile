@@ -20,6 +20,8 @@ public class PlaceTile: PowerAction
             return;
         }
         Tile selectedTile = player.WaitingChoseTile(pickedTiles);
+        pickedTiles.Remove(selectedTile);
+        foreach (Tile tile in pickedTiles) game.ReturnTile(tile);
         table.SendEvent(MessageQuery.WaitingPlaceTile, selectedTile.ToString());
         PositionDto selectedPosition = table.WaitForSelectPosition();
         player.SendEvent(MessageQuery.TilePlaced);

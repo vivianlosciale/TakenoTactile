@@ -55,12 +55,12 @@ public class Server
      * Create a new player room to handle the communication with the player device.
      * And add the new player to the game.
      */
-    public string? AddPlayer()
+    public string? AddPlayer(int roomNumber)
     {
         if (_players.Count < 4)
         {
             string privatePlayerPath = PlayerPath + _players.Count;
-            PlayerRoom playerRoom = new PlayerRoom(_game, _players.Count);
+            PlayerRoom playerRoom = new PlayerRoom(_game, roomNumber);
             _ws.AddWebSocketService(privatePlayerPath, () => playerRoom);
             _players.Add(playerRoom);
             _table.SendEvent(MessageQuery.APlayerJoined, playerRoom.GetNumber().ToString()); // TODO
@@ -79,7 +79,7 @@ public class Server
         if (_players.Count >= 1)
         {
             _ws.RemoveWebSocketService(LoginPath);
-            _gameThread = new Thread(new Takenoko(_table, _players).StartGame);
+            _gameThread = new Thread(_game.StartGame);
             _gameThread.Start();
         }
     }

@@ -43,8 +43,8 @@ public enum MessageQuery
     
     /**
      * FROM/TO: mobile -> server
-     * ARGS:    a unique identifier
-     *     To inform the server the mobile requires a connection
+     * ARGS:    the selected room number, a unique identifier
+     *     To inform the server the mobile requires a connection in the given room
      */
     PlayerConnection,
     

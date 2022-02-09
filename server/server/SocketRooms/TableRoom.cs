@@ -87,6 +87,7 @@ public class TableRoom : SocketRoom
         player.SendEvent(MessageQuery.WaitingChoseAction);
         Console.WriteLine("Waiting for the current player to chose " + _currentPlayer.PowerUses + " powers...");
         while (_chosenPowers.Count < _currentPlayer.PowerUses || !player.Validate) WaitSeconds(1);
+        Console.WriteLine("Choices are made!");
         Sender.Send(MessageQuery.ValidateChoice);
         return new List<Actions>(_chosenPowers);
     }

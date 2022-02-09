@@ -1,4 +1,5 @@
 using server.Game.Board.Cards;
+using server.Game.Board.Decks;
 using server.Game.Board.Field;
 using server.Game.Board.Tiles;
 using server.SocketRooms;
@@ -7,28 +8,27 @@ namespace server.Game.Board;
 
 public class GameState
 {
-    private readonly Deck _deck;
+    private readonly CardDeck _victoryCardDeck = new();
+    private readonly TileDeck _tilesDeck = new();
     private readonly List<PlayerRoom> _players;
-    private readonly Field.Field _field;
-    private PlayerRoom _currentPlayer;
+    private readonly Field.Field _field = new();
+    private PlayerRoom? _currentPlayer;
 
     public GameState(List<PlayerRoom> players)
     {
         _players = players;
-        if (players.Count > 0)
-            _currentPlayer = players[0];
-        _deck = new Deck();
-        _field = new Field.Field();
     }
 
     public FoodStorage GetCurrentPlayerFoodStorage()
     {
+        if (_currentPlayer == null) throw new Exception("No current player was found !");
         return _currentPlayer.GetFoodStorage(); 
     }
 
     public PlayerRoom NextPlayerTurn()
     {
-        PlayerRoom oldPlayer = _currentPlayer;
+        if (_players.Count == 0) throw new Exception("No current player was found !");
+        PlayerRoom oldPlayer = _currentPlayer ?? _players[0];
         _currentPlayer = _players[(_players.IndexOf(oldPlayer) + 1) % _players.Count];
         _currentPlayer.SetPlaying(true);
         oldPlayer.SetPlaying(false);
@@ -49,12 +49,12 @@ public class GameState
 
     public VictoryCard? PickCard()
     {
-        return _deck.PickCard();
+        return _victoryCardDeck.Pick();
     }
 
     public Tile? PickTile()
     {
-        return _deck.PickTile();
+        return _tilesDeck.Pick();
     }
 
     public Tile? GetTile(Position position)
@@ -65,5 +65,10 @@ public class GameState
     public void PlaceTile(Position position, Tile tile)
     {
         _field.AddTile(position, tile);
+    }
+
+    public void ReturnTile(Tile tile)
+    {
+        _tilesDeck.Return(tile);
     }
 }

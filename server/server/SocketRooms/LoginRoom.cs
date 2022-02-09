@@ -13,9 +13,9 @@ public class LoginRoom : SocketRoom
         _server = server;
     }
 
-    private void ConnectPlayer(string dest)
+    private void ConnectPlayer(string dest, int roomNumber)
     {
-        string? playerRoot = _server.AddPlayer();
+        string? playerRoot = _server.AddPlayer(roomNumber);
         if (playerRoot == null) Sender.Send(MessageQuery.GameIsFull);
         else Sender.Send(MessageQuery.AcceptConnection, dest, playerRoot);
     }
@@ -32,8 +32,8 @@ public class LoginRoom : SocketRoom
         switch (message.GetQuery())
         {
             case MessageQuery.PlayerConnection:
-                Console.WriteLine("Player "+message.GetBody()+" requires a connection.");
-                ConnectPlayer(message.GetBody());
+                Console.WriteLine("Player "+message.GetBody()+" requires a connection in room "+message.GetDest()+".");
+                ConnectPlayer(message.GetBody() ,int.Parse(message.GetDest()));
                 break;
             case MessageQuery.TableConnection:
                 Console.WriteLine("Table "+message.GetBody()+" requires a connection.");

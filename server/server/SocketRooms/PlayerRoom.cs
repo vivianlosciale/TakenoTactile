@@ -42,11 +42,6 @@ public class PlayerRoom : SocketRoom
         return _foodStorage;
     }
 
-    public void SetGame(Takenoko game)
-    {
-        _game = game;
-    }
-
     public void SetPlaying(bool playing)
     {
         _isPlaying = playing;
