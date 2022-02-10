@@ -4,7 +4,7 @@ class PlaceHolderMaterial : MonoBehaviour
 {
     private float _alpha = 1.0f;
     private bool _down = true;
-    private readonly float _speed = 0.005f;
+    private readonly float _speed = 0.01f;
     private void FixedUpdate()
     {
         Color c = transform.GetComponent<MeshRenderer>().material.color;
