@@ -323,6 +323,10 @@ public enum MessageQuery
      * FROM/TO: server -> mobile
      * ARGS:    the objective name
      *     To inform the mobile the objective was validated
+     *
+     * FROM/TO: server -> table
+     * ARGS:    the objective name
+     *     To inform the table the objective was validated
      */
     ValidateObjective,
     

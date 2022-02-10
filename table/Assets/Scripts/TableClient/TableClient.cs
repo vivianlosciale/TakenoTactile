@@ -254,6 +254,12 @@ public class TableClient : MonoBehaviour
                     //string cardName = ;
                 });
                 break;
+            case MessageQuery.ValidateObjective:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _currentPlayer.ValidateObjective(message.GetBody());
+                });
+                break;
             default:
                 _sender.Send(MessageQuery.Ping, "Unknown : " + message.GetQuery());
                 break;

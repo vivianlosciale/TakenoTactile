@@ -80,4 +80,9 @@ public class Takenoko
     {
         return _neededValidations;
     }
+
+    public void SendToTable(MessageQuery query, string message)
+    {
+        _table.SendEvent(query, message);
+    }
 }

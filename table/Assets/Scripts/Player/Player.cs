@@ -34,4 +34,9 @@ public class Player
     {
         return board;
     }
+
+    internal void ValidateObjective(string objectiveName)
+    {
+        this.board.GetComponent<PawnEvent>().AddCardToBoard(objectiveName);
+    }
 }
