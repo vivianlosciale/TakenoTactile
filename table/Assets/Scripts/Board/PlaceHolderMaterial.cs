@@ -17,4 +17,10 @@ class PlaceHolderMaterial : MonoBehaviour
         if (_alpha < 0.0f || _alpha > 1.0f)
             _down = !_down;
     }
+
+    private void OnEnable()
+    {
+        _alpha = 1.0f;
+        _down = true;
+    }
 }

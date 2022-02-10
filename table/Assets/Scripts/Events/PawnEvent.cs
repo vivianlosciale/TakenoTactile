@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class PawnEvent : MonoBehaviour
@@ -10,7 +12,7 @@ public class PawnEvent : MonoBehaviour
 
     public void Start()
     {
-        /*_tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+        _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         player = _tableClient.GetPlayerFromPosition(position);
         if (player == null)
         {
@@ -18,8 +20,7 @@ public class PawnEvent : MonoBehaviour
         } else
         {
             player.SetBoard(gameObject);
-        }*/
-        AddCardToBoard("card_bamboo_1gf");
+        }
     }
 
     public void OnActionBox()
@@ -78,7 +79,7 @@ public class PawnEvent : MonoBehaviour
         GameObject instance = Instantiate(prefab);
         Material newMat = new Material(Resources.Load<Material>("Models/Material/card_face"));
         Texture2D text = Resources.Load<Texture2D>("Cards/" + cardName);
-        newMat.mainTexture = text;
+        newMat.SetTexture("_EmissionMap", text);
         var materials = instance.GetComponent<MeshRenderer>().materials;
         materials[1] = newMat;
         instance.GetComponent<MeshRenderer>().materials = materials;

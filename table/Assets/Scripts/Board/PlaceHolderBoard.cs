@@ -33,7 +33,6 @@ public class PlaceHolderBoard : MonoBehaviour
             even = !even;
         }
         placeHolderPositions.Find(e => e.position == new Vector2Int(0, 0)).used = true;
-        //ActivateNeighborsSlot("tiles_g1");
     }
 
     private void GeneratePlaceHolder(int i, int j)
