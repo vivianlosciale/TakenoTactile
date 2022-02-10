@@ -44,7 +44,7 @@ public class Reserv : MonoBehaviour
         }
     }
 
-    private void Update()
+    private void handleUI()
     {
         ARCamera.SetActive(ARActive);
         hand.SetActive(!ARActive);
@@ -61,5 +61,6 @@ public class Reserv : MonoBehaviour
             }
         }
         ARActive = !ARActive;
+        handleUI();
     }
 }

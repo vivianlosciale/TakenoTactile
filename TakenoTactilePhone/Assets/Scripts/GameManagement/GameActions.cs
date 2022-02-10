@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -8,6 +9,7 @@ public class GameActions : MonoBehaviour
     public GameObject diceRoller;
     public GameObject diceChecker;
     public GameObject uiElements;
+    public GameObject ARCanvas;
     public GameObject endTurn;
     public GameObject hand;
     public GameObject tileSelector;
@@ -31,16 +33,16 @@ public class GameActions : MonoBehaviour
         _mobileClient.SetGameActions(this);
         playerName.text = _mobileClient.GetPlayerName();
         _popUpSystem = GameObject.FindWithTag(TagManager.PopUpManager.ToString()).GetComponent<PopUpSystem>();
-/*        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
-        List<string> tiles = new List<string>();
-        tiles.Add("tiles_y1");
-        tiles.Add("tiles_g1");
-        tiles.Add("tiles_r1");
-        foreach (var tile in tiles)
-        {
-            CreateTile(tile);
-        }
-        tileSelector.GetComponent<TileSelector>().PlaceTiles();*/
+        /*        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
+                List<string> tiles = new List<string>();
+                tiles.Add("tiles_y1");
+                tiles.Add("tiles_g1");
+                tiles.Add("tiles_r1");
+                foreach (var tile in tiles)
+                {
+                    CreateTile(tile);
+                }
+                tileSelector.GetComponent<TileSelector>().PlaceTiles();*/
     }
 
     void Update()
@@ -76,6 +78,7 @@ public class GameActions : MonoBehaviour
     private void SendDiceResultToServer(DiceFaces result)
     {
         uiElements.SetActive(true);
+        ARCanvas.SetActive(true);
         hand.SetActive(true);
         diceRoller.SetActive(false);
         _checker.ResetDice();
@@ -92,6 +95,7 @@ public class GameActions : MonoBehaviour
         uiElements.SetActive(false);
         hand.SetActive(false);
         diceRoller.SetActive(true);
+        ARCanvas.SetActive(false);
         diceChecker = GameObject.FindWithTag(TagManager.DiceCheckerFloor.ToString());
         _checker = diceChecker.GetComponent<DiceChecker>();
     }
