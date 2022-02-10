@@ -23,24 +23,22 @@ public class Reserv : MonoBehaviour
     void Start()
     {
         ARActive = false;
+        handleUI();
 
         for (int i = 0; i < nbBambooG; i++)
         {
             var bambooGtmp = Instantiate(bambooG, imageTarget.transform);
             bambooGtmp.transform.localPosition = new Vector3(0, i * 0.035f - 1, 0);
-            //bambooGtmp.transform.Rotate(new Vector3(-90, 0, 0));
         }
         for (int i = 0; i < nbBambooP; i++)
         {
             var bambooPtmp = Instantiate(bambooP, imageTarget.transform);
             bambooPtmp.transform.localPosition = new Vector3(0.03f, i * 0.035f - 1,  0.03f);
-           // bambooPtmp.transform.Rotate(new Vector3(-90, 0, 0));
         }
         for (int i = 0; i < nbBambooY; i++)
         {
             var bambooYtmp = Instantiate(bambooY, imageTarget.transform);
             bambooYtmp.transform.localPosition = new Vector3(0.03f, i * 0.035f - 1, 0.03f);
-            //bambooYtmp.transform.Rotate(new Vector3(-90, 0, 0));
         }
     }
 
