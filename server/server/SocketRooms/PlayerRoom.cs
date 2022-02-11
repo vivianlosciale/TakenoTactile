@@ -116,7 +116,7 @@ public class PlayerRoom : SocketRoom
             bool valid = _game.ValidateCard(card);
             if (valid) _validatedCards.Add(card);
             Sender.Send(valid ? MessageQuery.ValidateObjective : MessageQuery.InvalidObjective, cardName);
-            _game.SendToTable(MessageQuery.ValidateObjective, cardName);
+            if (valid) _game.SendToTable(MessageQuery.ValidateObjective, cardName);
             break;
         }
         _victoryCards.RemoveAll(_validatedCards.Contains);
