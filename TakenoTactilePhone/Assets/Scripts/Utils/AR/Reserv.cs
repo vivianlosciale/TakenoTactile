@@ -28,17 +28,17 @@ public class Reserv : MonoBehaviour
         for (int i = 0; i < nbBambooG; i++)
         {
             var bambooGtmp = Instantiate(bambooG, imageTarget.transform);
-            bambooGtmp.transform.localPosition = new Vector3(0, i * 0.035f - 1, 0);
+            bambooGtmp.transform.localPosition = new Vector3(0, i * 0.1f - 1, 0);
         }
         for (int i = 0; i < nbBambooP; i++)
         {
             var bambooPtmp = Instantiate(bambooP, imageTarget.transform);
-            bambooPtmp.transform.localPosition = new Vector3(0.03f, i * 0.035f - 1,  0.03f);
+            bambooPtmp.transform.localPosition = new Vector3(0.07f, i * 0.1f - 1,  0.07f);
         }
         for (int i = 0; i < nbBambooY; i++)
         {
             var bambooYtmp = Instantiate(bambooY, imageTarget.transform);
-            bambooYtmp.transform.localPosition = new Vector3(0.03f, i * 0.035f - 1, 0.03f);
+            bambooYtmp.transform.localPosition = new Vector3(0.07f, i * 0.1f - 1, 0.07f);
         }
     }
 
