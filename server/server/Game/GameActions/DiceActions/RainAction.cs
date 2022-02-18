@@ -22,7 +22,6 @@ public class RainAction: DiceAction
             player.SendEvent(MessageQuery.Error, "No tile at position ("+chosenPosition+")");
             Use(player, table, game);
         }
-        
         else if (tile.CanGrow())
         {
             tile.Grow();
