@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class PawnEvent : MonoBehaviour
 {
-    private int maxPawn = 2;
-    bool error = false;
     private TableClient _tableClient;
     public Player player;
     public int position;
@@ -23,54 +21,18 @@ public class PawnEvent : MonoBehaviour
         }
     }
 
-    public void OnActionBox()
+    public void OnActionBox(string actionName)
     {
-        if (maxPawn == 0)
-        {
-            Debug.LogError("Can't put more ActionBox");
-            error = true;
-        }
-        else
-        {
-            maxPawn--;
-        }
+        Debug.Log("Action : " + ActionsMethods.ToActions(actionName));
+        Actions action = ActionsMethods.ToActions(actionName);
+        _tableClient.SendChoseActionToServer(action, player);
     }
 
-    public void OnActionBoxTest(string actionName)
+    public void LeaveActionBox(string actionName)
     {
-        if (maxPawn == 0)
-        {
-            Debug.LogError("Can't put more ActionBox");
-            error = true;
-        }
-        else
-        {
-            Debug.Log("Action : " + ActionsMethods.ToActions(actionName));
-            Actions action = ActionsMethods.ToActions(actionName);
-            _tableClient.SendChoseActionToServer(action, player);
-            maxPawn--;
-        }
-    }
-
-    public void LeaveActionBox()
-    {
-        if (!error)
-            maxPawn++;
-        else
-            error = !error;
-    }
-
-    public void LeaveActionBoxTest(string actionName)
-    {
-        if (!error)
-        {
-            Debug.Log("Action : " + ActionsMethods.ToActions(actionName));
-            Actions action = ActionsMethods.ToActions(actionName);
-            _tableClient.SendRemoveActionToServer(action, player);
-            maxPawn++;
-        }
-        else
-            error = !error;
+        Debug.Log("Action : " + ActionsMethods.ToActions(actionName));
+        Actions action = ActionsMethods.ToActions(actionName);
+        _tableClient.SendRemoveActionToServer(action, player);
     }
 
     public void AddCardToBoard(string cardName)

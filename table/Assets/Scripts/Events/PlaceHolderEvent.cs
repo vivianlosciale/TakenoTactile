@@ -24,7 +24,9 @@ public class PlaceHolderEvent : MonoBehaviour
         tile.transform.position = transform.position + new Vector3(0, 11, 0);
         tile.AddComponent<BoardTileMovement>().SetPosition(transform.position);
         PlaceHolder p = transform.parent.GetComponent<PlaceHolderBoard>().placeHolderPositions.Find(e => e.GameObject == gameObject);
+        TileEvent tileEvent = tile.GetComponent<TileEvent>();
+        tileEvent.SetPlaceHolder(p);
         p.used = true;
-        _tableClient.SendTilePosition(p.position);
+        _tableClient.SendTilePosition(tile);
     }
 }
