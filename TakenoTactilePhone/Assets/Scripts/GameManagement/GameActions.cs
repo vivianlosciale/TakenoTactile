@@ -9,6 +9,7 @@ public class GameActions : MonoBehaviour
     public AudioClip displayTilesSound;
     public AudioClip startTurn;
     public AudioClip errorSound;
+    public AudioClip cardSound;
     
     public GameObject diceRoller;
     public GameObject diceChecker;
@@ -91,6 +92,7 @@ public class GameActions : MonoBehaviour
 
     public void AddCardToHand(string cardName)
     {
+        soundManager.PlayOneShot(cardSound);
         CreateMaterial(cardPrefab, hand.transform, "Cards", cardName );
         hand.GetComponent<HandManagement>().UpdateCardsPosition();
     }
