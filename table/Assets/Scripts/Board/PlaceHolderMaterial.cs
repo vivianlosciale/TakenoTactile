@@ -5,11 +5,17 @@ class PlaceHolderMaterial : MonoBehaviour
     private float _alpha = 1.0f;
     private bool _down = true;
     private readonly float _speed = 0.01f;
+    private MeshRenderer meshRenderer;
+
+    private void Start()
+    {
+        meshRenderer = transform.GetComponent<MeshRenderer>();
+    }
     private void FixedUpdate()
     {
-        Color c = transform.GetComponent<MeshRenderer>().material.color;
+        Color c = meshRenderer.material.color;
         c.a = _alpha;
-        transform.GetComponent<MeshRenderer>().material.SetColor("_Color", c);
+        meshRenderer.material.SetColor("_Color", c);
         if (_down)
             _alpha -= _speed;
         else
