@@ -12,7 +12,7 @@ public class MoveObject : MonoBehaviour
 
     private void Start()
     {
-        this.mobileClientObject = GameObject.FindWithTag(TagManager.MobileClient.ToString());
+        mobileClientObject = GameObject.FindWithTag(TagManager.MobileClient.ToString());
     }
 
     public void MoveToAnotherScene()

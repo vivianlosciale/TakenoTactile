@@ -286,7 +286,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBoxTest
+        m_MethodName: OnActionBox
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -301,7 +301,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBoxTest
+        m_MethodName: LeaveActionBox
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -382,7 +382,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: OnActionBoxTest
+        m_MethodName: OnActionBox
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -397,7 +397,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8255415279115301603}
         m_TargetAssemblyTypeName: PawnEvent, Assembly-CSharp
-        m_MethodName: LeaveActionBoxTest
+        m_MethodName: LeaveActionBox
         m_Mode: 5
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

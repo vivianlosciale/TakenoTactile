@@ -9,4 +9,5 @@
      TileSelector,
      GameManager,
      Hand,
+     SoundProvider,
 }

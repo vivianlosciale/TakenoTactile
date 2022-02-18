@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,6 +18,8 @@ public class TableClient : MonoBehaviour
 
     private bool _canPickTile;
     private bool _canPickCard;
+    private bool _canPlaceBamboo;
+    private List<GameObject> _tilesOnBoard;
 
     private Player _currentPlayer;
     private Player[] players;
@@ -44,6 +47,7 @@ public class TableClient : MonoBehaviour
         players = new Player[4];
         _canPickTile = false;
         _canPickCard = false;
+        _tilesOnBoard = new List<GameObject>();
     }
 
     /*
@@ -88,16 +92,33 @@ public class TableClient : MonoBehaviour
         return _canPickTile;
     }
 
+    internal bool CanPlaceBamboo()
+    {
+        return _canPlaceBamboo;
+    }
+
     internal void SetPlaceHolderBoard(PlaceHolderBoard placeHolderBoard)
     {
         _placeHolderBoard = placeHolderBoard;
     }
 
-    internal void SendTilePosition(Vector2Int position)
+    internal void SendTilePosition(GameObject tile)
     {
-        string res = PositionDto.ToString(position.x, position.y);
-        Debug.Log("Entre temps " + res + " Entre temps");
+        TileEvent tileEvent = tile.GetComponent<TileEvent>();
+        _tilesOnBoard.Add(tile);
+        string res = PositionDto.ToString(tileEvent.GetPosition().x, tileEvent.GetPosition().y);
         _sender.Send(MessageQuery.ChosenPosition , res);
+    }
+
+    internal void SendBambooPlaced(string cardPosition)
+    {
+        _sender.Send(MessageQuery.ChosenPosition, cardPosition);
+        _canPlaceBamboo = false;
+        foreach (GameObject tile in _tilesOnBoard)
+        {
+            TileEvent tileEvent = tile.GetComponent<TileEvent>();
+            tileEvent.ChangeActive(false);
+        }
     }
 
     /*
@@ -250,14 +271,42 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _placeHolderBoard.ActivateNeighborsSlot(message.GetBody());
-                    //TODO CHANGER LA CARTE
-                    //string cardName = ;
                 });
                 break;
             case MessageQuery.ValidateObjective:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _currentPlayer.ValidateObjective(message.GetBody());
+                });
+                break;
+            case MessageQuery.WaitingChoseRain:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    if (_tilesOnBoard.Count == 0) 
+                    {
+                        SendBambooPlaced(PositionDto.ToString(0, 0));
+                        return;
+                    }
+                    Debug.Log("JE NE SUIS PAS SENSE ETRE LA");
+                    List<TileEvent> tilesEventAvailable = new List<TileEvent>();
+                    foreach(GameObject tile in _tilesOnBoard)
+                    {
+                        TileEvent tileEvent = tile.GetComponent<TileEvent>();
+                        if (tileEvent.CanPlaceBamboo())
+                        {
+                            tilesEventAvailable.Add(tileEvent);
+                        }
+                    }
+                    if (tilesEventAvailable.Count == 0)
+                    {
+                        SendBambooPlaced(PositionDto.ToString(0, 0));
+                        return;
+                    }
+                    _canPlaceBamboo = true;
+                    foreach(TileEvent tileEvent in tilesEventAvailable)
+                    {
+                        tileEvent.ChangeActive(true);
+                    }
                 });
                 break;
             default:

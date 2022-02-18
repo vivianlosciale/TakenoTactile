@@ -10,6 +10,7 @@ TagManager:
   - GameManager
   - Hand
   - TileSelector
+  - SoundProvider
   layers:
   - Default
   - TransparentFX

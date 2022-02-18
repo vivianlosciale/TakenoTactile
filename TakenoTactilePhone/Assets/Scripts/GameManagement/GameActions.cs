@@ -1,11 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameActions : MonoBehaviour
 {
     //SCENE OBJECTS
+    public AudioSource soundManager;
+    public AudioClip displayTilesSound;
+    public AudioClip startTurn;
+    public AudioClip errorSound;
+    public AudioClip cardSound;
+    
     public GameObject diceRoller;
     public GameObject diceChecker;
     public GameObject uiElements;
@@ -33,16 +38,6 @@ public class GameActions : MonoBehaviour
         _mobileClient.SetGameActions(this);
         playerName.text = _mobileClient.GetPlayerName();
         _popUpSystem = GameObject.FindWithTag(TagManager.PopUpManager.ToString()).GetComponent<PopUpSystem>();
-        /*        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
-                List<string> tiles = new List<string>();
-                tiles.Add("tiles_y1");
-                tiles.Add("tiles_g1");
-                tiles.Add("tiles_r1");
-                foreach (var tile in tiles)
-                {
-                    CreateTile(tile);
-                }
-                tileSelector.GetComponent<TileSelector>().PlaceTiles();*/
     }
 
     void Update()
@@ -62,19 +57,6 @@ public class GameActions : MonoBehaviour
         }
     }
 
-/*    public void CreateOtherChildren()
-    {
-        List<string> tiles = new List<string>();
-        tiles.Add("tiles_r2");
-        tiles.Add("tiles_y3");
-        tiles.Add("tiles_g3");
-        foreach (var tile in tiles)
-        {
-            CreateTile(tile);
-        }
-        tileSelector.GetComponent<TileSelector>().PlaceTiles();
-    }*/
-
     private void SendDiceResultToServer(DiceFaces result)
     {
         uiElements.SetActive(true);
@@ -87,6 +69,7 @@ public class GameActions : MonoBehaviour
 
     public void StartTurn()
     {
+        soundManager.PlayOneShot(startTurn);
         _popUpSystem.StartTurnPopUp();
     }
 
@@ -109,15 +92,20 @@ public class GameActions : MonoBehaviour
 
     public void AddCardToHand(string cardName)
     {
+        soundManager.PlayOneShot(cardSound);
         CreateMaterial(cardPrefab, hand.transform, "Cards", cardName );
         hand.GetComponent<HandManagement>().UpdateCardsPosition();
     }
 
     public void DisplayTilesToChoose(string tileNames)
     {
+        soundManager.PlayOneShot(displayTilesSound);
+        Handheld.Vibrate();
         tileSelector.GetComponent<TileSelector>().ChangeNeeded();
+        hand.GetComponent<HandManagement>().HideHand();
         hand.SetActive(false);
-        List<string> tiles = MultiNames.ToNames(tileNames);
+        ARCanvas.SetActive(false);
+        var tiles = MultiNames.ToNames(tileNames);
         foreach (var tile in tiles)
         {
             CreateTile(tile);
@@ -127,11 +115,10 @@ public class GameActions : MonoBehaviour
 
     public void TilePlaced()
     {
-        tileSelector.GetComponent<TileSelector>().DestroyChildren();
-        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
-        Debug.Log("TILE SELECTOR DEACTIVATED");
+        TileSelector selector = tileSelector.GetComponent<TileSelector>();
+        selector.SlideTile();
         hand.SetActive(true);
-        Debug.Log("HAND ACTIVATED");
+        ARCanvas.SetActive(true);
     }
 
     public void ValidateChoice(bool b)
@@ -150,6 +137,14 @@ public class GameActions : MonoBehaviour
     {
         hand.GetComponent<HandManagement>().ObjectiveWasValidated(objectiveName);
     }
+
+    public void InvalidObjective()
+    {
+        //GetHandManagement().UpdateCardsPosition();
+        soundManager.PlayOneShot(errorSound);
+        _popUpSystem.PopUp("You can not validate this card yet.");
+    }
+    
     private void CreateTile(string tileName)
     {
         CreateMaterial(tilePrefab, tileSelector.transform, "Tiles", tileName );
@@ -178,10 +173,18 @@ public class GameActions : MonoBehaviour
         var materials = newObject.GetComponent<MeshRenderer>().materials;
         materials[1] = newMat;
         newObject.GetComponent<MeshRenderer>().materials = materials;
+        if (type.Equals("Tiles"))
+        {
+            newObject.AddComponent<TileSlidingAnimation>();
+        }
+        else if(type.Equals("Cards"))
+        {
+            newObject.AddComponent<CardSlidingAnimation>();
+        }
     }
 
     public MobileClient GetMobileClient()
     {
-        return this._mobileClient;
+        return _mobileClient;
     }
 }

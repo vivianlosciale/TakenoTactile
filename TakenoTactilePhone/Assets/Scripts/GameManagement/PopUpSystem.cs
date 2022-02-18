@@ -23,16 +23,14 @@ public class PopUpSystem : MonoBehaviour
     {
         popUpBox.SetActive(true);
         popUpText.text = textToDisplay;
+        Handheld.Vibrate();
     }
 
     public void HidePopUp()
     {
         popUpBox.SetActive(false);
         popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
-        popUpButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            HidePopUp();
-        });
+        popUpButton.GetComponent<Button>().onClick.AddListener(HidePopUp);
     }
 
     public void StartTurnPopUp()
@@ -62,6 +60,7 @@ public class PopUpSystem : MonoBehaviour
 
     private void NewPopUp(string message, UnityAction action, string buttonText)
     {
+        Handheld.Vibrate();
         popUpBox.SetActive(true);
         popUpText.text = message;
         popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
