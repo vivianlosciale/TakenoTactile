@@ -20,6 +20,8 @@ public class TableClient : MonoBehaviour
     private bool _canPickCard;
     private bool _canPlaceBamboo;
     private List<GameObject> _tilesOnBoard;
+    private AudioSource audioSource;
+    public AudioClip audioClip;
 
     private Player _currentPlayer;
     private Player[] players;
@@ -48,6 +50,7 @@ public class TableClient : MonoBehaviour
         _canPickTile = false;
         _canPickCard = false;
         _tilesOnBoard = new List<GameObject>();
+        audioSource = gameObject.GetComponent<AudioSource>();
     }
 
     /*
@@ -229,6 +232,7 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     ChangeScene(GAME_SCENE, HOME_SCENE);
+                    audioSource.PlayOneShot(audioClip);
                 });
                 break;
             case MessageQuery.WaitingPickTiles:
@@ -246,6 +250,7 @@ public class TableClient : MonoBehaviour
             case MessageQuery.RollDice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
+                    //audioSource.PlayOneShot();
                     GameObject.Find(message.GetBody()).GetComponent<ParticleSystem>().Play();
                 });
                 break;

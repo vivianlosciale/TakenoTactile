@@ -211,7 +211,13 @@ public enum MessageQuery
                MOVE FARMER ACTION
      ***************************************/
     
-    // TODO
+    /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table
+     *     to send a farmer move position
+     */
+    WaitingMoveFarmer,
     
     
     
