@@ -26,7 +26,6 @@ public class RainAction: DiceAction
         {
             tile.Grow();
             player.SendEvent(MessageQuery.RainPower, "true");
-            table.SendEvent(MessageQuery.RainPower, chosenPosition.ToString());
         }
         
         else player.SendEvent(MessageQuery.RainPower, "false");
