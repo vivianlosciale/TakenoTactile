@@ -10,6 +10,8 @@ public class MobileClient : MonoBehaviour
     private GameActions _gameActions;
     private PopUpSystem _popUpSystem;
     private string _playerName;
+    public AudioSource soundManager;
+    public AudioClip connectionSound;
 
     /*
      * Deactivate the camera gameObject.
@@ -88,6 +90,7 @@ public class MobileClient : MonoBehaviour
         _serverSocket = new WebSocket(address);
         _messageSender = new MessageSender(_serverSocket);
         _serverSocket.Connect();
+        soundManager.PlayOneShot(connectionSound);
         _serverSocket.OnMessage += ReceiveConnectionPath;
         _messageSender.Send(MessageQuery.PlayerConnection, playerPlace, Device.GetIPv4());
     }
@@ -125,7 +128,6 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.ValidateChoice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    Debug.Log("BOOLEAN PARSED : " + bool.Parse(parser.GetMessageBody()));
                     _gameActions.ValidateChoice(bool.Parse(parser.GetMessageBody()));
                 });
                 break;
@@ -176,8 +178,7 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.InvalidObjective:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    GetHandManagement().UpdateCardsPosition();
-                    _popUpSystem.PopUp("You can not validate this card yet.");
+                    _gameActions.InvalidObjective();
                 });
                 break;
             case MessageQuery.ValidateObjective:

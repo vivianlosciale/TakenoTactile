@@ -1,14 +1,19 @@
 ﻿using System.Collections.Generic;
-using System.Threading;
 using UnityEngine;
 
 public class HandManagement : MonoBehaviour
 {
+        public AudioSource soundManager;
+        public AudioClip cardSubmittedSound;
+        public AudioClip cardFlip;
         public GameObject validateButton;
         public GameObject cancelButton;
+        
         private readonly List<Vector3> _localPositions = new List<Vector3>();
         private List<string> _childrenNames = new List<string>();
         private string _cardToSubmit = "";
+        private bool _cardWasSelected = false;
+        private GameObject _selectedCard;
 
         public void Start()
         {
@@ -22,75 +27,95 @@ public class HandManagement : MonoBehaviour
 
         public void Update()
         {
+                DetectTouch();
+        }
+
+        private void DetectTouch()
+        {
                 Vector3 v = default(Vector3);
                 if (Input.touchCount > 0 )
                 {
                         v = Input.GetTouch(0).position;
                 }
                 else if (Input.GetMouseButtonUp(0))
-                {
+                { 
                         v = Input.mousePosition;
                 }
-                if (v != default)
+                if (v == default) return;
+                Ray ray = Camera.main.ScreenPointToRay(v);  
+                RaycastHit hit;  
+                if (Physics.Raycast(ray, out hit))
                 {
-                        Debug.Log("------------------------TOUCH IN HAND MANAGEMENT");
-                        Ray ray = Camera.main.ScreenPointToRay(v);  
-                        RaycastHit hit;  
-                        if (Physics.Raycast(ray, out hit)) {
-                                Debug.Log("---------------------------CLICKED ELEMENT : " +hit.transform.name);
-                                DisplayCard(hit.transform.name);
-                        }
-                }
+                        if (_cardWasSelected) return;
+                        DisplayCard(hit.transform.name);
+                }  
         }
         
         public void UpdateCardsPosition()
         {
                 _childrenNames = new List<string>();
-                int children = transform.childCount;
+                var children = transform.childCount;
                 validateButton.SetActive(false);
                 cancelButton.SetActive(false);
-                for (int i = 0; i < children; i++)
+                for (var i = 0; i < children; i++)
                 {
-                        GameObject child = transform.GetChild(i).gameObject;
+                        var child = transform.GetChild(i).gameObject;
                         child.SetActive(true);
+                        child.GetComponent<CardSlidingAnimation>().SetCardPosition(_localPositions[i]);
                         child.transform.localPosition = _localPositions[i];
                         _childrenNames.Add(child.name);
                 }
         }
 
+        public void CancelSelectedCard()
+        {
+                soundManager.PlayOneShot(cardFlip);
+                _selectedCard.GetComponent<CardSlidingAnimation>().AnimateBack();
+                _cardWasSelected = false; 
+        }
+        
         private void DisplayCard(string elementName)
         {
-                if (_childrenNames.Contains(elementName))
+                if (!_childrenNames.Contains(elementName))
                 {
-                        //on récupère le corresponding child
-                        GameObject child = GetChildByName(elementName);
-                        _cardToSubmit = elementName;
-                        //on sauvegarde sa position précédente
-                        var previousPosition = child.transform.position;
-                        //on le place au centre
-                        child.transform.position = new Vector3(0, previousPosition.y, 0);
-                        //on fait apparaître les boutons de validation et d'annulation
-                        validateButton.SetActive(true);
-                        cancelButton.SetActive(true);
-                        // les autres cartes deviennent invisibles
-                        int children = transform.childCount;
-                        for (int i = 0; i < children; i++)
-                        {
-                                GameObject sibling = transform.GetChild(i).gameObject;
-                                if (sibling.name != elementName)
-                                {
-                                        sibling.SetActive(false);
-                                }
-                        }
+                        if (!_cardWasSelected) return;
+                        _selectedCard.GetComponent<CardSlidingAnimation>().AnimateBack();
+                        _cardWasSelected = false;
                 }
+                else
+                {
+                        _selectedCard = GetChildByName(elementName);
+                        _cardWasSelected = true;
+                        _cardToSubmit = elementName;
+                        soundManager.PlayOneShot(cardFlip);
+                        CardSlidingAnimation animation = _selectedCard.GetComponent<CardSlidingAnimation>();
+                        animation.SetCardPosition(_selectedCard.transform.position);
+                        DisplaySingleCardUI(elementName);
+                        animation.AnimateToCenter(); 
+                }
+        }
+
+        private void DisplaySingleCardUI(string elementName)
+        {
+                validateButton.SetActive(true);
+                cancelButton.SetActive(true);
+                var children = transform.childCount;
+                for (var i = 0; i < children; i++)
+                {
+                        GameObject sibling = transform.GetChild(i).gameObject;
+                        if (sibling.name != elementName)
+                        {
+                                sibling.SetActive(false);
+                        }
+                } 
         }
 
         private GameObject GetChildByName(string cardName)
         {
-                int children = transform.childCount;
-                for (int i = 0; i < children; i++)
+                var children = transform.childCount;
+                for (var i = 0; i < children; i++)
                 {
-                        GameObject child = transform.GetChild(i).gameObject;
+                        var child = transform.GetChild(i).gameObject;
                         if (child.name == cardName)
                         {
                                 return child;
@@ -104,21 +129,20 @@ public class HandManagement : MonoBehaviour
                 Debug.Log("SENDING RESULT : " + _cardToSubmit);
                 GameObject.FindWithTag(TagManager.MobileClient.ToString())
                         .GetComponent<MobileClient>().SendChosenObjective(_cardToSubmit);
-
         }
 
         public void ObjectiveWasValidated(string objectiveName)
         {
                 Debug.Log("OBJECTIVE WAS VALIDATED : " + objectiveName);
-                int children = transform.childCount;
-                for (int i = 0; i < children; i++)
-                {
-                        GameObject child = transform.GetChild(i).gameObject;
-                        if (child.name == objectiveName)
-                        {
-                                Destroy(child);
-                        }
-                }
+                _selectedCard.GetComponent<CardSlidingAnimation>().AnimateToTable();
+                soundManager.PlayOneShot(cardSubmittedSound);
                 UpdateCardsPosition();
+        }
+
+        public void HideHand()
+        {
+                UpdateCardsPosition();
+                cancelButton.SetActive(false);
+                validateButton.SetActive(false);
         }
 }

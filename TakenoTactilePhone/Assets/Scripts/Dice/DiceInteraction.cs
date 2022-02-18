@@ -2,7 +2,10 @@ using UnityEngine;
 
 public class DiceInteraction : MonoBehaviour
 {
-    //private float moveSpeed = 10.0f;
+
+    public AudioSource soundManager;
+    public AudioClip rollingDice;
+    
     private float range = 5.0f;
     private float force = 17.5f;
     float cameraZDistance;
@@ -34,6 +37,7 @@ public class DiceInteraction : MonoBehaviour
     /// </summary>
     private void OnShake()
     {
+        soundManager.PlayOneShot(rollingDice);
         GetComponent<Rigidbody>().maxAngularVelocity = 15.0f;
         float x = transform.position.x;
         float y = transform.position.y;
