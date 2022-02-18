@@ -235,11 +235,25 @@ public enum MessageQuery
     WaitingPickCard,
     
     /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table to pick an upgrade
+     */
+    WaitingPickUpgrade,
+    
+    /**
      * FROM/TO: table -> server
      * NO ARGS
      *     Inform the server a pick card request is made
      */
     PickCard,
+    
+    /**
+     * FROM/TO: table -> server
+     * NO ARGS
+     *     Inform the server a pick upgrade request is made
+     */
+    PickUpgrade,
     
     /**
      * FROM/TO: server -> mobile
