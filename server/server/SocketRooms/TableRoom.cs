@@ -9,6 +9,7 @@ public class TableRoom : SocketRoom
     private readonly Server _server;
     private PositionDto? _tilePosition;
     private CardTypes _pickCard;
+    private UpgradeType _pickUpgrade;
     private bool _pickTiles;
     private PlayerRoom? _currentPlayer;
     private readonly List<Actions> _chosenPowers = new();
@@ -35,6 +36,9 @@ public class TableRoom : SocketRoom
                 break;
             case MessageQuery.PickCard:
                 _pickCard = CardTypesMethods.ToPowers(message.GetBody());
+                break;
+            case MessageQuery.PickUpgrade:
+                _pickUpgrade = UpgradeTypeMethods.ToUpgradeType(message.GetBody());
                 break;
             case MessageQuery.PickTiles:
                 _pickTiles = true;
@@ -70,6 +74,15 @@ public class TableRoom : SocketRoom
         Console.WriteLine("Waiting for the current player to pick a card...");
         while (_pickCard.Equals(CardTypes.None)) WaitSeconds(1);
         return _pickCard;
+    }
+
+    public UpgradeType WaitForUpgradePick()
+    {
+        _pickUpgrade = UpgradeType.None;
+        SendEvent(MessageQuery.WaitingPickUpgrade);
+        Console.WriteLine("Waiting for the current player to pick an upgrade...");
+        while (_pickUpgrade.Equals(UpgradeType.None)) WaitSeconds(1);
+        return _pickUpgrade;
     }
 
     public void WaitForTilesPick()

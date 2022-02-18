@@ -14,6 +14,6 @@ public class PickCard: PowerAction
         CardTypes type = table.WaitForCardPick();
         VictoryCard? card = game.PickCard(type);
         if (card != null) player.GiveCard(card);
-        else player.SendEvent(MessageQuery.Error, "No more cards in the deck!");
+        else player.SendEvent(MessageQuery.Error, "No more cards in that deck!");
     }
 }

@@ -16,7 +16,8 @@ public class PlayerRoom : SocketRoom
     private readonly List<VictoryCard> _victoryCards = new();
     private readonly List<VictoryCard> _validatedCards = new();
     private readonly FoodStorage _foodStorage = new ();
-    
+    private readonly Dictionary<UpgradeType, int> _upgrades = new();
+
     private bool _isPlaying;
     private bool _endTurn;
     private string _chosenTile = string.Empty;
@@ -105,6 +106,11 @@ public class PlayerRoom : SocketRoom
         _victoryCards.Add(card);
         Console.WriteLine("Sending card " + card.GetName() + " to player " + _playerNumber);
         Sender.Send(MessageQuery.ReceivedCard,card.GetName());
+    }
+
+    public void GiveUpgrade(UpgradeType upgrade)
+    {
+        _upgrades[upgrade]++;
     }
     
     private void ValidateCard(string cardName)

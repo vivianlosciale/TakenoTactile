@@ -2,6 +2,7 @@ using server.Game.Board.Cards;
 using server.Game.Board.Decks;
 using server.Game.Board.Fields;
 using server.Game.Board.Tiles;
+using server.Game.Board.Upgrades;
 using server.SocketRooms;
 using server.Utils.Game;
 
@@ -12,6 +13,7 @@ public class GameState
     private readonly FieldCardsDeck _fieldCardsDeck = new();
     private readonly FoodCardsDeck _foodCardsDeck = new();
     private readonly GrowthCardsDeck _growthCardsDeck = new();
+    private readonly UpgradesDeck _upgradesDeck = new();
     private readonly TileDeck _tilesDeck = new();
     private readonly List<PlayerRoom> _players;
     private readonly Field _field = new();
@@ -62,6 +64,11 @@ public class GameState
             default:
                 return _foodCardsDeck.Pick();
         }
+    }
+
+    public UpgradeType PickUpgrade(UpgradeType type)
+    {
+        return _upgradesDeck.PickUpgrade(type);
     }
 
     public Tile? PickTile()

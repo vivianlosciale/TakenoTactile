@@ -11,8 +11,6 @@ public class RainAction: DiceAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {
-        /* TODO add
-        
         player.SendEvent(MessageQuery.WaitingChoseRain);
         table.SendEvent(MessageQuery.WaitingChoseRain);
         
@@ -33,7 +31,5 @@ public class RainAction: DiceAction
         }
         
         else player.SendEvent(MessageQuery.RainPower, "false");
-        
-        */
     }
 }
