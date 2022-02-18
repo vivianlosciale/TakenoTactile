@@ -10,6 +10,7 @@ public class PawnEvent : MonoBehaviour
 
     public void Start()
     {
+        StartCoroutine(example());
         _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         player = _tableClient.GetPlayerFromPosition(position);
         if (player == null)
@@ -19,6 +20,26 @@ public class PawnEvent : MonoBehaviour
         {
             player.SetBoard(gameObject);
         }
+    }
+
+    private IEnumerator example()
+    {
+        yield return new WaitForSeconds(1);
+        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage("sun");
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().addIcon("tiles");
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().addIcon("panda");
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().removeIcon("tiles");
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().addIcon("cards");
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().useAction();
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().useAction();
+        yield return new WaitForSeconds(1);
+        transform.GetChild(6).GetComponent<ListAction>().useAction();// do nothing
     }
 
     public void OnActionBox(string actionName)
