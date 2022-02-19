@@ -74,6 +74,7 @@ public class TableClient : MonoBehaviour
     {
         _sender.Send(MessageQuery.PickCard, cardType);
         _canPickCard = false;
+        StartCoroutine(_currentPlayer.UseAction());
     }
 
     internal bool CanPickCard()
@@ -111,6 +112,7 @@ public class TableClient : MonoBehaviour
         _tilesOnBoard.Add(tile);
         string res = PositionDto.ToString(tileEvent.GetPosition().x, tileEvent.GetPosition().y);
         _sender.Send(MessageQuery.ChosenPosition , res);
+        StartCoroutine(_currentPlayer.UseAction());
     }
 
     internal void SendBambooPlaced(string cardPosition)
@@ -132,6 +134,7 @@ public class TableClient : MonoBehaviour
         if (_currentPlayer.id == player.id && player.CanChoseAction())
         {
             _sender.Send(MessageQuery.ChoseAction, action.ToString());
+            StartCoroutine(_currentPlayer.AddIcon(action.ToString()));
         } else
         {
             //TODO envoie au serveur un message d'erreur
@@ -143,6 +146,7 @@ public class TableClient : MonoBehaviour
         if (_currentPlayer.id == player.id && player.CanChoseAction())
         {
             _sender.Send(MessageQuery.RemoveAction, action.ToString());
+            StartCoroutine(_currentPlayer.RemoveIcon(action.ToString()));
         }
         else
         {
@@ -252,11 +256,17 @@ public class TableClient : MonoBehaviour
                 {
                     //audioSource.PlayOneShot();
                     GameObject.Find(message.GetBody()).GetComponent<ParticleSystem>().Play();
+                    StartCoroutine(_currentPlayer.ShowWeatherImage(message.GetBody()));
                 });
                 break;
             case MessageQuery.CurrentPlayerNumber:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
+                    if (_currentPlayer != null)
+                    {
+                        StartCoroutine(_currentPlayer.RemoveWeatherImage());
+                        StartCoroutine(_currentPlayer.RemoveAllIcon());
+                    }
                     _currentPlayer = players[int.Parse(message.GetBody())];
                 });
                 break;

@@ -45,4 +45,12 @@ public class ListAction : MonoBehaviour
 
         }
     }
+
+    public void removeAllIcon()
+    {
+        for(int i = 0; i < icons.Count; i++)
+        {
+            transform.GetChild(i).GetComponent<ActionMaterial>().removeIcon();
+        }
+    }
 }

@@ -10,7 +10,7 @@ public class PawnEvent : MonoBehaviour
 
     public void Start()
     {
-        StartCoroutine(example());
+        //StartCoroutine(example());
         _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         player = _tableClient.GetPlayerFromPosition(position);
         if (player == null)
@@ -22,10 +22,52 @@ public class PawnEvent : MonoBehaviour
         }
     }
 
+
+    internal IEnumerator ShowWeatherImage(string weather)
+    {
+        yield return null;
+        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage(weather);
+    }
+
+    internal IEnumerator RemoveWeatherImage()
+    {
+        yield return null;
+        transform.GetChild(7).GetComponent<WeatherMaterial>().removeWeatherImage();
+    }
+
+    internal IEnumerator AddIcon(string iconName)
+    {
+        yield return null;
+        transform.GetChild(6).GetComponent<ListAction>().addIcon(iconName);
+    }
+
+    internal IEnumerator RemoveIcon(string iconName)
+    {
+        yield return null;
+        transform.GetChild(6).GetComponent<ListAction>().removeIcon(iconName);
+    }
+
+    internal IEnumerator RemoveAllIcon()
+    {
+        yield return null;
+        transform.GetChild(6).GetComponent<ListAction>().removeAllIcon();
+    }
+
+    internal IEnumerator UseAction()
+    {
+        yield return null;
+        transform.GetChild(6).GetComponent<ListAction>().useAction();
+    }
+
+
     private IEnumerator example()
     {
         yield return new WaitForSeconds(1);
-        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage("sun");
+        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage("Cloud");
+        yield return new WaitForSeconds(2);
+        transform.GetChild(7).GetComponent<WeatherMaterial>().removeWeatherImage();
+        yield return new WaitForSeconds(2);
+        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage("Sun");
         yield return new WaitForSeconds(1);
         transform.GetChild(6).GetComponent<ListAction>().addIcon("tiles");
         yield return new WaitForSeconds(1);
