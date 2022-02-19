@@ -71,7 +71,7 @@ public class MessageManager : MonoBehaviour
         TuioCursor tuioEvent = (TuioCursor)tuioEvents.Find(e => e.Id == id);
         if (tuioEvent == null)
         {
-            tuioEvent = new TuioCursor(id, xCoord, 1.0f-yCoord);
+            tuioEvent = new TuioCursor(id, xCoord, 1.0f - yCoord);
             tuioEvents.Add(tuioEvent);
             StartCoroutine(InstantiateType(tuioEvent));
         }
@@ -129,5 +129,14 @@ public class MessageManager : MonoBehaviour
             res += obj + " ";
         }
         return res;
+    }
+
+    private void Update()
+    {
+        foreach (TuioEntity t in tuioEvents)
+        {
+            Ray ray = Camera.main.ScreenPointToRay(new Vector3(t.position.TUIOPosition.x * Screen.width, t.position.TUIOPosition.y * Screen.height, 0));
+            Debug.DrawRay(Camera.main.transform.position, ray.direction * 100, Color.green);
+        }
     }
 }
