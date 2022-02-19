@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -21,7 +22,8 @@ public class TableClient : MonoBehaviour
     private bool _canPlaceBamboo;
     private List<GameObject> _tilesOnBoard;
     private AudioSource audioSource;
-    public AudioClip audioClip;
+    public AudioClip jingleClip;
+    public List<AudioClip> diceAudioClips;
 
     private Player _currentPlayer;
     private Player[] players;
@@ -236,7 +238,7 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     ChangeScene(GAME_SCENE, HOME_SCENE);
-                    audioSource.PlayOneShot(audioClip);
+                    
                 });
                 break;
             case MessageQuery.WaitingPickTiles:
@@ -257,6 +259,15 @@ public class TableClient : MonoBehaviour
                     //audioSource.PlayOneShot();
                     GameObject.Find(message.GetBody()).GetComponent<ParticleSystem>().Play();
                     StartCoroutine(_currentPlayer.ShowWeatherImage(message.GetBody()));
+                    string diceSoundName = message.GetBody() + "_sound";
+                    foreach(AudioClip audioClip in diceAudioClips)
+                    {
+                        if (audioClip.name.Equals(diceSoundName))
+                        {
+                            audioSource.PlayOneShot(audioClip);
+                            return;
+                        }
+                    }
                 });
                 break;
             case MessageQuery.CurrentPlayerNumber:
