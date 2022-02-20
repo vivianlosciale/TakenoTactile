@@ -1,3 +1,5 @@
+using server.SocketRooms;
+
 namespace server.Game.Board.Cards;
 
 public class FoodVictoryCard : VictoryCard
@@ -9,13 +11,13 @@ public class FoodVictoryCard : VictoryCard
         _condition = condition;
     }
     
-    public override bool IsValid(GameState gameState)
+    public override bool IsValid(GameState gameState, PlayerRoom currentPlayer)
     {
-        return _condition.Match(gameState.GetCurrentPlayerFoodStorage());
+        return _condition.Match(currentPlayer.GetFoodStorage());
     }
 
-    public override void Validate(GameState gameState)
+    public override void Validate(GameState gameState, PlayerRoom currentPlayer)
     {
-        gameState.GetCurrentPlayerFoodStorage().Dispose(_condition);
+        currentPlayer.GetFoodStorage().Dispose(_condition);
     }
 }

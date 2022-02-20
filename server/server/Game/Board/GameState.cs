@@ -2,8 +2,6 @@ using server.Game.Board.Cards;
 using server.Game.Board.Decks;
 using server.Game.Board.Fields;
 using server.Game.Board.Tiles;
-using server.Game.Board.Upgrades;
-using server.SocketRooms;
 using server.Utils.Game;
 
 namespace server.Game.Board;
@@ -15,42 +13,7 @@ public class GameState
     private readonly GrowthCardsDeck _growthCardsDeck = new();
     private readonly UpgradesDeck _upgradesDeck = new();
     private readonly TileDeck _tilesDeck = new();
-    private readonly List<PlayerRoom> _players;
     private readonly Field _field = new();
-    private PlayerRoom? _currentPlayer;
-
-    public GameState(List<PlayerRoom> players)
-    {
-        _players = players;
-    }
-
-    public FoodStorage GetCurrentPlayerFoodStorage()
-    {
-        if (_currentPlayer == null) throw new Exception("No current player was found !");
-        return _currentPlayer.GetFoodStorage(); 
-    }
-
-    public PlayerRoom NextPlayerTurn()
-    {
-        if (_players.Count == 0) throw new Exception("No current player was found !");
-        PlayerRoom oldPlayer = _currentPlayer ?? _players[0];
-        _currentPlayer = _players[(_players.IndexOf(oldPlayer) + 1) % _players.Count];
-        _currentPlayer.SetPlaying(true);
-        oldPlayer.SetPlaying(false);
-        return _currentPlayer;
-    }
-
-    public bool APlayerWon()
-    {
-        foreach (PlayerRoom player in _players)
-        {
-            if (player.FinishedGame())
-            {
-                return true;
-            }
-        }
-        return false;
-    }
 
     public VictoryCard? PickCard(CardTypes type)
     {

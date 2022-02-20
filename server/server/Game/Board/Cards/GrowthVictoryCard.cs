@@ -1,5 +1,6 @@
 using server.Game.Board.Fields;
 using server.Game.Board.Tiles;
+using server.SocketRooms;
 
 namespace server.Game.Board.Cards;
 
@@ -12,7 +13,7 @@ public class GrowthVictoryCard : VictoryCard
         _condition = condition;
     }
 
-    public override bool IsValid(GameState gameState)
+    public override bool IsValid(GameState gameState, PlayerRoom currentPlayer)
     {
         Tile? tile = gameState.GetTile(new Position(0, 0));
         if (tile != null)
@@ -36,7 +37,7 @@ public class GrowthVictoryCard : VictoryCard
         return false;
     }
 
-    public override void Validate(GameState gameState) {}
+    public override void Validate(GameState gameState, PlayerRoom currentPlayer) {}
 }
 
 public class GrowthCondition

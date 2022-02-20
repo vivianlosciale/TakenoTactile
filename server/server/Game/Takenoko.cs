@@ -13,7 +13,7 @@ public class Takenoko
 
     private readonly TableRoom _table;
     private readonly List<PlayerRoom> _players;
-    private readonly GameState _gameState;
+    private readonly GameState _gameState = new();
     private PlayerRoom _currentPlayer;
     private readonly int _neededValidations;
 
@@ -21,7 +21,6 @@ public class Takenoko
     {
         _table = table;
         _players = players;
-        _gameState = new GameState(_players);
         _currentPlayer = new PlayerRoom(this,-1);
         _neededValidations = 5;
     }
@@ -35,10 +34,10 @@ public class Takenoko
         {
             player.SendEvent(MessageQuery.StartGame);
         }
-        while (!_gameState.APlayerWon())
+        while (!APlayerWon())
         {
             PlayATurn();
-            _currentPlayer = _gameState.NextPlayerTurn();
+            SwitchPlayer();
         }
     }
 
@@ -49,6 +48,27 @@ public class Takenoko
         PlayDice();
         PlayPower();
         _currentPlayer.WaitForEndTurn();
+    }
+
+    private void SwitchPlayer()
+    {
+        if (_players.Count == 0) throw new Exception("No players found !");
+        PlayerRoom newCurrent = _players[(_players.IndexOf(_currentPlayer) + 1) % _players.Count];
+        newCurrent.SetPlaying(true);
+        _currentPlayer.SetPlaying(false);
+        _currentPlayer = newCurrent;
+    }
+
+    private bool APlayerWon()
+    {
+        foreach (PlayerRoom player in _players)
+        {
+            if (player.FinishedGame())
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     private void PlayDice()
@@ -71,8 +91,8 @@ public class Takenoko
 
     public bool ValidateCard(VictoryCard card)
     {
-        bool result = card.IsValid(_gameState);
-        if (result) card.Validate(_gameState);
+        bool result = card.IsValid(_gameState, _currentPlayer);
+        if (result) card.Validate(_gameState, _currentPlayer);
         return result;
     }
 

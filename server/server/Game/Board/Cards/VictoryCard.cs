@@ -1,3 +1,5 @@
+using server.SocketRooms;
+
 namespace server.Game.Board.Cards;
 
 public abstract class VictoryCard
@@ -11,8 +13,8 @@ public abstract class VictoryCard
         _value = value;
     }
 
-    public abstract bool IsValid(GameState gameState);
-    public abstract void Validate(GameState gameState);
+    public abstract bool IsValid(GameState gameState, PlayerRoom currentPlayer);
+    public abstract void Validate(GameState gameState, PlayerRoom currentPlayer);
 
     public string GetName()
     {
