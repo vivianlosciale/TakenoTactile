@@ -1,5 +1,4 @@
-﻿ using System;
- using UnityEngine;
+﻿ using UnityEngine;
 
  public class CardSlidingAnimation : MonoBehaviour
  {
@@ -8,19 +7,20 @@
      private bool moveToTable = false;
      private bool returnToPosition = false;
      private Vector3 initialPosition = default;
-
+     private bool _wasSelected = false;
      private Vector3 _centerPosition;
 
      private void Start()
      {
-         initialPosition = transform.position;
-         _centerPosition = new Vector3(0, initialPosition.y, 0);
+         Debug.Log("CARD " + gameObject.name + " POSITION " + transform.localPosition);
+         initialPosition = transform.localPosition;
+         _centerPosition = new Vector3(0, 0, -0.6f);
      }
 
      public void SetCardPosition(Vector3 v)
      {
          initialPosition = v;
-         _centerPosition = new Vector3(0, initialPosition.y, 0);
+         transform.localPosition = v;
      }
 
      private void Update()
@@ -39,32 +39,31 @@
          }
      }
 
-     public void AnimateToCenter()
-     {
-         moveToCenter = true;
-     }
-
      public void AnimateToTable()
      {
+         Debug.Log("SENDING CARD TO TABLE");
          moveToTable = true;
      }
 
      public void AnimateBack()
      {
+         Debug.Log("SENDING CARD TO ORIGINAL POSITION");
          returnToPosition = true;
+         _wasSelected = false;
      }
 
      private void MoveToCenter()
      {
          if (transform.position == _centerPosition)
          {
+             Debug.Log("IS IN CENTER");
              moveToCenter = false;
-             //GetComponentInParent<HandManagement>().DisplaySingleCardUI(gameObject.name);
          }
          else
          {
+             Debug.Log("MOVING TOWARDS CENTER");
              var _step = 4 * Time.deltaTime;
-             transform.position = Vector3.MoveTowards(transform.position, _centerPosition, _step);
+             transform.localPosition = Vector3.MoveTowards(transform.localPosition, _centerPosition, _step);
          }
      }
 
@@ -81,15 +80,33 @@
 
      private void ReturnToInitialPosition()
      {
-         if (transform.position == initialPosition)
+         Debug.Log("IS BACK TO INITIAL POSITION");
+         returnToPosition = false;
+         _wasSelected = false;
+         moveToCenter = false;
+         var _step = 4 * Time.deltaTime;
+         transform.localPosition = Vector3.MoveTowards(transform.localPosition, initialPosition, _step);
+         GetComponentInParent<HandManagement>().UpdateCardsPosition();
+         /*if (transform.position == initialPosition)
          {
+             Debug.Log("IS BACK TO INITIAL POSITION");
              returnToPosition = false;
              GetComponentInParent<HandManagement>().UpdateCardsPosition();
          }
          else
          {
              var _step = 4 * Time.deltaTime;
-             transform.position = Vector3.MoveTowards(transform.position, initialPosition, _step);
-         }
+             transform.localPosition = Vector3.MoveTowards(transform.localPosition, initialPosition, _step);
+             Debug.Log("LOCALPOSITION : " + transform.localPosition + " and initial : " + initialPosition);
+             Debug.Log("POSITION : " + transform.position + " and initial : " + initialPosition);
+         }*/
+     }
+
+     private void OnMouseUpAsButton()
+     {
+         if (_wasSelected) return;
+         GetComponentInParent<HandManagement>().SetSelectedCard(gameObject);
+         moveToCenter = true;
+         _wasSelected = true;
      }
  }

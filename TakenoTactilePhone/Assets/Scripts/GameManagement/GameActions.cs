@@ -34,10 +34,13 @@ public class GameActions : MonoBehaviour
 
     void Start()
     {
-        _mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
-        _mobileClient.SetGameActions(this);
-        playerName.text = _mobileClient.GetPlayerName();
+        //_mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
+        //_mobileClient.SetGameActions(this);
+        //playerName.text = _mobileClient.GetPlayerName();
         _popUpSystem = GameObject.FindWithTag(TagManager.PopUpManager.ToString()).GetComponent<PopUpSystem>();
+        AddCardToHand("card_bamboo_1gf");
+        AddCardToHand("card_land_3gw3");
+        AddCardToHand("card_panda_3");
     }
 
     void Update()
@@ -99,9 +102,9 @@ public class GameActions : MonoBehaviour
 
     public void DisplayTilesToChoose(string tileNames)
     {
+        Debug.Log("Displaying tiles to choose");
         soundManager.PlayOneShot(displayTilesSound);
         Handheld.Vibrate();
-        tileSelector.GetComponent<TileSelector>().ChangeNeeded();
         hand.GetComponent<HandManagement>().HideHand();
         hand.SetActive(false);
         ARCanvas.SetActive(false);
@@ -115,8 +118,7 @@ public class GameActions : MonoBehaviour
 
     public void TilePlaced()
     {
-        TileSelector selector = tileSelector.GetComponent<TileSelector>();
-        selector.SlideTile();
+        tileSelector.GetComponent<TileSelector>().SlideTile();
         hand.SetActive(true);
         ARCanvas.SetActive(true);
     }
@@ -173,6 +175,7 @@ public class GameActions : MonoBehaviour
         var materials = newObject.GetComponent<MeshRenderer>().materials;
         materials[1] = newMat;
         newObject.GetComponent<MeshRenderer>().materials = materials;
+        newObject.AddComponent<BoxCollider>();
         if (type.Equals("Tiles"))
         {
             newObject.AddComponent<TileSlidingAnimation>();

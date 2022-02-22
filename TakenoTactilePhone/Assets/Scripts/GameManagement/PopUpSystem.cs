@@ -14,8 +14,8 @@ public class PopUpSystem : MonoBehaviour
     
     void Start()
     {
-        _mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
-        _mobileClient.SetPopUpSystem(this);
+        //_mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
+        //_mobileClient.SetPopUpSystem(this);
         _gameActions = GameObject.FindWithTag(TagManager.GameManager.ToString()).GetComponent<GameActions>();
     }
     
