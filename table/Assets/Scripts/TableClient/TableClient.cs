@@ -20,6 +20,9 @@ public class TableClient : MonoBehaviour
     private bool _canPickTile;
     private bool _canPickCard;
     private bool _canPlaceBamboo;
+
+    private DiceFaces _actualDice;
+
     private AudioSource audioSource;
     public AudioClip jingleClip;
     public List<AudioClip> diceAudioClips;
@@ -51,6 +54,7 @@ public class TableClient : MonoBehaviour
         _canPickTile = false;
         _canPickCard = false;
         audioSource = gameObject.GetComponent<AudioSource>();
+        _actualDice = DiceFaces.None;
     }
 
     /*
@@ -80,6 +84,14 @@ public class TableClient : MonoBehaviour
     internal bool CanPickCard()
     {
         return _canPickCard;
+    }
+
+    /*
+     *  Dice section
+     */
+    internal DiceFaces GetActualDice()
+    {
+        return _actualDice;
     }
 
     /*
@@ -124,8 +136,9 @@ public class TableClient : MonoBehaviour
      */
     internal void SendChoseActionToServer(Actions action, Player player)
     {
-        if (_currentPlayer.id == player.id && player.CanChoseAction())
+        if (_currentPlayer.id == player.id && player.CanChoseAction(_actualDice, action))
         {
+            player.ChoseAction(action);
             _sender.Send(MessageQuery.ChoseAction, action.ToString());
             StartCoroutine(_currentPlayer.AddIcon(action.ToString()));
         } else
@@ -136,8 +149,9 @@ public class TableClient : MonoBehaviour
 
     internal void SendRemoveActionToServer(Actions action, Player player)
     {
-        if (_currentPlayer.id == player.id && player.CanChoseAction())
+        if (_currentPlayer.id == player.id && player.CanRemoveAction())
         {
+            player.RemoveAction(action);
             _sender.Send(MessageQuery.RemoveAction, action.ToString());
             StartCoroutine(_currentPlayer.RemoveIcon(action.ToString()));
         }
@@ -229,7 +243,7 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     ChangeScene(GAME_SCENE, HOME_SCENE);
-                    
+                    audioSource.PlayOneShot(jingleClip);
                 });
                 break;
             case MessageQuery.WaitingPickTiles:
@@ -247,7 +261,7 @@ public class TableClient : MonoBehaviour
             case MessageQuery.RollDice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    //audioSource.PlayOneShot();
+                    _actualDice = DiceFacesMethods.ToDiceFace(message.GetBody());
                     GameObject.Find(message.GetBody()).GetComponent<ParticleSystem>().Play();
                     StartCoroutine(_currentPlayer.ShowWeatherImage(message.GetBody()));
                     string diceSoundName = message.GetBody() + "_sound";

@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PawnEvent : MonoBehaviour
@@ -7,6 +8,7 @@ public class PawnEvent : MonoBehaviour
     private TableClient _tableClient;
     public Player player;
     public int position;
+    private List<Actions> _actions;
 
     public void Start()
     {
@@ -20,6 +22,7 @@ public class PawnEvent : MonoBehaviour
         {
             player.SetBoard(gameObject);
         }
+        _actions = new List<Actions>();
     }
 
 
@@ -64,13 +67,19 @@ public class PawnEvent : MonoBehaviour
         Debug.Log("Action : " + ActionsMethods.ToActions(actionName));
         Actions action = ActionsMethods.ToActions(actionName);
         _tableClient.SendChoseActionToServer(action, player);
+        _actions.Add(action);
     }
 
     public void LeaveActionBox(string actionName)
     {
+        int numberOfActions = _tableClient.GetActualDice().Equals(DiceFaces.Sun) ? 3 : 2;
         Debug.Log("Action : " + ActionsMethods.ToActions(actionName));
         Actions action = ActionsMethods.ToActions(actionName);
-        _tableClient.SendRemoveActionToServer(action, player);
+        _actions.Remove(action);
+        if ((_actions.Count <= numberOfActions && !_actions.Contains(action)) || (_actions.Count < numberOfActions && _tableClient.GetActualDice().Equals(DiceFaces.Wind)))
+        {
+            _tableClient.SendRemoveActionToServer(action, player);
+        }
     }
 
     public void AddCardToBoard(string cardName)
