@@ -186,29 +186,23 @@ public class TableClient : MonoBehaviour
         gameObject.GetComponent<MoveObject>().MoveToAnotherScene(sceneToLoad, sceneToUnload);
     }
 
+
     /*
-     * Connect to the server websocket.
+     * Open a private websocket to communicate with the server.
      * Send the private websocket address to the server.
      */
-    private void RequestConnection(string serverAddress)
+    public void Connect(QRCreator qrcreator)
     {
-        _loginServerSocket = new WebSocket(serverAddress);
+        _loginServerSocket = new WebSocket(adresseInput.text);
         _loginServerSocket.Connect();
         _loginServerSocket.OnMessage += OnMessage;
 
         _sender = new MessageSender(_loginServerSocket);
-        _sender.Send(MessageQuery.TableConnection, _privateAddress);
-    }
-
-    /*
-     * Deactivate the camera gameObject.
-     * Open a private websocket to communicate with the server.
-     * Send the private websocket address to the server.
-     */
-    public void Connect()
-    {
-        Debug.Log(adresseInput.text);
-        RequestConnection(adresseInput.text);
+        Exception exception = _sender.Send(MessageQuery.TableConnection, _privateAddress);
+        if (exception == null)
+        {
+            qrcreator.DisplayQR();
+        }
     }
 
     /*

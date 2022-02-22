@@ -14,29 +14,29 @@ public class MessageSender
         _room = room;
     }
 
-    public void Send(MessageQuery query)
+    public Exception Send(MessageQuery query)
     {
-        Send(QueryMethods.ToString(query));
+        return Send(QueryMethods.ToString(query));
     }
 
-    public void Send(MessageQuery query, string message)
+    public Exception Send(MessageQuery query, string message)
     {
-        Send(QueryMethods.ToString(query) + Separator + message);
+        return Send(QueryMethods.ToString(query) + Separator + message);
     }
 
-    public void Send(MessageQuery query, string dest, string message)
+    public Exception Send(MessageQuery query, string dest, string message)
     {
-        Send(QueryMethods.ToString(query) + Separator + dest + Separator + message);
+        return Send(QueryMethods.ToString(query) + Separator + dest + Separator + message);
     }
 
-    public void Send(string message)
+    public Exception Send(string message)
     {
         for (int tries = 0; tries < 5;)
         {
             try
             {
                 _room.Send(message);
-                return;
+                return null;
             }
             catch (Exception)
             {
@@ -45,5 +45,6 @@ public class MessageSender
             }
         }
         Debug.LogError("Message sent failed!");
+        return new Exception();
     }
 }
