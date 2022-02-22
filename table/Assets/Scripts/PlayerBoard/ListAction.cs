@@ -5,30 +5,30 @@ using UnityEngine;
 public class ListAction : MonoBehaviour
 {
     List<string> icons = new List<string>();
-    public void addIcon(string icon)
+    public void AddIcon(string icon)
     {
         icons.Add(icon);
-        updateCollection();
+        UpdateCollection();
     }
 
-    public void removeIcon(string icon)
+    public void RemoveIcon(string icon)
     {
         icons.Remove(icon);
-        updateCollection();
+        UpdateCollection();
     }
 
-    private void updateCollection()
+    private void UpdateCollection()
     {
 
         int max = 2;
 
         for (int i = 0; i < max; i++)
         {
-            transform.GetChild(i).GetComponent<ActionMaterial>().removeIcon();
+            transform.GetChild(i).GetComponent<ActionMaterial>().RemoveIcon();
         }
         for (int i = 0; i < icons.Count; i++)
         {
-            transform.GetChild(i).GetComponent<ActionMaterial>().addIcon(icons[i]);
+            transform.GetChild(i).GetComponent<ActionMaterial>().AddIcon(icons[i]);
         }
     }
 
@@ -50,7 +50,7 @@ public class ListAction : MonoBehaviour
     {
         for(int i = 0; i < icons.Count; i++)
         {
-            transform.GetChild(i).GetComponent<ActionMaterial>().removeIcon();
+            transform.GetChild(i).GetComponent<ActionMaterial>().RemoveIcon();
         }
     }
 }

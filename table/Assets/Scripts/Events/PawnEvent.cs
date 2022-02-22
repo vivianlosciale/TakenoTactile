@@ -38,13 +38,13 @@ public class PawnEvent : MonoBehaviour
     internal IEnumerator AddIcon(string iconName)
     {
         yield return null;
-        transform.GetChild(6).GetComponent<ListAction>().addIcon(iconName);
+        transform.GetChild(6).GetComponent<ListAction>().AddIcon(iconName);
     }
 
     internal IEnumerator RemoveIcon(string iconName)
     {
         yield return null;
-        transform.GetChild(6).GetComponent<ListAction>().removeIcon(iconName);
+        transform.GetChild(6).GetComponent<ListAction>().RemoveIcon(iconName);
     }
 
     internal IEnumerator RemoveAllIcon()
@@ -57,31 +57,6 @@ public class PawnEvent : MonoBehaviour
     {
         yield return null;
         transform.GetChild(6).GetComponent<ListAction>().useAction();
-    }
-
-
-    private IEnumerator example()
-    {
-        yield return new WaitForSeconds(1);
-        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage("Cloud");
-        yield return new WaitForSeconds(2);
-        transform.GetChild(7).GetComponent<WeatherMaterial>().removeWeatherImage();
-        yield return new WaitForSeconds(2);
-        transform.GetChild(7).GetComponent<WeatherMaterial>().showWeatherImage("Sun");
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().addIcon("tiles");
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().addIcon("panda");
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().removeIcon("tiles");
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().addIcon("cards");
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().useAction();
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().useAction();
-        yield return new WaitForSeconds(1);
-        transform.GetChild(6).GetComponent<ListAction>().useAction();// do nothing
     }
 
     public void OnActionBox(string actionName)
