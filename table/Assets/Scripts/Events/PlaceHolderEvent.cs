@@ -13,20 +13,19 @@ public class PlaceHolderEvent : MonoBehaviour
 
     public void PlaceTileToBoard()
     {
-        transform.parent.GetComponent<PlaceHolderBoard>().DeactivateAllSlot();
-        GameObject tile = Instantiate(Resources.Load<GameObject>("Prefabs/Tiles"), GameObject.Find("TileBoard").transform);
+        GetComponentInParent<PlaceHolderBoard>().DeactivateAllSlot();
+        PlaceHolder p = GetComponentInParent<PlaceHolderBoard>().placeHolderPositions.Find(e => e.GameObject == gameObject);
+        Tile tile = new Tile(p.position, GameObject.Find("TileBoard").transform);
+        GameObject gameObjectTile = tile.GameObject;
         Material newMat = new Material(Resources.Load<Material>("Models/Material/tiles_face"));
         Texture2D text = Resources.Load<Texture2D>("Tiles/" + texture);
         newMat.mainTexture = text;
-        var materials = tile.GetComponent<MeshRenderer>().materials;
+        Material[] materials = gameObjectTile.GetComponent<MeshRenderer>().materials;
         materials[1] = newMat;
-        tile.GetComponent<MeshRenderer>().materials = materials;
-        tile.transform.position = transform.position + new Vector3(0, 11, 0);
-        tile.AddComponent<BoardTileMovement>().SetPosition(transform.position);
-        PlaceHolder p = transform.parent.GetComponent<PlaceHolderBoard>().placeHolderPositions.Find(e => e.GameObject == gameObject);
-        TileEvent tileEvent = tile.GetComponent<TileEvent>();
-        tileEvent.SetPlaceHolder(p);
-        p.used = true;
+        gameObjectTile.GetComponent<MeshRenderer>().materials = materials;
+        gameObjectTile.transform.position = transform.position + new Vector3(0, 11, 0);
+        gameObjectTile.AddComponent<BoardTileMovement>().SetPosition(transform.position);
+        GameObject.Find("TileBoard").GetComponent<TileBoard>().tilesPositions.Add(tile);
         _tableClient.SendTilePosition(tile);
     }
 }

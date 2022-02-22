@@ -6,7 +6,6 @@ public class TileEvent : MonoBehaviour
 {
     private TableClient _tableClient;
     private int _numberOfBamboos;
-    private PlaceHolder placeHolder;
 
     void Start()
     {
@@ -19,23 +18,8 @@ public class TileEvent : MonoBehaviour
         if (_tableClient.CanPlaceBamboo() && _numberOfBamboos < 4)
         {
             _numberOfBamboos++;
-            _tableClient.SendBambooPlaced(PositionDto.ToString(placeHolder.position.x, placeHolder.position.y));
+            //_tableClient.SendBambooPlaced(PositionDto.ToString(placeHolder.position.x, placeHolder.position.y));
         }
-    }
-
-    public void SetPlaceHolder(PlaceHolder placeHolder)
-    {
-        this.placeHolder = placeHolder;
-    }
-
-    public Vector2Int GetPosition()
-    {
-        return placeHolder.position;
-    }
-
-    public void ChangeActive(bool used)
-    {
-        placeHolder.GameObject.SetActive(used);
     }
 
     public bool CanPlaceBamboo()

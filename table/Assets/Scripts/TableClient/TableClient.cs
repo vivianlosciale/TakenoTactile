@@ -20,7 +20,6 @@ public class TableClient : MonoBehaviour
     private bool _canPickTile;
     private bool _canPickCard;
     private bool _canPlaceBamboo;
-    private List<GameObject> _tilesOnBoard;
     private AudioSource audioSource;
     public AudioClip jingleClip;
     public List<AudioClip> diceAudioClips;
@@ -51,7 +50,6 @@ public class TableClient : MonoBehaviour
         players = new Player[4];
         _canPickTile = false;
         _canPickCard = false;
-        _tilesOnBoard = new List<GameObject>();
         audioSource = gameObject.GetComponent<AudioSource>();
     }
 
@@ -108,11 +106,9 @@ public class TableClient : MonoBehaviour
         _placeHolderBoard = placeHolderBoard;
     }
 
-    internal void SendTilePosition(GameObject tile)
+    internal void SendTilePosition(Tile tile)
     {
-        TileEvent tileEvent = tile.GetComponent<TileEvent>();
-        _tilesOnBoard.Add(tile);
-        string res = PositionDto.ToString(tileEvent.GetPosition().x, tileEvent.GetPosition().y);
+        string res = PositionDto.ToString(tile.position.x, tile.position.y);
         _sender.Send(MessageQuery.ChosenPosition , res);
         StartCoroutine(_currentPlayer.UseAction());
     }
@@ -121,11 +117,6 @@ public class TableClient : MonoBehaviour
     {
         _sender.Send(MessageQuery.ChosenPosition, cardPosition);
         _canPlaceBamboo = false;
-        foreach (GameObject tile in _tilesOnBoard)
-        {
-            TileEvent tileEvent = tile.GetComponent<TileEvent>();
-            tileEvent.ChangeActive(false);
-        }
     }
 
     /*
@@ -308,31 +299,14 @@ public class TableClient : MonoBehaviour
             case MessageQuery.WaitingChoseRain:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    if (_tilesOnBoard.Count == 0) 
-                    {
-                        SendBambooPlaced(PositionDto.ToString(0, 0));
-                        return;
-                    }
                     Debug.Log("JE NE SUIS PAS SENSE ETRE LA");
                     List<TileEvent> tilesEventAvailable = new List<TileEvent>();
-                    foreach(GameObject tile in _tilesOnBoard)
-                    {
-                        TileEvent tileEvent = tile.GetComponent<TileEvent>();
-                        if (tileEvent.CanPlaceBamboo())
-                        {
-                            tilesEventAvailable.Add(tileEvent);
-                        }
-                    }
                     if (tilesEventAvailable.Count == 0)
                     {
                         SendBambooPlaced(PositionDto.ToString(0, 0));
                         return;
                     }
                     _canPlaceBamboo = true;
-                    foreach(TileEvent tileEvent in tilesEventAvailable)
-                    {
-                        tileEvent.ChangeActive(true);
-                    }
                 });
                 break;
             default:
