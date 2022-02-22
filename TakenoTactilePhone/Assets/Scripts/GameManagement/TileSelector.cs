@@ -4,35 +4,32 @@ using UnityEngine;
 
 public class TileSelector : MonoBehaviour
 {
-        private bool _needed;
+       // private bool _needed;
         public AudioSource soundManager;
         public AudioClip TouchingAudioClip;
         public AudioClip SlidingAudioClip;
         private GameObject savedChild;
-        private bool _selectedTile = false;
+        //private bool _selectedTile;
 
-        public void Start()
-        {
-            _needed = false;
-        }
-
-        public bool isNeeded()
+        /*public bool isNeeded()
         {
             return _needed;
-        }
+        }*/
         
-        public void ChangeNeeded()
+        /*public void ChangeNeeded()
         {
-        _needed = !_needed;
-        }
- 
-        public void Update()
+            Debug.Log("CHANGE WAS ASKED FOR TILE SELECTOR");
+            _needed = !_needed;
+            Debug.Log("FOR TILE SELECTOR NEW VALUE FOR IS NEEDED : " + _needed);
+        }*/
+
+        /*public void Update()
         {
             if (!_needed) return;
             DetectTileSelection();
-        }
+        }*/
 
-        private void DetectTileSelection()
+        /*private void DetectTileSelection()
         {
             Vector3 v = default(Vector3);
             if (Input.touchCount > 0)
@@ -50,10 +47,9 @@ public class TileSelector : MonoBehaviour
             if (!Physics.Raycast(ray, out hit)) return;
             if (_selectedTile) return;
             SelectTile(hit.transform.name);
-            
-        }
+        }*/
 
-        private void SelectTile(String tileName)
+        /*private void SelectTile(string tileName)
         {
                 List<GameObject> childrenTiles = new List<GameObject>();
                 var childrenNumber = transform.childCount;
@@ -61,37 +57,47 @@ public class TileSelector : MonoBehaviour
                 {
                         childrenTiles.Add(transform.GetChild(i).gameObject);
                 }
-
                 _selectedTile = false;
                 foreach (var child in childrenTiles)
                 {
-                        if (tileName == child.name && !_selectedTile)
+                        if (tileName == child.name)
                         {
-                            savedChild = child;
-                            soundManager.PlayOneShot(TouchingAudioClip);
-                            child.transform.localPosition = new Vector3(0, 0, 0);  
-                            Debug.Log("TILE SELECTED : " + tileName);
-                            _selectedTile = true; 
-                            SendResult(tileName);
+                            if (!_selectedTile)
+                            {
+                                savedChild = child;
+                                soundManager.PlayOneShot(TouchingAudioClip);
+                                child.transform.localPosition = new Vector3(0, 0, 0);  
+                                Debug.Log("TILE SELECTED : " + tileName);
+                                _selectedTile = true; 
+                                SendResult(tileName);
+                            }
+                            else
+                            {
+                                child.SetActive(false); 
+                            }
                         }
                         else
                         {
                             child.SetActive(false); 
                         }
                 }
-        }
+        }*/
 
-        private void SendResult(string tileName)
+        private void SendResult()
         {
                 GameObject.FindWithTag(TagManager.MobileClient.ToString())
-                        .GetComponent<MobileClient>().SendChosenTile(tileName);
+                        .GetComponent<MobileClient>().SendChosenTile(savedChild.name);
         }
         
         public void PlaceTiles()
         {
-                PlaceTile(-2,transform.GetChild(0).gameObject);
-                PlaceTile(0,transform.GetChild(1).gameObject);
-                PlaceTile(2,transform.GetChild(2).gameObject);
+            var coordinates = new [] { -2, 0, 2 };
+            var tilesNb = transform.childCount;
+            var minTiles = Math.Min(tilesNb, 3); //on peut avoir au maximum 3 tuiles affichées
+            for (var i = 0; i < minTiles; i++)
+            {
+                PlaceTile(coordinates[i], transform.GetChild(i).gameObject);
+            }
         }
         
         private void PlaceTile(int x, GameObject tile)
@@ -107,6 +113,28 @@ public class TileSelector : MonoBehaviour
             }
         }
 
+        public void SetChosenTile(GameObject chosenTile)
+        {
+            Debug.Log("CHOSEN TILE IS : " + chosenTile.name);
+            soundManager.PlayOneShot(TouchingAudioClip);
+            savedChild = chosenTile;
+            HideOtherTiles();
+            SendResult();
+        }
+
+        private void HideOtherTiles()
+        {
+            var childrenNumber = transform.childCount;
+            for (var i = 0; i < childrenNumber; i++)
+            {
+                var child = transform.GetChild(i);
+                if (savedChild.name != child.name)
+                {
+                    child.gameObject.SetActive(false);
+                }
+            }
+        }
+        
         public void SlideTile()
         {
             soundManager.PlayOneShot(SlidingAudioClip);

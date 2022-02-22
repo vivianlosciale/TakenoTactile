@@ -36,7 +36,7 @@ public class MobileClient : MonoBehaviour
     /*
      * Switch to the game scene
      */
-    public void StartGame()
+    private void StartGame()
     {
         var move = gameObject.GetComponent<MoveObject>();
         move.MoveToAnotherScene();
@@ -119,18 +119,36 @@ public class MobileClient : MonoBehaviour
         Debug.Log("--------- RECEIVED : " + parser.GetFullMessage());
         switch(parser.GetQuery())
         {
+
+            //METEO ACTIONS
             case MessageQuery.WaitingDiceResult:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.StartTurn();
                 });
                 break;
+            case MessageQuery.WaitingChoseRain:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("The weather is rainy. Bamboos will grow on the tile of your choice.");
+                });
+                break;
+
+            //CHOSEN ACTIONS ON THE TABLE
             case MessageQuery.ValidateChoice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.ValidateChoice(bool.Parse(parser.GetMessageBody()));
                 });
                 break;
+            case MessageQuery.WaitingChoseAction :
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("You must now choose your actions on the table.");
+                });
+                break;
+           
+            //CARD INTERACTIONS
             case MessageQuery.WaitingPickCard:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
@@ -144,6 +162,21 @@ public class MobileClient : MonoBehaviour
                     _gameActions.AddCardToHand(parser.GetMessageBody());
                 });
                 break;
+            case MessageQuery.InvalidObjective:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.InvalidObjective();
+                });
+                break;
+            case MessageQuery.ValidateObjective:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Your card was validated.");
+                    _gameActions.ValidateObjective(parser.GetMessageBody());
+                });
+                break;
+            
+            //TILE INTERACTIONS
             case MessageQuery.WaitingPickTiles:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
@@ -163,29 +196,12 @@ public class MobileClient : MonoBehaviour
                     _gameActions.TilePlaced();
                 });
                 break;
-            case MessageQuery.WaitingChoseAction :
-                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
-                {
-                    _popUpSystem.PopUp("You must now choose your actions on the table.");
-                });
-                break;
+            
+
             case MessageQuery.WaitingEndTurn:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.WaitingEndTurn();
-                });
-                break;
-            case MessageQuery.InvalidObjective:
-                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
-                {
-                    _gameActions.InvalidObjective();
-                });
-                break;
-            case MessageQuery.ValidateObjective:
-                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
-                {
-                    _popUpSystem.PopUp("Your card was validated.");
-                    _gameActions.ValidateObjective(parser.GetMessageBody());
                 });
                 break;
         }
