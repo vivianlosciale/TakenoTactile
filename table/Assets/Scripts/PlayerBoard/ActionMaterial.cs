@@ -48,12 +48,12 @@ public class ActionMaterial : MonoBehaviour
         _meshRenderer.material.SetTexture("_EmissionMap", _image);
     }
 
-    public void addIcon(string image)
+    public void AddIcon(string image)
     {
         _image = Resources.Load<Texture2D>("Images/board/board_" + image);
         gameObject.SetActive(true);
     }
-    public void removeIcon()
+    public void RemoveIcon()
     {
         gameObject.SetActive(false);
     }
