@@ -7,13 +7,13 @@ public class TileEvent : MonoBehaviour
     private TableClient _tableClient;
     private int _numberOfBamboos;
     private Tile _tile;
-    private List<string> objectsValues;
+    private List<string> _objectsValues;
 
     void Start()
     {
         _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         _numberOfBamboos = 0;
-        objectsValues = new List<string>();
+        _objectsValues = new List<string>();
     }
 
     public void SetTile(Tile tile)
@@ -21,12 +21,45 @@ public class TileEvent : MonoBehaviour
         _tile = tile;
     }
 
-    public void OnBambooPlaced()
+    public void OnBambooPlaced(string tuioValue)
     {
-        if (_tableClient.CanPlaceBamboo() && _numberOfBamboos < 4)
+        Debug.Log("Coucou je suis ici");
+        if (!_objectsValues.Contains(tuioValue))
         {
-            _numberOfBamboos++;
-            _tableClient.SendBambooPlaced(PositionDto.ToString(_tile.position.x, _tile.position.y));
+            Debug.Log("I'm here");
+            if (_tableClient.CanPlaceBambooFromRainPower() && _numberOfBamboos < 4)
+            {
+                _objectsValues.Add(tuioValue);
+                _numberOfBamboos++;
+                _tableClient.SendBambooPlaced(MessageQuery.WaitingChoseRain, PositionDto.ToString(_tile.position.x, _tile.position.y));
+            }
+            if (_tableClient.CanPlaceBambooFromFarmer() && _numberOfBamboos < 4)
+            {
+                Debug.Log("Je peux bouger le fermier");
+                if (_tableClient.IsGardener(tuioValue))
+                {
+                    Debug.Log("Je suis le fermier");
+                    _tableClient.SetGardenerPosition(_tile.position);
+                } else
+                {
+                    _objectsValues.Add(tuioValue);
+                    _numberOfBamboos++;
+                    _tableClient.SendBambooPlaced(MessageQuery.WaitingMoveFarmer, PositionDto.ToString(_tile.position.x, _tile.position.y));
+                }
+            }
+        }
+    }
+
+    public void OnBambooEated(string tuioValue)
+    {
+        if (_objectsValues.Contains(tuioValue))
+        {
+            if (_tableClient.CanEatBamboo())
+            {
+                _objectsValues.Remove(tuioValue);
+                _numberOfBamboos--;
+                //_tableClient.SendBambooEated(PositionDto.ToString(_tile.position.x, _tile.position.y));
+            }
         }
     }
 

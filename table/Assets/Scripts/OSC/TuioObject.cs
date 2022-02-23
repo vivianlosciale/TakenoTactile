@@ -9,6 +9,11 @@ public class TuioObject : TuioEntity
         this.value = value;
     }
 
+    public string GetValue()
+    {
+        return value;
+    }
+
     public bool IsOnTable()
     {
         return state != TuioState.CLICK_UP;

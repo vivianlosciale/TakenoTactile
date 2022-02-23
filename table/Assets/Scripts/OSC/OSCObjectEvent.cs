@@ -7,24 +7,24 @@ class OSCObjectEvent : OSCEvent
     public override void RunFunction(TuioEntity tuio)
     {
 
-        if (tuio is TuioObject)
+        if (tuio is TuioObject t)
         {
-            if (tuio.IsDrag())
+            if (t.IsDrag())
             {
                 OnDrag.Invoke();
             }
-            if (tuio.State == TuioState.CLICK_DOWN)
+            if (t.State == TuioState.CLICK_DOWN)
             {
                 OnClickDown.Invoke();
             }
-            if (tuio.State == TuioState.CLICK_UP)
+            if (t.State == TuioState.CLICK_UP)
             {
                 OnClickUp.Invoke();
             }
-            if (!detections.Contains(tuio))
+            if (!detections.Contains(t))
             {
-                OnCollisionEnter.Invoke();
-                detections.Add(tuio);
+                OnCollisionEnter.Invoke(t.GetValue());
+                detections.Add(t);
             }
         }
     }
