@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Reserv : MonoBehaviour
 {
@@ -22,7 +23,10 @@ public class Reserv : MonoBehaviour
     public GameObject UI;
     public GameObject helpButton;
     private bool ARActive;
-
+    private string InARScreen = "Retour";
+    private string InGameScreen = "Ma réserve";
+    public Text ARButtonText;
+    
     private float offset = 0.035f;
 
     public GameObject imageTarget;
@@ -93,6 +97,14 @@ public class Reserv : MonoBehaviour
 
     private void handleUI()
     {
+        if (ARActive)
+        {
+            ARButtonText.text = InARScreen;
+        }
+        else
+        {
+            ARButtonText.text = InGameScreen;
+        }
         ARCamera.SetActive(ARActive);
         if (hand.activeSelf)
         {
