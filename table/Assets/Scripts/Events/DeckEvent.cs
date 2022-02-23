@@ -17,8 +17,9 @@ public class DeckEvent : MonoBehaviour
         Debug.Log("Can : " + _tableClient.CanPickTile());
         if (_tableClient.CanPickTile())
         {
-            Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
-            GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
+            int playerID = _tableClient.GetCurrentPlayer().id;
+            Debug.Log("Player : " + playerID);
+            GameObject board = _tableClient.GetCurrentPlayer().GetBoard();
             Transform pointPosition = board.transform.GetChild(0).transform;
             StartCoroutine(TranslateTile(pointPosition));
             _tableClient.PickTile();
@@ -30,8 +31,9 @@ public class DeckEvent : MonoBehaviour
         Debug.Log("Can : " + _tableClient.CanPickCard());
         if (_tableClient.CanPickCard())
         {
-            Debug.Log("Player : " + _tableClient.GetCurrentPlayer().id);
-            GameObject board = _tableClient.GetCurrentPlayer().GetBoard(); //GameObject.Find("BoardP" + _tableClient.GetCurrentPlayer().id);
+            int playerID = _tableClient.GetCurrentPlayer().id;
+            Debug.Log("Player : " + playerID);
+            GameObject board = _tableClient.GetCurrentPlayer().GetBoard();
             Transform pointPosition = board.transform.GetChild(0).transform;
             Material mat = Resources.Load<Material>("Models/Material/card_back_" + cardType);
             TranslateCard(pointPosition, mat);

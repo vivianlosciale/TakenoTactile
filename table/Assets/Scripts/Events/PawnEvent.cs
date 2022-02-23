@@ -54,6 +54,7 @@ public class PawnEvent : MonoBehaviour
     {
         yield return null;
         transform.GetChild(6).GetComponent<ListAction>().removeAllIcon();
+        _actions = new List<Actions>();
     }
 
     internal IEnumerator UseAction()

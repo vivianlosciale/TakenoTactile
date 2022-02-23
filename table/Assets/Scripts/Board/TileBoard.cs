@@ -14,7 +14,23 @@ public class TileBoard : MonoBehaviour
         gardenerPosition = new Vector2Int(0, 0);
         tilesPositions = new List<Tile>();
         tilesPositions.Add(new Tile(new Vector2Int(0, 0), transform)); //castle tile
+        TableClient tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+        tableClient.SetTileBoard(this);
+    }
 
+    public List<Tile> TilesWhereCantPlaceBamboo()
+    {
+        if (tilesPositions.Count == 1) return tilesPositions;
+        List<Tile> tilesAvailable = new List<Tile>();
+        foreach (Tile tile in tilesPositions)
+        {
+            TileEvent tileEvent = tile.GameObject.GetComponent<TileEvent>();
+            if (!tileEvent.CanPlaceBamboo())
+            {
+                tilesAvailable.Add(tile);
+            }
+        }
+        return tilesAvailable;
     }
 
     public void ActivatePandaNeighborsSlot()

@@ -31,6 +31,6 @@ public class TileMaterial : MonoBehaviour
 
     private void OnDestroy()
     {
-        meshRenderer.material.SetColor("_Color", Color.white);
+        meshRenderer.materials[1].SetColor("_Color", Color.white);
     }
 }

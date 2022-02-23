@@ -19,7 +19,9 @@ public class TableClient : MonoBehaviour
 
     private bool _canPickTile;
     private bool _canPickCard;
+
     private bool _canPlaceBamboo;
+    private List<Tile> _tilesEventNotAvailable;
 
     private DiceFaces _actualDice;
 
@@ -31,6 +33,7 @@ public class TableClient : MonoBehaviour
     private Player[] players;
 
     private PlaceHolderBoard _placeHolderBoard;
+    private TileBoard _tileBoard;
 
     public Loading _loading;
 
@@ -55,6 +58,7 @@ public class TableClient : MonoBehaviour
         _canPickCard = false;
         audioSource = gameObject.GetComponent<AudioSource>();
         _actualDice = DiceFaces.None;
+        _tilesEventNotAvailable = new List<Tile>();
     }
 
     /*
@@ -76,9 +80,31 @@ public class TableClient : MonoBehaviour
      */
     internal void PickCard(string cardType)
     {
-        _sender.Send(MessageQuery.PickCard, cardType);
         _canPickCard = false;
         StartCoroutine(_currentPlayer.UseAction());
+        StartCoroutine(PickCardCorountine(cardType));
+    }
+
+    private IEnumerator PickCardCorountine(string cardType)
+    {
+        float waitTime = 0.0f;
+        switch(_currentPlayer.id)
+        {
+            case 0:
+                waitTime = 2.0f;
+                break;
+            case 1:
+                waitTime = 3.0f;
+                break;
+            case 2:
+                waitTime = 2.0f;
+                break;
+            case 3:
+                waitTime = 1.5f;
+                break;
+        }
+        yield return new WaitForSeconds(waitTime);
+        _sender.Send(MessageQuery.PickCard, cardType);
     }
 
     internal bool CanPickCard()
@@ -99,8 +125,30 @@ public class TableClient : MonoBehaviour
      */
     internal void PickTile()
     {
-        _sender.Send(MessageQuery.PickTiles);
         _canPickTile = false;
+        StartCoroutine(PickTileCorountine());
+    }
+
+    private IEnumerator PickTileCorountine()
+    {
+        float waitTime = 0.0f;
+        switch (_currentPlayer.id)
+        {
+            case 0:
+                waitTime = 2.5f;
+                break;
+            case 1:
+                waitTime = 3.5f;
+                break;
+            case 2:
+                waitTime = 3.5f;
+                break;
+            case 3:
+                waitTime = 2.5f;
+                break;
+        }
+        yield return new WaitForSeconds(waitTime);
+        _sender.Send(MessageQuery.PickTiles);
     }
 
     internal bool CanPickTile()
@@ -118,6 +166,11 @@ public class TableClient : MonoBehaviour
         _placeHolderBoard = placeHolderBoard;
     }
 
+    internal void SetTileBoard(TileBoard tileBoard)
+    {
+        _tileBoard = tileBoard;
+    }
+
     internal void SendTilePosition(Tile tile)
     {
         string res = PositionDto.ToString(tile.position.x, tile.position.y);
@@ -129,6 +182,10 @@ public class TableClient : MonoBehaviour
     {
         _sender.Send(MessageQuery.ChosenPosition, cardPosition);
         _canPlaceBamboo = false;
+        foreach (Tile tile in _tilesEventNotAvailable)
+        {
+            Destroy(tile.GameObject.GetComponent<TileMaterial>());
+        }
     }
 
     /*
@@ -292,7 +349,7 @@ public class TableClient : MonoBehaviour
                     _currentPlayer.ChangeChoseAction();
                 });
                 break;
-            case MessageQuery.WaitingPlaceTile :
+            case MessageQuery.WaitingPlaceTile:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _placeHolderBoard.ActivateNeighborsSlot(message.GetBody());
@@ -307,14 +364,17 @@ public class TableClient : MonoBehaviour
             case MessageQuery.WaitingChoseRain:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    Debug.Log("JE NE SUIS PAS SENSE ETRE LA");
-                    List<TileEvent> tilesEventAvailable = new List<TileEvent>();
-                    if (tilesEventAvailable.Count == 0)
+                    _tilesEventNotAvailable = _tileBoard.TilesWhereCantPlaceBamboo();
+                    if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
                         SendBambooPlaced(PositionDto.ToString(0, 0));
                         return;
                     }
                     _canPlaceBamboo = true;
+                    foreach (Tile tile in _tilesEventNotAvailable)
+                    {
+                        tile.GameObject.AddComponent<TileMaterial>();
+                    }
                 });
                 break;
             default:

@@ -52,5 +52,6 @@ public class ListAction : MonoBehaviour
         {
             transform.GetChild(i).GetComponent<ActionMaterial>().RemoveIcon();
         }
+        icons = new List<string>();
     }
 }

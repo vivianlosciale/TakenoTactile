@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3502290726838673174}
   - component: {fileID: 1692884612055690204}
   - component: {fileID: 3412345313541898576}
-  - component: {fileID: 2592118089306506366}
   - component: {fileID: 6898480944643214723}
+  - component: {fileID: 8966863753341313451}
   m_Layer: 0
   m_Name: Tiles
   m_TagString: Untagged
@@ -99,18 +99,6 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: -6592096154841002239, guid: 272b1838ef9239e47a045de438bd2ed3, type: 3}
---- !u!114 &2592118089306506366
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 900343780524313097}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5bad63b8cd488164eba26098ce22da29, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &6898480944643214723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -135,7 +123,7 @@ MonoBehaviour:
   OnCollisionEnter:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 2592118089306506366}
+      - m_Target: {fileID: 8966863753341313451}
         m_TargetAssemblyTypeName: TileEvent, Assembly-CSharp
         m_MethodName: OnBambooPlaced
         m_Mode: 1
@@ -150,3 +138,15 @@ MonoBehaviour:
   OnCollisionExit:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8966863753341313451
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 900343780524313097}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bad63b8cd488164eba26098ce22da29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

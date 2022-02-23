@@ -15,7 +15,7 @@ public abstract class OSCEvent : MonoBehaviour
     [SerializeField]
     protected UnityEvent OnCollisionExit;
 
-    protected List<TuioEntity> detections = new List<TuioEntity>();
+    public List<TuioEntity> detections = new List<TuioEntity>();
 
     public abstract void RunFunction(TuioEntity tuio);
 
