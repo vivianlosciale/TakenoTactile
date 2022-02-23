@@ -57,6 +57,7 @@
             {
                 Debug.Log("-----------------------Tile Moved to center");
                 _moveToCenter = false;
+                GameObject.FindWithTag(TagManager.Helper.ToString()).GetComponent<Helper>().UpdateHelpMessage("Veuillez placer la tuile sur la table.");
             }
             else
             {

@@ -8,6 +8,7 @@
      DiceCheckerFloor,
      TileSelector,
      GameManager,
+     Helper,
      Hand,
      SoundProvider,
 }

@@ -4,6 +4,7 @@ using UnityEngine;
 public class Helper : MonoBehaviour
 {
     public GameObject PopUp;
+    public GameObject ARPopUp;
     private string _helpMessage = "Bienvenue dans Takenoko !";
 
     private void Start()
@@ -49,7 +50,12 @@ public class Helper : MonoBehaviour
 
     public void ARExplanation()
     {
-        var explanation = "Veuillez regarder votre plateau de jeu avec votre téléphone.";
-        PopUp.GetComponent<PopUpSystem>().HelpPopUp(explanation, "C'est compris");
+        ARPopUp.SetActive(true);
     }
+
+    public void ExitARExplanation()
+    {
+        ARPopUp.SetActive(false);
+    }
+    
 }
