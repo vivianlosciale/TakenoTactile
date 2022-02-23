@@ -46,10 +46,10 @@ public class Reserv : MonoBehaviour
         for (int i = 0; i < nbBambooP; i++)
         {
             var bambooPtmp = Instantiate(bambooP, imageTarget.transform);
-            bambooPtmp.transform.localPosition = new Vector3(0.05f, i * offset - 1,  0.05f);
+            bambooPtmp.transform.localPosition = new Vector3(-0.05f, i * offset - 1,  0.05f);
         }
         var nbPinktmp = Instantiate(nbPink, imageTarget.transform);
-        nbPinktmp.transform.localPosition = new Vector3(0.05f, (nbBambooP + 1) * offset - 1, 0.05f);
+        nbPinktmp.transform.localPosition = new Vector3(-0.05f, (nbBambooP + 1) * offset - 1, 0.05f);
         nbPinktmp.text = nbBambooP.ToString();
 
         for (int i = 0; i < nbBambooY; i++)
