@@ -17,12 +17,6 @@
          _centerPosition = new Vector3(0, 0, -0.6f);
      }
 
-     public void SetCardPosition(Vector3 v)
-     {
-         initialPosition = v;
-         transform.localPosition = v;
-     }
-
      private void Update()
      {
          if (moveToCenter)
@@ -54,7 +48,7 @@
 
      private void MoveToCenter()
      {
-         if (transform.position == _centerPosition)
+         if (transform.localPosition.Equals(_centerPosition))
          {
              Debug.Log("IS IN CENTER");
              moveToCenter = false;
@@ -80,17 +74,11 @@
 
      private void ReturnToInitialPosition()
      {
-         Debug.Log("IS BACK TO INITIAL POSITION");
-         returnToPosition = false;
-         _wasSelected = false;
-         moveToCenter = false;
-         var _step = 4 * Time.deltaTime;
-         transform.localPosition = Vector3.MoveTowards(transform.localPosition, initialPosition, _step);
-         GetComponentInParent<HandManagement>().UpdateCardsPosition();
-         /*if (transform.position == initialPosition)
+         if (transform.localPosition.Equals(initialPosition))
          {
              Debug.Log("IS BACK TO INITIAL POSITION");
              returnToPosition = false;
+             _wasSelected = false;
              GetComponentInParent<HandManagement>().UpdateCardsPosition();
          }
          else
@@ -99,7 +87,7 @@
              transform.localPosition = Vector3.MoveTowards(transform.localPosition, initialPosition, _step);
              Debug.Log("LOCALPOSITION : " + transform.localPosition + " and initial : " + initialPosition);
              Debug.Log("POSITION : " + transform.position + " and initial : " + initialPosition);
-         }*/
+         }
      }
 
      private void OnMouseUpAsButton()
@@ -108,5 +96,12 @@
          GetComponentInParent<HandManagement>().SetSelectedCard(gameObject);
          moveToCenter = true;
          _wasSelected = true;
+     }
+
+     public void ResetCard(Vector3 v)
+     {
+         initialPosition = v;
+         transform.localPosition = v;
+         _wasSelected = false;
      }
  }

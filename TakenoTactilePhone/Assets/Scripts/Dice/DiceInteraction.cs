@@ -5,6 +5,7 @@ public class DiceInteraction : MonoBehaviour
 
     public AudioSource soundManager;
     public AudioClip rollingDice;
+    public GameObject shakeIndication;
     
     private float range = 5.0f;
     private float force = 17.5f;
@@ -22,6 +23,8 @@ public class DiceInteraction : MonoBehaviour
     public bool shookOnce = false;
     public bool stopShaking = false;
     
+    private float _countDownTime = 3.0f;
+    
     private void Start()
     {
         stopShaking = false;
@@ -30,6 +33,8 @@ public class DiceInteraction : MonoBehaviour
         lowPassFilterFactor = accelerometerUpdateInterval / lowPassKernelWidthInSeconds;
         shakeDetectionThreshold *= shakeDetectionThreshold;
         lowPassValue = Input.acceleration;
+        shakeIndication.SetActive(false);
+        _countDownTime = 3.0f;
     }
 
     /// <summary>
@@ -67,16 +72,35 @@ public class DiceInteraction : MonoBehaviour
         lowPassValue = Vector3.Lerp(lowPassValue, acceleration, lowPassFilterFactor);
         Vector3 deltaAcceleration = acceleration - lowPassValue;
 
+        if (shookOnce)
+        {
+            shakeIndication.SetActive(false);
+        }
+        
         if (deltaAcceleration.sqrMagnitude >= shakeDetectionThreshold && !stopShaking)
         {
             Debug.Log("Shake event detected at time "+Time.time);
             OnShake();
+            shakeIndication.SetActive(false);
+            _countDownTime = 3.0f;
             shookOnce = true;
         }
+        
         if(shookOnce && deltaAcceleration.sqrMagnitude < shakeDetectionThreshold)
         {
             GetComponent<Rigidbody>().useGravity = true;
             stopShaking = true;
+            shakeIndication.SetActive(false);
+        }
+
+        if (_countDownTime > 0 && ! shookOnce)
+        {
+            _countDownTime -= Time.deltaTime;
+        }
+        
+        if (_countDownTime <= 0)
+        {
+            shakeIndication.SetActive(true);
         }
     }
 }

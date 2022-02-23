@@ -20,6 +20,7 @@ public class Reserv : MonoBehaviour
     public GameObject hand;
     public GameObject ARCamera;
     public GameObject UI;
+    public GameObject helpButton;
     private bool ARActive;
 
     private float offset = 0.035f;
@@ -40,6 +41,7 @@ public class Reserv : MonoBehaviour
             bambooGtmp.transform.localPosition = new Vector3(0, i * offset - 1, 0);
         }
         var nbGreentmp = Instantiate(nbGreen, imageTarget.transform);
+        nbGreentmp.transform.localPosition = new Vector3(0, (nbBambooG + 1) * offset - 1, 0);
         nbGreentmp.text = nbBambooG.ToString();
 
         if (nbBambooG > 5)
@@ -58,6 +60,7 @@ public class Reserv : MonoBehaviour
             bambooPtmp.transform.localPosition = new Vector3(-0.05f, i * offset - 1,  0.05f);
         }
         var nbPinktmp = Instantiate(nbPink, imageTarget.transform);
+        nbPinktmp.transform.localPosition = new Vector3(-0.05f, (nbBambooP + 1) * offset - 1, 0.05f);
         nbPinktmp.text = nbBambooP.ToString();
 
         if (nbBambooP > 5)
@@ -91,8 +94,13 @@ public class Reserv : MonoBehaviour
     private void handleUI()
     {
         ARCamera.SetActive(ARActive);
+        if (hand.activeSelf)
+        {
+            hand.GetComponent<HandManagement>().UpdateCardsPosition();
+        }
         hand.SetActive(!ARActive);
         UI.SetActive(!ARActive);
+        helpButton.SetActive(ARActive);
     }
 
     public void switchAR()

@@ -19,6 +19,7 @@ public class GameActions : MonoBehaviour
     public GameObject hand;
     public GameObject tileSelector;
     public Text playerName;
+    public GameObject handBackground;
     private PopUpSystem _popUpSystem;
     
     public bool turnStarted;
@@ -34,13 +35,10 @@ public class GameActions : MonoBehaviour
 
     void Start()
     {
-        //_mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
-        //_mobileClient.SetGameActions(this);
-        //playerName.text = _mobileClient.GetPlayerName();
+        _mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
+        _mobileClient.SetGameActions(this);
+        playerName.text = _mobileClient.GetPlayerName();
         _popUpSystem = GameObject.FindWithTag(TagManager.PopUpManager.ToString()).GetComponent<PopUpSystem>();
-        AddCardToHand("card_bamboo_1gf");
-        AddCardToHand("card_land_3gw3");
-        AddCardToHand("card_panda_3");
     }
 
     void Update()
@@ -73,6 +71,7 @@ public class GameActions : MonoBehaviour
     public void StartTurn()
     {
         soundManager.PlayOneShot(startTurn);
+        hand.GetComponent<HandManagement>().UpdateCardsPosition();
         _popUpSystem.StartTurnPopUp();
     }
 
@@ -105,8 +104,8 @@ public class GameActions : MonoBehaviour
         Debug.Log("Displaying tiles to choose");
         soundManager.PlayOneShot(displayTilesSound);
         Handheld.Vibrate();
-        hand.GetComponent<HandManagement>().HideHand();
-        hand.SetActive(false);
+        hand.GetComponent<HandManagement>().UpdateCardsPosition();
+        HideHand();
         ARCanvas.SetActive(false);
         var tiles = MultiNames.ToNames(tileNames);
         foreach (var tile in tiles)
@@ -119,7 +118,7 @@ public class GameActions : MonoBehaviour
     public void TilePlaced()
     {
         tileSelector.GetComponent<TileSelector>().SlideTile();
-        hand.SetActive(true);
+        ShowHand();
         ARCanvas.SetActive(true);
     }
 
@@ -142,9 +141,8 @@ public class GameActions : MonoBehaviour
 
     public void InvalidObjective()
     {
-        //GetHandManagement().UpdateCardsPosition();
         soundManager.PlayOneShot(errorSound);
-        _popUpSystem.PopUp("You can not validate this card yet.");
+        _popUpSystem.PopUp("Vous ne pouvez pas (encore) valider cette carte !");
     }
     
     private void CreateTile(string tileName)
@@ -186,8 +184,15 @@ public class GameActions : MonoBehaviour
         }
     }
 
-    public MobileClient GetMobileClient()
+    private void HideHand()
     {
-        return _mobileClient;
+        hand.SetActive(false);
+        handBackground.SetActive(false);
+    }
+    
+    private void ShowHand()
+    {
+        hand.SetActive(true);
+        handBackground.SetActive(true);
     }
 }

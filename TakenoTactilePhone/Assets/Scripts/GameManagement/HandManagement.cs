@@ -30,7 +30,7 @@ public class HandManagement : MonoBehaviour
                 {
                         var child = transform.GetChild(i).gameObject;
                         child.SetActive(true);
-                        child.GetComponent<CardSlidingAnimation>().SetCardPosition(_localPositions[i]);
+                        child.GetComponent<CardSlidingAnimation>().ResetCard(_localPositions[i]);
                 }
         }
 
@@ -77,12 +77,5 @@ public class HandManagement : MonoBehaviour
                 _selectedCard.GetComponent<CardSlidingAnimation>().AnimateToTable();
                 soundManager.PlayOneShot(cardSubmittedSound);
                 UpdateCardsPosition();
-        }
-
-        public void HideHand()
-        {
-                UpdateCardsPosition();
-                cancelButton.SetActive(false);
-                validateButton.SetActive(false);
         }
 }

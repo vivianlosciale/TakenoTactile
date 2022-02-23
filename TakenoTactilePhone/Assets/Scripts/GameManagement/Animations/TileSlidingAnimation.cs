@@ -45,7 +45,6 @@
 
         private void OnMouseUpAsButton()
         {
-            //The selected tile was chosen
             if (_wasSelected) return;
             GetComponentInParent<TileSelector>().SetChosenTile(gameObject);
             _moveToCenter = true;
@@ -54,8 +53,9 @@
 
         private void MoveToCenter()
         {
-            if (transform.position == _centerPosition)
+            if (transform.position.Equals(_centerPosition))
             {
+                Debug.Log("-----------------------Tile Moved to center");
                 _moveToCenter = false;
             }
             else
@@ -64,4 +64,5 @@
                 transform.position = Vector3.MoveTowards(transform.position, _centerPosition, _step);
             }
         }
+     
  }

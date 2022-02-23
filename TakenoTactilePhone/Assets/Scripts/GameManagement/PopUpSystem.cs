@@ -8,14 +8,15 @@ public class PopUpSystem : MonoBehaviour
     public GameObject popUpBox;
     public TMP_Text popUpText;
     public GameObject popUpButton;
+    public Helper helper;
     private MobileClient _mobileClient;
 
     private GameActions _gameActions;
     
     void Start()
     {
-        //_mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
-        //_mobileClient.SetPopUpSystem(this);
+        _mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
+        _mobileClient.SetPopUpSystem(this);
         _gameActions = GameObject.FindWithTag(TagManager.GameManager.ToString()).GetComponent<GameActions>();
     }
     
@@ -35,32 +36,50 @@ public class PopUpSystem : MonoBehaviour
 
     public void StartTurnPopUp()
     {
-        NewPopUp("It is now your turn.",
+        NewPopUp("A vous de jouer !",
             () =>
             {
                 _gameActions.turnStarted = true;
                 _gameActions.InvokeDice();
                 HidePopUp();
             },
-            "Got it!"
+            "Oui !"
             );
     }
 
     public void ValidateYourActionsPopUp()
     {
-        NewPopUp("Please validate your actions.",
+        NewPopUp("Veuillez confirmer ou modifier vos actions.",
             () =>
             { 
                 _mobileClient.ValidateChoice();
                 HidePopUp();
             },
-            "Validate"
+            "Confirmer"
             );
+    }
+
+    public void HelpPopUp(string message, string buttonText)
+    {
+        NewHelpPopUp(message, () =>
+        {
+            HidePopUp();
+        }, 
+            buttonText);
     }
 
     private void NewPopUp(string message, UnityAction action, string buttonText)
     {
         Handheld.Vibrate();
+        popUpBox.SetActive(true);
+        popUpText.text = message;
+        popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        popUpButton.GetComponent<Button>().onClick.AddListener(action);
+        popUpButton.GetComponentInChildren<Text>().text = buttonText;
+    }
+    
+    private void NewHelpPopUp(string message, UnityAction action, string buttonText)
+    {
         popUpBox.SetActive(true);
         popUpText.text = message;
         popUpButton.GetComponent<Button>().onClick.RemoveAllListeners();

@@ -167,7 +167,7 @@ public enum MessageQuery
                MOVE FARMER ACTION
      ***************************************/
     
-    // TODO
+    WaitingMoveFarmer,
     
     
     

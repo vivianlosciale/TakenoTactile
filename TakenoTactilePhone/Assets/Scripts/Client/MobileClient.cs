@@ -12,6 +12,7 @@ public class MobileClient : MonoBehaviour
     private string _playerName;
     public AudioSource soundManager;
     public AudioClip connectionSound;
+    private Helper _helper;
 
     /*
      * Deactivate the camera gameObject.
@@ -44,7 +45,7 @@ public class MobileClient : MonoBehaviour
 
     public string GetPlayerName()
     {
-        return _playerName;
+        return "Joueur " + _playerName.Substring(_playerName.Length - 1);
     }
 
     public void SetGameActions(GameActions gameActions)
@@ -57,9 +58,15 @@ public class MobileClient : MonoBehaviour
         _popUpSystem = popUpSystem;
     }
 
+    public void SetHelper(Helper helper)
+    {
+        _helper = helper;
+    }
+
     public void SendDiceResult(DiceFaces result)
     {
         _messageSender.Send(MessageQuery.RollDice, result.ToString());
+        _helper.DiceResultExplanation(result);
     }
 
     public void ValidateChoice()
@@ -70,11 +77,13 @@ public class MobileClient : MonoBehaviour
     public void EndTurn()
     {
         _messageSender.Send(MessageQuery.FinishTurn);
+        _helper.UpdateHelpMessage("Ce n'est pas votre tour, mais vous pouvez toujours consulter votre réserve...");
     }
 
     public void SendChosenTile(String tileName)
     {
         _messageSender.Send(MessageQuery.ChosenTile, tileName);
+        _helper.UpdateHelpMessage("Vous avez sélectionné une tuile.");
     }
 
     public void SendChosenObjective(String objectiveName)
@@ -110,7 +119,7 @@ public class MobileClient : MonoBehaviour
     }
 
     /*
-     * Generic message receiver //TODO
+     * Generic message receiver
      */
     private void ReceiveGameMessages(object sender, MessageEventArgs args)
     {
@@ -130,10 +139,18 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.WaitingChoseRain:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("The weather is rainy. Bamboos will grow on the tile of your choice.");
+                   _popUpSystem.PopUp("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
+                   _helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
                 });
                 break;
-
+            case MessageQuery.WaitingMoveFarmer:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Vous pouvez déplacer le jardinier.");
+                    _helper.UpdateHelpMessage("Vous pouvez déplacer le jardinier.");
+                });
+                break;
+            
             //CHOSEN ACTIONS ON THE TABLE
             case MessageQuery.ValidateChoice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
@@ -144,7 +161,8 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.WaitingChoseAction :
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("You must now choose your actions on the table.");
+                    _popUpSystem.PopUp("Placez vos pions sur la table pour choisir vos actions.");
+                    _helper.UpdateHelpMessage("Placez vos pions sur la table pour choisir vos actions.");
                 });
                 break;
            
@@ -152,7 +170,8 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.WaitingPickCard:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("Please pick a card.");
+                    _popUpSystem.PopUp("Veuillez piocher une carte.");
+                    _helper.UpdateHelpMessage("Veuillez piocher une carte.");
                 });
                 break;
             case MessageQuery.ReceivedCard:
@@ -171,7 +190,7 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.ValidateObjective:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("Your card was validated.");
+                    _popUpSystem.PopUp("Votre objectif a été validé !");
                     _gameActions.ValidateObjective(parser.GetMessageBody());
                 });
                 break;
@@ -180,13 +199,15 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.WaitingPickTiles:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("Please pick your tiles.");
+                    _popUpSystem.PopUp("Veuillez piocher des tuiles.");
+                    _helper.UpdateHelpMessage("Veuillez piocher des tuiles.");
                 });
                 break;
             case MessageQuery.WaitingChoseTile :
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _popUpSystem.HidePopUp();
+                    _helper.UpdateHelpMessage("Veuillez sélectionner une tuile et la placer sur la table.");
                     _gameActions.DisplayTilesToChoose(parser.GetMessageBody());
                 });
                 break;
@@ -196,21 +217,14 @@ public class MobileClient : MonoBehaviour
                     _gameActions.TilePlaced();
                 });
                 break;
-            
-
             case MessageQuery.WaitingEndTurn:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.WaitingEndTurn();
+                    _helper.UpdateHelpMessage("Vous avez terminé vos actions. Vous pouvez valider un objectif ou finir votre tour.");
                 });
                 break;
         }
-    }
-
-    private HandManagement GetHandManagement()
-    {
-        var handGo = GameObject.FindWithTag(TagManager.Hand.ToString());
-        return handGo.GetComponent<HandManagement>();
     }
 
 }
