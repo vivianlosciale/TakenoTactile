@@ -34,7 +34,7 @@ class OSCCursorEvent : OSCEvent
             }
             if (!detections.Contains(tuio))
             {
-                OnCollisionEnter.Invoke();
+                OnCollisionEnter.Invoke("");
                 detections.Add(tuio);
             }
         }

@@ -20,7 +20,9 @@ public class TableClient : MonoBehaviour
     private bool _canPickTile;
     private bool _canPickCard;
 
-    private bool _canPlaceBamboo;
+    private bool _canPlaceBambooFromRainPower;
+    private bool _canPlaceBambooFromFarmer;
+    private bool _canEatBamboo;
     private List<Tile> _tilesEventNotAvailable;
 
     private DiceFaces _actualDice;
@@ -40,7 +42,6 @@ public class TableClient : MonoBehaviour
     private static string GAME_SCENE = "Game";
     private static string HOME_SCENE = "Takenotest";
 
-        
     /*
      * Private constructor to avoid outside instantiations.
      */
@@ -56,6 +57,9 @@ public class TableClient : MonoBehaviour
         players = new Player[4];
         _canPickTile = false;
         _canPickCard = false;
+        _canPlaceBambooFromRainPower = false;
+        _canPlaceBambooFromFarmer = false;
+        _canEatBamboo = false;
         audioSource = gameObject.GetComponent<AudioSource>();
         _actualDice = DiceFaces.None;
         _tilesEventNotAvailable = new List<Tile>();
@@ -156,11 +160,6 @@ public class TableClient : MonoBehaviour
         return _canPickTile;
     }
 
-    internal bool CanPlaceBamboo()
-    {
-        return _canPlaceBamboo;
-    }
-
     internal void SetPlaceHolderBoard(PlaceHolderBoard placeHolderBoard)
     {
         _placeHolderBoard = placeHolderBoard;
@@ -178,13 +177,51 @@ public class TableClient : MonoBehaviour
         StartCoroutine(_currentPlayer.UseAction());
     }
 
-    internal void SendBambooPlaced(string cardPosition)
+    /*
+     * Bamboo section
+     */
+
+    internal bool CanPlaceBambooFromRainPower()
     {
-        _sender.Send(MessageQuery.ChosenPosition, cardPosition);
-        _canPlaceBamboo = false;
-        foreach (Tile tile in _tilesEventNotAvailable)
+        return _canPlaceBambooFromRainPower;
+    }
+    
+    internal bool CanPlaceBambooFromFarmer()
+    {
+        return _canPlaceBambooFromFarmer;
+    }
+
+    internal bool IsGardener(string tuioValue)
+    {
+        return _tileBoard.IsGardener(tuioValue);
+    }
+
+    internal void SetGardenerPosition(Vector2Int newPosition)
+    {
+        _tileBoard.SetGardenerPosition(newPosition);
+    }
+
+    internal bool CanEatBamboo()
+    {
+        return _canEatBamboo;
+    }
+
+    internal void SendBambooPlaced(MessageQuery messageQuery, string cardPosition)
+    {
+        switch(messageQuery)
         {
-            Destroy(tile.GameObject.GetComponent<TileMaterial>());
+            case MessageQuery.WaitingChoseRain:
+                _sender.Send(MessageQuery.ChosenPosition, cardPosition);
+                _canPlaceBambooFromRainPower = false;
+                foreach (Tile tile in _tilesEventNotAvailable)
+                {
+                    Destroy(tile.GameObject.GetComponent<TileMaterial>());
+                }
+                break;
+            case MessageQuery.WaitingMoveFarmer:
+                _sender.Send(MessageQuery.ChosenPosition, cardPosition);
+                _canPlaceBambooFromFarmer = false;
+                break;
         }
     }
 
@@ -367,14 +404,21 @@ public class TableClient : MonoBehaviour
                     _tilesEventNotAvailable = _tileBoard.TilesWhereCantPlaceBamboo();
                     if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
-                        SendBambooPlaced(PositionDto.ToString(0, 0));
+                        SendBambooPlaced(MessageQuery.WaitingChoseRain, PositionDto.ToString(0, 0));
                         return;
                     }
-                    _canPlaceBamboo = true;
+                    _canPlaceBambooFromRainPower = true;
                     foreach (Tile tile in _tilesEventNotAvailable)
                     {
                         tile.GameObject.AddComponent<TileMaterial>();
                     }
+                });
+                break;
+            case MessageQuery.WaitingMoveFarmer:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _canPlaceBambooFromFarmer = true;
+                    _tileBoard.ActivateGardenerNeighborsSlot();
                 });
                 break;
             default:

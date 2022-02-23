@@ -7,6 +7,8 @@ public class TileBoard : MonoBehaviour
     public List<Tile> tilesPositions;
     public Vector2Int pandaPosition;
     public Vector2Int gardenerPosition;
+    private string pandadId;
+    private string gardenerId;
 
     private void Awake()
     {
@@ -16,6 +18,17 @@ public class TileBoard : MonoBehaviour
         tilesPositions.Add(new Tile(new Vector2Int(0, 0), transform)); //castle tile
         TableClient tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         tableClient.SetTileBoard(this);
+        gardenerId = "4";
+    }
+
+    public bool IsGardener(string id)
+    {
+        return gardenerId.Equals(id);
+    }
+
+    public void SetGardenerPosition(Vector2Int newPosition)
+    {
+        gardenerPosition = newPosition;
     }
 
     public List<Tile> TilesWhereCantPlaceBamboo()

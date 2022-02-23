@@ -11,7 +11,7 @@ public abstract class OSCEvent : MonoBehaviour
     [SerializeField]
     protected UnityEvent OnDrag;
     [SerializeField]
-    protected UnityEvent OnCollisionEnter;
+    protected UnityEvent<string> OnCollisionEnter;
     [SerializeField]
     protected UnityEvent OnCollisionExit;
 
