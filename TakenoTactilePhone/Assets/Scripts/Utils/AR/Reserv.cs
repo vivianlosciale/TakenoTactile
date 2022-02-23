@@ -40,8 +40,17 @@ public class Reserv : MonoBehaviour
             bambooGtmp.transform.localPosition = new Vector3(0, i * offset - 1, 0);
         }
         var nbGreentmp = Instantiate(nbGreen, imageTarget.transform);
-        nbGreentmp.transform.localPosition = new Vector3(0, (nbBambooG + 1) * offset - 1, 0);
         nbGreentmp.text = nbBambooG.ToString();
+
+        if (nbBambooG > 5)
+        {
+            nbGreentmp.transform.localPosition = new Vector3(0.05f, offset - 1, 0);
+        } 
+        else
+        {
+            nbGreentmp.transform.localPosition = new Vector3(0, (nbBambooG + 1) * offset - 1, 0);
+        }
+        
 
         for (int i = 0; i < nbBambooP; i++)
         {
@@ -49,8 +58,16 @@ public class Reserv : MonoBehaviour
             bambooPtmp.transform.localPosition = new Vector3(-0.05f, i * offset - 1,  0.05f);
         }
         var nbPinktmp = Instantiate(nbPink, imageTarget.transform);
-        nbPinktmp.transform.localPosition = new Vector3(-0.05f, (nbBambooP + 1) * offset - 1, 0.05f);
         nbPinktmp.text = nbBambooP.ToString();
+
+        if (nbBambooP > 5)
+        {
+            nbPinktmp.transform.localPosition = new Vector3(0, offset - 1, 0.05f);
+        }
+        else
+        {
+            nbPinktmp.transform.localPosition = new Vector3(-0.05f, (nbBambooP + 1) * offset - 1, 0.05f);
+        }
 
         for (int i = 0; i < nbBambooY; i++)
         {
@@ -58,8 +75,17 @@ public class Reserv : MonoBehaviour
             bambooYtmp.transform.localPosition = new Vector3(0.05f, i * offset - 1, 0.05f);
         }
         var nbYellowtmp = Instantiate(nbYellow, imageTarget.transform);
-        nbYellowtmp.transform.localPosition = new Vector3(0.05f, (nbBambooY + 1) * offset - 1, 0.05f);
         nbYellowtmp.text = nbBambooY.ToString();
+
+        if (nbBambooY > 5)
+        {
+            nbYellowtmp.transform.localPosition = new Vector3(0.09f, offset - 1, 0.05f);
+        }
+        else
+        {
+            nbYellowtmp.transform.localPosition = new Vector3(0.05f, (nbBambooY + 1) * offset - 1, 0.05f);
+        }
+
     }
 
     private void handleUI()
