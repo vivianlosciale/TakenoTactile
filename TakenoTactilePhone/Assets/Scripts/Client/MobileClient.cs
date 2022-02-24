@@ -13,6 +13,13 @@ public class MobileClient : MonoBehaviour
     public AudioSource soundManager;
     public AudioClip connectionSound;
     private Helper _helper;
+    private Reserv _reserv;
+    private bool _gameStarted;
+
+    private void Start()
+    {
+        _gameStarted = false;
+    }
 
     /*
      * Deactivate the camera gameObject.
@@ -48,6 +55,11 @@ public class MobileClient : MonoBehaviour
         return "Joueur " + _playerName.Substring(_playerName.Length - 1);
     }
 
+    internal void AskServerNbOfBamboo()
+    {
+        _messageSender.Send(MessageQuery.WaitingFoodStorage);
+    }
+
     public void SetGameActions(GameActions gameActions)
     {
         _gameActions = gameActions;
@@ -61,6 +73,16 @@ public class MobileClient : MonoBehaviour
     public void SetHelper(Helper helper)
     {
         _helper = helper;
+    }
+
+    public void SetReserv(Reserv reserv)
+    {
+        _reserv = reserv;
+    }
+
+    public bool GameIsStarted()
+    {
+        return _gameStarted;
     }
 
     public void SendDiceResult(DiceFaces result)
@@ -128,7 +150,12 @@ public class MobileClient : MonoBehaviour
         Debug.Log("--------- RECEIVED : " + parser.GetFullMessage());
         switch(parser.GetQuery())
         {
-
+            case MessageQuery.StartGame:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameStarted = true;
+                });
+                break;
             //METEO ACTIONS
             case MessageQuery.WaitingDiceResult:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
@@ -222,6 +249,13 @@ public class MobileClient : MonoBehaviour
                 {
                     _gameActions.WaitingEndTurn();
                     _helper.UpdateHelpMessage("Vous avez terminé vos actions. Vous pouvez valider un objectif ou finir votre tour.");
+                });
+                break;
+            //RESERV INTERACTIONS
+            case MessageQuery.FoodStorage:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _reserv.CreateBamboo(parser.GetMessageBody());
                 });
                 break;
         }

@@ -31,13 +31,29 @@ public class Reserv : MonoBehaviour
 
     public GameObject imageTarget;
 
+    private MobileClient mobileClient;
+
     // Start is called before the first frame update
     void Start()
     {
+        mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
+        mobileClient.SetReserv(this);
+
         ARActive = false;
         imageTarget.SetActive(ARActive);
         ARCamera.SetActive(ARActive);
         handleUI();
+    }
+
+    public void CreateBamboo(string bamboo)
+    {
+
+        BambooDto bambooDto = BambooDto.ToBambooDto(bamboo);
+        nbBambooG = bambooDto._green;
+        nbBambooP = bambooDto._pink;
+        nbBambooY = bambooDto._yellow;
+
+        while (nbBambooG == -1 && nbBambooP == -1 && nbBambooY == -1) {}
 
         for (int i = 0; i < nbBambooG; i++)
         {
@@ -51,17 +67,17 @@ public class Reserv : MonoBehaviour
         if (nbBambooG > 5)
         {
             nbGreentmp.transform.localPosition = new Vector3(0.05f, offset - 1, 0);
-        } 
+        }
         else
         {
             nbGreentmp.transform.localPosition = new Vector3(0, (nbBambooG + 1) * offset - 1, 0);
         }
-        
+
 
         for (int i = 0; i < nbBambooP; i++)
         {
             var bambooPtmp = Instantiate(bambooP, imageTarget.transform);
-            bambooPtmp.transform.localPosition = new Vector3(-0.05f, i * offset - 1,  0.05f);
+            bambooPtmp.transform.localPosition = new Vector3(-0.05f, i * offset - 1, 0.05f);
         }
         var nbPinktmp = Instantiate(nbPink, imageTarget.transform);
         nbPinktmp.transform.localPosition = new Vector3(-0.05f, (nbBambooP + 1) * offset - 1, 0.05f);
@@ -92,7 +108,14 @@ public class Reserv : MonoBehaviour
         {
             nbYellowtmp.transform.localPosition = new Vector3(0.05f, (nbBambooY + 1) * offset - 1, 0.05f);
         }
+    }
 
+    private void DestroyBamboo()
+    {
+        for(int i = 1; i < imageTarget.transform.childCount; i++)
+        {
+            Destroy(imageTarget.transform.GetChild(i).gameObject);
+        }
     }
 
     private void handleUI()
@@ -100,10 +123,15 @@ public class Reserv : MonoBehaviour
         if (ARActive)
         {
             ARButtonText.text = InARScreen;
+            if (mobileClient.GameIsStarted())
+            {
+                mobileClient.AskServerNbOfBamboo();
+            }
         }
         else
         {
             ARButtonText.text = InGameScreen;
+            DestroyBamboo();
         }
         ARCamera.SetActive(ARActive);
         if (hand.activeSelf)

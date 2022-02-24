@@ -231,15 +231,31 @@ public enum MessageQuery
      *     Inform that the chosen tile have been placed
      */
     TilePlaced,
-    
-    
- 
-    
-    
+
+
+    /***************************************
+           FINISH THE TURN
+    ***************************************/
+
+    /**
+        * FROM/TO: mobile -> server
+        * NO ARGS
+        *     To inform that the mobile awaits the server to send the food quantity
+        */
+    WaitingFoodStorage,
+
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    the food quantity as a bamboo dto
+     *     To send the food quantity to the mobile
+     */
+    FoodStorage,
+
+
     /***************************************
                FINISH THE TURN
      ***************************************/
-    
+
     /**
      * FROM/TO: mobile -> server
      * ARGS:    the objective name
