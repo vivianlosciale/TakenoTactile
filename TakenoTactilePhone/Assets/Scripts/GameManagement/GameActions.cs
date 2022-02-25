@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 public class GameActions : MonoBehaviour
@@ -93,6 +92,23 @@ public class GameActions : MonoBehaviour
         return _checker.result;
     }
 
+    public void PlaceBamboo(bool canPlaceBamboo)
+    {
+    /*
+       true -> the player should place a bamboo at the gardener position
+       false -> no bamboo is able to grow here
+     */
+    if (canPlaceBamboo)
+    {
+        _popUpSystem.PopUp("Placez un bambou sur la case du jardinier.");
+    }
+    else
+    {
+        soundManager.PlayOneShot(errorSound);
+        _popUpSystem.PopUp("Vous ne pouvez pas placer de bambou ici !");
+    }
+    }
+    
     public void AddCardToHand(string cardName)
     {
         soundManager.PlayOneShot(cardSound);

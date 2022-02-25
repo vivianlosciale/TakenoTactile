@@ -53,7 +53,7 @@ public enum MessageQuery
      *     To inform that the game is full and no more players can join
      */
     GameIsFull,
-    
+
     /**
      * FROM/TO: table -> server
      * NO ARGS
@@ -168,6 +168,21 @@ public enum MessageQuery
      ***************************************/
     
     WaitingMoveFarmer,
+    
+    /***************************************
+             PLACE BAMBOO ACTION
+   ***************************************/  
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     *
+     * From/TO: server -> table
+     * ARGS:    position object
+     *     Inform that the server awaits the table to
+     *     confirm a bamboo was places
+     */
+    PlaceBamboo,
     
     
     

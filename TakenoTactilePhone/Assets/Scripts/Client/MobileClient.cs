@@ -156,6 +156,7 @@ public class MobileClient : MonoBehaviour
                     _gameStarted = true;
                 });
                 break;
+           
             //METEO ACTIONS
             case MessageQuery.WaitingDiceResult:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
@@ -177,7 +178,12 @@ public class MobileClient : MonoBehaviour
                     _helper.UpdateHelpMessage("Vous pouvez déplacer le jardinier.");
                 });
                 break;
-            
+            case MessageQuery.PlaceBamboo:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.PlaceBamboo(bool.Parse(parser.GetMessageBody()));
+                });
+                break;
             //CHOSEN ACTIONS ON THE TABLE
             case MessageQuery.ValidateChoice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
@@ -251,11 +257,21 @@ public class MobileClient : MonoBehaviour
                     _helper.UpdateHelpMessage("Vous avez terminé vos actions. Vous pouvez valider un objectif ou finir votre tour.");
                 });
                 break;
+            
             //RESERV INTERACTIONS
             case MessageQuery.FoodStorage:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _reserv.CreateBamboo(parser.GetMessageBody());
+                });
+                break;
+            
+            //ERROR
+            case MessageQuery.Error:
+                //TODO
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Erreur : " + parser.GetMessageBody());
                 });
                 break;
         }
