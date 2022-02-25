@@ -39,6 +39,7 @@ public class GameActions : MonoBehaviour
         _mobileClient.SetGameActions(this);
         playerName.text = _mobileClient.GetPlayerName();
         _popUpSystem = GameObject.FindWithTag(TagManager.PopUpManager.ToString()).GetComponent<PopUpSystem>();
+        //AddCardToHand("card_bamboo_1gf");
     }
 
     void Update()

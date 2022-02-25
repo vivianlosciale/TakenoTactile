@@ -1,4 +1,5 @@
-﻿ using UnityEngine;
+﻿ using System;
+ using UnityEngine;
 
  public class CardSlidingAnimation : MonoBehaviour
  {
@@ -66,7 +67,7 @@
          if (transform.position.z > 3)
          {
              moveToTable = false;
-             Destroy(this);
+             Destroy(gameObject);
              return;
          }
          transform.position += new Vector3(0, 0, 4 * Time.deltaTime);
