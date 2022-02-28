@@ -219,6 +219,11 @@ public enum MessageQuery
     WaitingMoveFarmer,
 
 
+    PlaceBamboo,
+
+    BambooPlaced,
+
+
 
     /***************************************
                MOVE PANDA ACTION

@@ -25,7 +25,6 @@ public class PlaceHolderEvent : MonoBehaviour
         gameObjectTile.GetComponent<MeshRenderer>().materials = materials;
         gameObjectTile.transform.position = transform.position + new Vector3(0, 11, 0);
         gameObjectTile.AddComponent<BoardTileMovement>().SetPosition(transform.position);
-        gameObjectTile.GetComponent<TileEvent>().SetTile(tile);
         GameObject.Find("TileBoard").GetComponent<TileBoard>().tilesPositions.Add(tile);
         p.used = true;
         _tableClient.SendTilePosition(tile);

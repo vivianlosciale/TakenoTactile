@@ -31,21 +31,18 @@ public class TileEvent : MonoBehaviour
             {
                 _objectsValues.Add(tuioValue);
                 _numberOfBamboos++;
-                _tableClient.SendBambooPlaced(MessageQuery.WaitingChoseRain, PositionDto.ToString(_tile.position.x, _tile.position.y));
+                _tableClient.SendBambooPlaced(MessageQuery.WaitingChoseRain, _tile.position);
             }
-            if (_tableClient.CanPlaceBambooFromFarmer() && _numberOfBamboos < 4)
+            if (_tableClient.IsGardener(tuioValue) && _tableClient.CanMoveFarmer(_tile.position))
             {
-                Debug.Log("Je peux bouger le fermier");
-                if (_tableClient.IsGardener(tuioValue))
-                {
-                    Debug.Log("Je suis le fermier");
-                    _tableClient.SetGardenerPosition(_tile.position);
-                } else
-                {
-                    _objectsValues.Add(tuioValue);
-                    _numberOfBamboos++;
-                    _tableClient.SendBambooPlaced(MessageQuery.WaitingMoveFarmer, PositionDto.ToString(_tile.position.x, _tile.position.y));
-                }
+                Debug.Log("Je suis le fermier");
+                _tableClient.SetGardenerPosition(_tile.position);
+            }
+            else if (_tableClient.CanPlaceBambooFromFarmer(_tile.position) && _numberOfBamboos < 4 && _tableClient.IsBamboo(tuioValue))
+            {
+                _objectsValues.Add(tuioValue);
+                _numberOfBamboos++;
+                _tableClient.SendBambooPlaced(MessageQuery.PlaceBamboo, _tile.position);
             }
         }
     }

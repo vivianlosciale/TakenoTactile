@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -91,5 +92,32 @@ public class TileBoard : MonoBehaviour
             line.Add(tileInProgress);
         }
         return line;
+    }
+
+    internal void ActivateGardenerTile(Vector2Int gardenerPosition)
+    {
+        foreach (Tile t in tilesPositions)
+        {
+            if (t.position != gardenerPosition)
+            {
+                t.GameObject.AddComponent<TileMaterial>();
+            }
+        }
+    }
+
+    internal void DeactivateGardenerTile(Vector2Int gardenerPosition)
+    {
+        foreach (Tile t in tilesPositions)
+        {
+            if (t.position != gardenerPosition)
+            {
+                Destroy(t.GameObject.GetComponent<TileMaterial>());
+            }
+        }
+    }
+
+    internal bool IsFarmerPosition(Vector2Int position)
+    {
+        return position.Equals(gardenerPosition);
     }
 }

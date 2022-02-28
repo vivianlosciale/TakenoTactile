@@ -22,6 +22,7 @@ public class TableClient : MonoBehaviour
 
     private bool _canPlaceBambooFromRainPower;
     private bool _canPlaceBambooFromFarmer;
+    private bool _canMoveFarmer;
     private bool _canEatBamboo;
     private List<Tile> _tilesEventNotAvailable;
 
@@ -60,7 +61,8 @@ public class TableClient : MonoBehaviour
         _canPlaceBambooFromRainPower = false;
         _canPlaceBambooFromFarmer = false;
         _canEatBamboo = false;
-        audioSource = gameObject.GetComponent<AudioSource>();
+        _canMoveFarmer = false;
+         audioSource = gameObject.GetComponent<AudioSource>();
         _actualDice = DiceFaces.None;
         _tilesEventNotAvailable = new List<Tile>();
     }
@@ -181,14 +183,35 @@ public class TableClient : MonoBehaviour
      * Bamboo section
      */
 
+    internal bool CanMoveFarmer(Vector2Int position)
+    {
+        foreach(Tile tile in _tilesEventNotAvailable)
+        {
+            Debug.Log("Position : " + position);
+            Debug.Log("Position2 : " + tile.position);
+            if (tile.position.Equals(position))
+            {
+                return false;
+            }
+        }
+        return _canMoveFarmer;
+    }
+
     internal bool CanPlaceBambooFromRainPower()
     {
         return _canPlaceBambooFromRainPower;
     }
     
-    internal bool CanPlaceBambooFromFarmer()
+    internal bool CanPlaceBambooFromFarmer(Vector2Int position)
     {
-        return _canPlaceBambooFromFarmer;
+        if (_canPlaceBambooFromFarmer && _tileBoard.IsFarmerPosition(position))
+        {
+            return true;
+        } else
+        {
+            _sender.Send(MessageQuery.Error, _currentPlayer.id.ToString(), "Tu ne peux pas poser le jardinier ici !");
+            return false;
+        }
     }
 
     internal bool IsGardener(string tuioValue)
@@ -196,9 +219,16 @@ public class TableClient : MonoBehaviour
         return _tileBoard.IsGardener(tuioValue);
     }
 
+    internal bool IsBamboo(string tuioValue)
+    {
+        return !IsGardener(tuioValue);
+    }
+
     internal void SetGardenerPosition(Vector2Int newPosition)
     {
         _tileBoard.SetGardenerPosition(newPosition);
+        SendBambooPlaced(MessageQuery.WaitingMoveFarmer, newPosition);
+        _canMoveFarmer = false;
     }
 
     internal bool CanEatBamboo()
@@ -206,22 +236,28 @@ public class TableClient : MonoBehaviour
         return _canEatBamboo;
     }
 
-    internal void SendBambooPlaced(MessageQuery messageQuery, string cardPosition)
+    internal void SendBambooPlaced(MessageQuery messageQuery, Vector2Int newPosition)
     {
-        switch(messageQuery)
+        string cardPosition = PositionDto.ToString(newPosition.x, newPosition.y);
+        switch (messageQuery)
         {
             case MessageQuery.WaitingChoseRain:
                 _sender.Send(MessageQuery.ChosenPosition, cardPosition);
                 _canPlaceBambooFromRainPower = false;
-                foreach (Tile tile in _tilesEventNotAvailable)
-                {
-                    Destroy(tile.GameObject.GetComponent<TileMaterial>());
-                }
                 break;
             case MessageQuery.WaitingMoveFarmer:
                 _sender.Send(MessageQuery.ChosenPosition, cardPosition);
-                _canPlaceBambooFromFarmer = false;
+                StartCoroutine(_currentPlayer.UseAction());
                 break;
+            case MessageQuery.PlaceBamboo:
+                _sender.Send(MessageQuery.BambooPlaced);
+                _canPlaceBambooFromFarmer = false;
+                _tileBoard.DeactivateGardenerTile(newPosition);
+                break;
+        }
+        foreach (Tile tile in _tilesEventNotAvailable)
+        {
+            Destroy(tile.GameObject.GetComponent<TileMaterial>());
         }
     }
 
@@ -238,6 +274,7 @@ public class TableClient : MonoBehaviour
         } else
         {
             //TODO envoie au serveur un message d'erreur
+            //_sender.Send(MessageQuery.Error, player.id.ToString(), "Tu ne peux pas jouer d'actions !");
         }
     }
 
@@ -252,6 +289,7 @@ public class TableClient : MonoBehaviour
         else
         {
             //TODO envoie au serveur un message d'erreur
+            //_sender.Send(MessageQuery.Error, player.id.ToString(), "Tu ne peux pas jouer d'actions !");
         }
     }
 
@@ -404,7 +442,7 @@ public class TableClient : MonoBehaviour
                     _tilesEventNotAvailable = _tileBoard.TilesWhereCantPlaceBamboo();
                     if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
-                        SendBambooPlaced(MessageQuery.WaitingChoseRain, PositionDto.ToString(0, 0));
+                        SendBambooPlaced(MessageQuery.WaitingChoseRain, new Vector2Int(0,0));
                         return;
                     }
                     _canPlaceBambooFromRainPower = true;
@@ -417,8 +455,15 @@ public class TableClient : MonoBehaviour
             case MessageQuery.WaitingMoveFarmer:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _canPlaceBambooFromFarmer = true;
+                    _canMoveFarmer = true;
                     _tileBoard.ActivateGardenerNeighborsSlot();
+                });
+                break;
+            case MessageQuery.PlaceBamboo:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _tileBoard.ActivateGardenerTile(_tileBoard.gardenerPosition);
+                    _canPlaceBambooFromFarmer = true;
                 });
                 break;
             default:
