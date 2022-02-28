@@ -171,6 +171,17 @@ public class MobileClient : MonoBehaviour
                    _helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
                 });
                 break;
+            case MessageQuery.RainPower:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    var wasPlaced = bool.Parse(parser.GetMessageBody());
+                    _popUpSystem.PopUp(wasPlaced
+                        ? "Votre bambou a poussé ! Regardez comme il est beau !"
+                        : "Une erreur s'est produite ! Malheureusement, nous ne pouvons pas gérer ce cas de figure. Veuillez recommencer la partie.");
+                });
+                break;
+            
+            //FARMER ACTIONS
             case MessageQuery.WaitingMoveFarmer:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
@@ -184,6 +195,22 @@ public class MobileClient : MonoBehaviour
                     _gameActions.PlaceBamboo(bool.Parse(parser.GetMessageBody()));
                 });
                 break;
+            
+            //PANDAS ACTIONS
+            case MessageQuery.WaitingMovePanda:                
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Vous pouvez déplacer le panda.");
+                    _helper.UpdateHelpMessage("Vous pouvez déplacer le panda.");
+                });
+                break;
+            case MessageQuery.EatBamboo:                
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Vous avez mangé un bambou ! Il s'est ajouté à votre réserve.");
+                });
+                break;
+            
             //CHOSEN ACTIONS ON THE TABLE
             case MessageQuery.ValidateChoice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
@@ -268,10 +295,9 @@ public class MobileClient : MonoBehaviour
             
             //ERROR
             case MessageQuery.Error:
-                //TODO
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("Erreur : " + parser.GetMessageBody());
+                    _gameActions.DisplayError(parser.GetMessageBody());
                 });
                 break;
         }

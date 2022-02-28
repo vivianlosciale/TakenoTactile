@@ -24,7 +24,7 @@ public class Reserv : MonoBehaviour
     public GameObject helpButton;
     private bool ARActive;
     private string InARScreen = "Retour";
-    private string InGameScreen = "Ma réserve";
+    private string InGameScreen = "Bambous";
     public Text ARButtonText;
     
     private float offset = 0.035f;
