@@ -11,6 +11,7 @@ public class TableRoom : SocketRoom
     private CardTypes _pickCard;
     private UpgradeType _pickUpgrade;
     private bool _pickTiles;
+    private bool _objectMoved;
     private PlayerRoom? _currentPlayer;
     private readonly List<Actions> _chosenPowers = new();
 
@@ -42,6 +43,10 @@ public class TableRoom : SocketRoom
                 break;
             case MessageQuery.PickTiles:
                 _pickTiles = true;
+                break;
+            case MessageQuery.BambooEaten:
+            case MessageQuery.BambooPlaced:
+                _objectMoved = true;
                 break;
             case MessageQuery.ChoseAction:
                 Actions action = PowersMethods.ToPowers(message.GetBody());
@@ -121,7 +126,14 @@ public class TableRoom : SocketRoom
     public PositionDto WaitForSelectPosition()
     {
         _tilePosition = null;
+        Console.WriteLine("Waiting for the current player to chose a position!");
         while (_tilePosition == null) WaitSeconds(1);
         return _tilePosition;
+    }
+
+    public void WaitForObjectMoved()
+    {
+        _objectMoved = false;
+        while (!_objectMoved) WaitSeconds(1);
     }
 }

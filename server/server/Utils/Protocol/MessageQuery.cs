@@ -23,7 +23,7 @@ public enum MessageQuery
     
     /**
      * FROM/TO: everyone -> everyone
-     * ARGS:    a string error
+     * ARGS:    a player number and a string error
      *     To warn of an error
      */
     Error,
@@ -219,13 +219,57 @@ public enum MessageQuery
      */
     WaitingMoveFarmer,
     
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     *
+     * From/TO: server -> table
+     * ARGS:    position object
+     *     Inform that the server awaits the table to
+     *     confirm a bamboo was places
+     */
+    PlaceBamboo,
+    
+    /**
+     * FROM/TO: table -> server
+     * NO ARGS
+     *     Inform that a bamboo was correctly placed
+     */
+    BambooPlaced,
+    
     
     
     /***************************************
                MOVE PANDA ACTION
      ***************************************/
     
-    // TODO
+    /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table
+     *     to send a panda move position
+     */
+    WaitingMovePanda,
+    
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     *
+     * From/TO: server -> table
+     * ARGS:    position object
+     *     Inform that the server awaits the table to
+     *     confirm a bamboo was removed
+     */
+    EatBamboo,
+    
+    /**
+     * FROM/TO: table -> server
+     * NO ARGS
+     *     Inform that a bamboo was correctly eaten
+     */
+    BambooEaten,
     
     
     

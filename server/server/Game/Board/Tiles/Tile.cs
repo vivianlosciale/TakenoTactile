@@ -39,6 +39,7 @@ public class Tile
 
     public bool CanGrow()
     {
+        if (_upgrade is Castle) return false;
         return _irrigation.Contains(true) || _upgrade.BambooCanGrow();
     }
 

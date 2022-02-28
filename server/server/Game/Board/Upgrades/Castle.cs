@@ -1,6 +1,6 @@
 namespace server.Game.Board.Upgrades;
 
-public class Lake : NoUpgrade
+public class Castle : NoUpgrade
 {
     public override int MaxGrowthSize()
     {

@@ -26,13 +26,16 @@ public class MoveFarmer: PowerAction
         else if (tile.CanGrow())
         {
             tile.Grow();
-            player.SendEvent(MessageQuery.RainPower, "true");
-            table.SendEvent(MessageQuery.RainPower, chosenPosition.ToString());
+            player.SendEvent(MessageQuery.PlaceBamboo, "true");
+            table.SendEvent(MessageQuery.PlaceBamboo, chosenPosition.ToString());
+            Console.WriteLine("Waiting for a bamboo to be placed at the farmer position!");
+            table.WaitForObjectMoved();
         }
-        
-        else player.SendEvent(MessageQuery.RainPower, "false");
-        Console.WriteLine("Player "+player.GetNumber()+" has no right to use that much power !!!");
+        else
+        {
+            player.SendEvent(MessageQuery.PlaceBamboo, "false");
+            Console.WriteLine("Player "+player.GetNumber()+" has no right to use that much power !!!");
+        }
         */
-        
     }
 }
