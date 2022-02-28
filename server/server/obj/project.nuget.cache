@@ -1,11 +1,11 @@
 {
   "version": 2,
-  "dgSpecHash": "jD9z6SOx7gGM+fXBYpBd/Bu58kPE/WesJWrOBUdsnKH4xzO2mXLJHC575oxhcuwNbWyW+nGPzIhn+OKlaGdXpQ==",
+  "dgSpecHash": "KvEUn2Mi/SzwPl1CzI3Go5QKZIHyuOR3nnCMPtqzm1ZWY1aybFYZ7h3eXJHIKRSZ7JuB7uTkj96/1+h/tpNgvQ==",
   "success": true,
   "projectFilePath": "/home/ludovic/Bureau/Ecole/SI-5/IHM/TakenoTactile/server/server/server.csproj",
   "expectedPackageFiles": [
     "/home/ludovic/.nuget/packages/websocketsharp/1.0.3-rc11/websocketsharp.1.0.3-rc11.nupkg.sha512",
-    "/home/ludovic/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.0/microsoft.aspnetcore.app.ref.6.0.0.nupkg.sha512"
+    "/home/ludovic/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.2/microsoft.aspnetcore.app.ref.6.0.2.nupkg.sha512"
   ],
   "logs": [
     {

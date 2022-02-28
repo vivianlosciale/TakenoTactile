@@ -87,6 +87,12 @@ public class Server
 
     public void SendError(int playerNumber, string body)
     {
-        _players[playerNumber].SendEvent(MessageQuery.Error, body);
+        foreach (PlayerRoom player in _players)
+        {
+            if (player.GetNumber().Equals(playerNumber))
+            {
+                player.SendEvent(MessageQuery.Error, body);
+            }
+        }
     }
 }

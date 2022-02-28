@@ -53,7 +53,7 @@ public enum MessageQuery
      *     To inform that the game is full and no more players can join
      */
     GameIsFull,
-    
+
     /**
      * FROM/TO: table -> server
      * NO ARGS
@@ -119,15 +119,10 @@ public enum MessageQuery
      * ARGS:    a boolean success status
      *     Inform the mobile the action failed or succeeded
      *
-     * FROM/TO: server -> table
-     * ARGS:    the position dto where the rain should fall
-     *     Inform that the server awaits the table
-     *     to send a placed tile position
      */
     RainPower,
-    
-    
-    
+
+
     /***************************************
               THUNDER DICE POWER
      ***************************************/
@@ -169,13 +164,36 @@ public enum MessageQuery
     
     WaitingMoveFarmer,
     
+    /***************************************
+             PLACE BAMBOO ACTION
+   ***************************************/  
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     */
+    PlaceBamboo,
+    
     
     
     /***************************************
                MOVE PANDA ACTION
      ***************************************/
     
-    // TODO
+    /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table
+     *     to send a panda move position
+     */
+    WaitingMovePanda,
+    
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     */
+    EatBamboo,
     
     
     

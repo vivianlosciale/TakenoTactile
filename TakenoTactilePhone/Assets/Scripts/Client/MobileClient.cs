@@ -156,6 +156,7 @@ public class MobileClient : MonoBehaviour
                     _gameStarted = true;
                 });
                 break;
+           
             //METEO ACTIONS
             case MessageQuery.WaitingDiceResult:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
@@ -170,11 +171,43 @@ public class MobileClient : MonoBehaviour
                    _helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
                 });
                 break;
+            case MessageQuery.RainPower:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    var wasPlaced = bool.Parse(parser.GetMessageBody());
+                    _popUpSystem.PopUp(wasPlaced
+                        ? "Votre bambou a poussé ! Regardez comme il est beau !"
+                        : "Une erreur s'est produite ! Malheureusement, nous ne pouvons pas gérer ce cas de figure. Veuillez recommencer la partie.");
+                });
+                break;
+            
+            //FARMER ACTIONS
             case MessageQuery.WaitingMoveFarmer:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _popUpSystem.PopUp("Vous pouvez déplacer le jardinier.");
                     _helper.UpdateHelpMessage("Vous pouvez déplacer le jardinier.");
+                });
+                break;
+            case MessageQuery.PlaceBamboo:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.PlaceBamboo(bool.Parse(parser.GetMessageBody()));
+                });
+                break;
+            
+            //PANDAS ACTIONS
+            case MessageQuery.WaitingMovePanda:                
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Vous pouvez déplacer le panda.");
+                    _helper.UpdateHelpMessage("Vous pouvez déplacer le panda.");
+                });
+                break;
+            case MessageQuery.EatBamboo:                
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Vous avez mangé un bambou ! Il s'est ajouté à votre réserve.");
                 });
                 break;
             
@@ -251,11 +284,20 @@ public class MobileClient : MonoBehaviour
                     _helper.UpdateHelpMessage("Vous avez terminé vos actions. Vous pouvez valider un objectif ou finir votre tour.");
                 });
                 break;
+            
             //RESERV INTERACTIONS
             case MessageQuery.FoodStorage:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _reserv.CreateBamboo(parser.GetMessageBody());
+                });
+                break;
+            
+            //ERROR
+            case MessageQuery.Error:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.DisplayError(parser.GetMessageBody());
                 });
                 break;
         }

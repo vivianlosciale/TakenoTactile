@@ -15,7 +15,7 @@ public class PlayerRoom : SocketRoom
     
     private readonly List<VictoryCard> _victoryCards = new();
     private readonly List<VictoryCard> _validatedCards = new();
-    private readonly FoodStorage _foodStorage = new ();
+    private readonly FoodStorage _foodStorage = new (1,6,3);
     private readonly Dictionary<UpgradeType, int> _upgrades = new();
 
     private bool _isPlaying;

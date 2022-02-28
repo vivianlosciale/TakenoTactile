@@ -9,7 +9,7 @@ public class Field
     
     public Field()
     {
-        Tile firstTile = new Tile("Initial", TileColor.None, new Lake());
+        Tile firstTile = new Tile("Initial", TileColor.None, new Castle());
         firstTile.AddIrrigation(RelativePosition.TopRight);
         firstTile.AddIrrigation(RelativePosition.Right);
         firstTile.AddIrrigation(RelativePosition.BottomRight);
