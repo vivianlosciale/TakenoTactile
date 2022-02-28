@@ -23,26 +23,27 @@ public class TileEvent : MonoBehaviour
 
     public void OnBambooPlaced(string tuioValue)
     {
-        Debug.Log("Coucou je suis ici");
         if (!_objectsValues.Contains(tuioValue))
         {
-            Debug.Log("I'm here");
             if (_tableClient.CanPlaceBambooFromRainPower() && _numberOfBamboos < 4)
             {
                 _objectsValues.Add(tuioValue);
                 _numberOfBamboos++;
-                _tableClient.SendBambooPlaced(MessageQuery.WaitingChoseRain, _tile.position);
+                _tableClient.SendBambooAction(MessageQuery.WaitingChoseRain, _tile.position);
             }
-            if (_tableClient.IsGardener(tuioValue) && _tableClient.CanMoveFarmer(_tile.position))
+            if (_tableClient.IsGardener(tuioValue) && _tableClient.CanMoveFarmer(_tile))
             {
-                Debug.Log("Je suis le fermier");
                 _tableClient.SetGardenerPosition(_tile.position);
             }
-            else if (_tableClient.CanPlaceBambooFromFarmer(_tile.position) && _numberOfBamboos < 4 && _tableClient.IsBamboo(tuioValue))
+            if (_tableClient.IsPanda(tuioValue) && _tableClient.CanMovePanda(_tile))
+            {
+                _tableClient.SetPandaPosition(_tile.position);
+            }
+            if (_tableClient.CanPlaceBambooFromFarmer(_tile.position) && _numberOfBamboos < 4 && _tableClient.IsBamboo(tuioValue))
             {
                 _objectsValues.Add(tuioValue);
                 _numberOfBamboos++;
-                _tableClient.SendBambooPlaced(MessageQuery.PlaceBamboo, _tile.position);
+                _tableClient.SendBambooAction(MessageQuery.PlaceBamboo, _tile.position);
             }
         }
     }
@@ -51,11 +52,13 @@ public class TileEvent : MonoBehaviour
     {
         if (_objectsValues.Contains(tuioValue))
         {
-            if (_tableClient.CanEatBamboo())
+            Debug.Log("Je suis sûr la tuile");
+            if (_tableClient.CanEatBamboo(_tile.position))
             {
                 _objectsValues.Remove(tuioValue);
                 _numberOfBamboos--;
-                //_tableClient.SendBambooEated(PositionDto.ToString(_tile.position.x, _tile.position.y));
+                Debug.Log("J'ai enlevé le bambou");
+                _tableClient.SendBambooAction(MessageQuery.EatBamboo, _tile.position);
             }
         }
     }

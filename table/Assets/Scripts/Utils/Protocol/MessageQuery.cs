@@ -2,6 +2,7 @@ using System;
 
 public enum MessageQuery
 {
+
     /***************************************
                    INFORMATIVE
      ***************************************/
@@ -22,7 +23,7 @@ public enum MessageQuery
 
     /**
      * FROM/TO: everyone -> everyone
-     * ARGS:    a string error
+     * ARGS:    a player number and a string error
      *     To warn of an error
      */
     Error,
@@ -42,8 +43,8 @@ public enum MessageQuery
 
     /**
      * FROM/TO: mobile -> server
-     * ARGS:    a unique identifier
-     *     To inform the server the mobile requires a connection
+     * ARGS:    the selected room number, a unique identifier
+     *     To inform the server the mobile requires a connection in the given room
      */
     PlayerConnection,
 
@@ -218,9 +219,23 @@ public enum MessageQuery
      */
     WaitingMoveFarmer,
 
-
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     *
+     * From/TO: server -> table
+     * ARGS:    position object
+     *     Inform that the server awaits the table to
+     *     confirm a bamboo was places
+     */
     PlaceBamboo,
 
+    /**
+     * FROM/TO: table -> server
+     * NO ARGS
+     *     Inform that a bamboo was correctly placed
+     */
     BambooPlaced,
 
 
@@ -229,7 +244,32 @@ public enum MessageQuery
                MOVE PANDA ACTION
      ***************************************/
 
-    // TODO
+    /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table
+     *     to send a panda move position
+     */
+    WaitingMovePanda,
+
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    boolean state of the action completion
+     *     Inform the mobile about the action completion
+     *
+     * From/TO: server -> table
+     * ARGS:    position object
+     *     Inform that the server awaits the table to
+     *     confirm a bamboo was removed
+     */
+    EatBamboo,
+
+    /**
+     * FROM/TO: table -> server
+     * NO ARGS
+     *     Inform that a bamboo was correctly eaten
+     */
+    BambooEaten,
 
 
 
@@ -245,11 +285,25 @@ public enum MessageQuery
     WaitingPickCard,
 
     /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table to pick an upgrade
+     */
+    WaitingPickUpgrade,
+
+    /**
      * FROM/TO: table -> server
      * NO ARGS
      *     Inform the server a pick card request is made
      */
     PickCard,
+
+    /**
+     * FROM/TO: table -> server
+     * NO ARGS
+     *     Inform the server a pick upgrade request is made
+     */
+    PickUpgrade,
 
     /**
      * FROM/TO: server -> mobile
@@ -330,9 +384,9 @@ public enum MessageQuery
      * ARGS:    the objective name
      *     To ask the server to try validating an objective
      *
-     * FROM/TO: server -> mobile
+     * FROM/TO: server -> everyone
      * ARGS:    the objective name
-     *     To inform the mobile the objective was validated
+     *     To inform the objective was validated
      */
     ValidateObjective,
 
@@ -342,6 +396,26 @@ public enum MessageQuery
      *     To inform the mobile the objective can't be validated
      */
     InvalidObjective,
+
+
+
+    /***************************************
+               FINISH THE TURN
+     ***************************************/
+
+    /**
+     * FROM/TO: mobile -> server
+     * NO ARGS
+     *     To inform that the mobile awaits the server to send the food quantity
+     */
+    WaitingFoodStorage,
+
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    the food quantity as a bamboo dto
+     *     To send the food quantity to the mobile
+     */
+    FoodStorage,
 
 
 
@@ -364,10 +438,13 @@ public enum MessageQuery
     FinishTurn,
 }
 
+
+
 public static class QueryMethods
 {
-    public static string ToString( MessageQuery query)
+    public static string ToString(MessageQuery query)
     {
+
         string? res = Enum.GetName(typeof(MessageQuery), query);
         if (res == null) return "None";
         return res;

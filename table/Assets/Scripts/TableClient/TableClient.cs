@@ -23,6 +23,7 @@ public class TableClient : MonoBehaviour
     private bool _canPlaceBambooFromRainPower;
     private bool _canPlaceBambooFromFarmer;
     private bool _canMoveFarmer;
+    private bool _canMovePanda;
     private bool _canEatBamboo;
     private List<Tile> _tilesEventNotAvailable;
 
@@ -41,7 +42,7 @@ public class TableClient : MonoBehaviour
     public Loading _loading;
 
     private static string GAME_SCENE = "Game";
-    private static string HOME_SCENE = "Takenotest";
+    private static string HOME_SCENE = "TakenoHome";
 
     /*
      * Private constructor to avoid outside instantiations.
@@ -62,6 +63,7 @@ public class TableClient : MonoBehaviour
         _canPlaceBambooFromFarmer = false;
         _canEatBamboo = false;
         _canMoveFarmer = false;
+        _canMovePanda = false;
          audioSource = gameObject.GetComponent<AudioSource>();
         _actualDice = DiceFaces.None;
         _tilesEventNotAvailable = new List<Tile>();
@@ -183,18 +185,22 @@ public class TableClient : MonoBehaviour
      * Bamboo section
      */
 
-    internal bool CanMoveFarmer(Vector2Int position)
+    internal bool CanMoveFarmer(Tile tile)
     {
-        foreach(Tile tile in _tilesEventNotAvailable)
+        if (_tilesEventNotAvailable.Contains(tile))
         {
-            Debug.Log("Position : " + position);
-            Debug.Log("Position2 : " + tile.position);
-            if (tile.position.Equals(position))
-            {
-                return false;
-            }
+            return false;
         }
         return _canMoveFarmer;
+    }
+    
+    internal bool CanMovePanda(Tile tile)
+    {
+        if (_tilesEventNotAvailable.Contains(tile))
+        {
+            return false;
+        }
+        return _canMovePanda;
     }
 
     internal bool CanPlaceBambooFromRainPower()
@@ -219,24 +225,47 @@ public class TableClient : MonoBehaviour
         return _tileBoard.IsGardener(tuioValue);
     }
 
+    internal bool IsPanda(string tuioValue)
+    {
+        return _tileBoard.IsPanda(tuioValue);
+    }
+
     internal bool IsBamboo(string tuioValue)
     {
-        return !IsGardener(tuioValue);
+        return !IsGardener(tuioValue) && !IsPanda(tuioValue);
     }
 
     internal void SetGardenerPosition(Vector2Int newPosition)
     {
         _tileBoard.SetGardenerPosition(newPosition);
-        SendBambooPlaced(MessageQuery.WaitingMoveFarmer, newPosition);
+        SendBambooAction(MessageQuery.WaitingMoveFarmer, newPosition);
         _canMoveFarmer = false;
     }
 
-    internal bool CanEatBamboo()
+    internal void SetPandaPosition(Vector2Int newPosition)
     {
-        return _canEatBamboo;
+        _tileBoard.SetPandaPosition(newPosition);
+        SendBambooAction(MessageQuery.WaitingMovePanda, newPosition);
+        _canMovePanda = false;
     }
 
-    internal void SendBambooPlaced(MessageQuery messageQuery, Vector2Int newPosition)
+    internal bool CanEatBamboo(Vector2Int position)
+    {
+        Debug.Log("Je vérifie que je peux être mangé");
+        Debug.Log("CAN EAT : " + _canEatBamboo);
+        Debug.Log("IS PANDA POSITION : " + _tileBoard.IsPandaPosition(position));
+        if (_canEatBamboo && _tileBoard.IsPandaPosition(position))
+        {
+            return true;
+        }
+        else
+        {
+            _sender.Send(MessageQuery.Error, _currentPlayer.id.ToString(), "Il n'y a pas de bambous à manger !");
+            return false;
+        }
+    }
+
+    internal void SendBambooAction(MessageQuery messageQuery, Vector2Int newPosition)
     {
         string cardPosition = PositionDto.ToString(newPosition.x, newPosition.y);
         switch (messageQuery)
@@ -246,13 +275,19 @@ public class TableClient : MonoBehaviour
                 _canPlaceBambooFromRainPower = false;
                 break;
             case MessageQuery.WaitingMoveFarmer:
+            case MessageQuery.WaitingMovePanda:
                 _sender.Send(MessageQuery.ChosenPosition, cardPosition);
                 StartCoroutine(_currentPlayer.UseAction());
                 break;
             case MessageQuery.PlaceBamboo:
                 _sender.Send(MessageQuery.BambooPlaced);
                 _canPlaceBambooFromFarmer = false;
-                _tileBoard.DeactivateGardenerTile(newPosition);
+                _tileBoard.DeactivateGardenerTile();
+                break;
+            case MessageQuery.EatBamboo:
+                _sender.Send(MessageQuery.BambooEaten);
+                _canEatBamboo = false;
+                _tileBoard.DeactivatePandaTile();
                 break;
         }
         foreach (Tile tile in _tilesEventNotAvailable)
@@ -442,7 +477,7 @@ public class TableClient : MonoBehaviour
                     _tilesEventNotAvailable = _tileBoard.TilesWhereCantPlaceBamboo();
                     if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
-                        SendBambooPlaced(MessageQuery.WaitingChoseRain, new Vector2Int(0,0));
+                        SendBambooAction(MessageQuery.WaitingChoseRain, new Vector2Int(0,0));
                         return;
                     }
                     _canPlaceBambooFromRainPower = true;
@@ -456,14 +491,28 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _canMoveFarmer = true;
-                    _tileBoard.ActivateGardenerNeighborsSlot();
+                    _tilesEventNotAvailable = _tileBoard.ActivateGardenerNeighborsSlot();
                 });
                 break;
             case MessageQuery.PlaceBamboo:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _tileBoard.ActivateGardenerTile(_tileBoard.gardenerPosition);
+                    _tileBoard.ActivateGardenerTile();
                     _canPlaceBambooFromFarmer = true;
+                });
+                break;
+            case MessageQuery.WaitingMovePanda:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _canMovePanda = true;
+                    _tilesEventNotAvailable = _tileBoard.ActivatePandaNeighborsSlot();
+                });
+                break;
+            case MessageQuery.EatBamboo:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _tileBoard.ActivatePandaTile();
+                    _canEatBamboo = true;
                 });
                 break;
             default:

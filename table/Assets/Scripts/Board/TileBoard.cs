@@ -8,7 +8,7 @@ public class TileBoard : MonoBehaviour
     public List<Tile> tilesPositions;
     public Vector2Int pandaPosition;
     public Vector2Int gardenerPosition;
-    private string pandadId;
+    private string pandaId;
     private string gardenerId;
 
     private void Awake()
@@ -20,16 +20,27 @@ public class TileBoard : MonoBehaviour
         TableClient tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         tableClient.SetTileBoard(this);
         gardenerId = "4";
+        pandaId = "5";
     }
 
     public bool IsGardener(string id)
     {
         return gardenerId.Equals(id);
     }
+    
+    public bool IsPanda(string id)
+    {
+        return pandaId.Equals(id);
+    }
 
     public void SetGardenerPosition(Vector2Int newPosition)
     {
         gardenerPosition = newPosition;
+    }
+    
+    public void SetPandaPosition(Vector2Int newPosition)
+    {
+        pandaPosition = newPosition;
     }
 
     public List<Tile> TilesWhereCantPlaceBamboo()
@@ -47,33 +58,33 @@ public class TileBoard : MonoBehaviour
         return tilesAvailable;
     }
 
-    public void ActivatePandaNeighborsSlot()
+    public List<Tile> ActivatePandaNeighborsSlot()
     {
-        ActivateNeighborsSlot(pandaPosition);
+        return ActivateNeighborsSlot(pandaPosition);
     }
 
-    public void ActivateGardenerNeighborsSlot()
+    public List<Tile> ActivateGardenerNeighborsSlot()
     {
-        ActivateNeighborsSlot(gardenerPosition);
+        return ActivateNeighborsSlot(gardenerPosition);
     }
 
-    private void ActivateNeighborsSlot(Vector2Int pawn)
+    private List<Tile> ActivateNeighborsSlot(Vector2Int pawn)
     {
         List<Tile> neighbors = GetPawnActiveSlot(pawn);
         List<Tile> toDeactivate = new List<Tile>(tilesPositions);
         toDeactivate.RemoveAll(e => neighbors.Contains(e));
         foreach (Tile t in toDeactivate)
         {
-            Debug.Log(t.position);
             t.GameObject.AddComponent<TileMaterial>();
         }
+        return toDeactivate;
     }
 
     private List<Tile> GetPawnActiveSlot(Vector2Int pawn)
     {
         Tile origin = tilesPositions.Find(e => e.position == pawn);
         List<Tile> foundActiveSlot = new List<Tile>();
-        foundActiveSlot.Add(origin);
+        //foundActiveSlot.Add(origin);
         foundActiveSlot.AddRange(FindLineNeighbors(origin, 0, 1));
         foundActiveSlot.AddRange(FindLineNeighbors(origin, 0, -1));
         foundActiveSlot.AddRange(FindLineNeighbors(origin, 1, 1));
@@ -94,7 +105,17 @@ public class TileBoard : MonoBehaviour
         return line;
     }
 
-    internal void ActivateGardenerTile(Vector2Int gardenerPosition)
+    internal void ActivateGardenerTile()
+    {
+        ActivateTile(gardenerPosition);
+    }
+
+    internal void ActivatePandaTile()
+    {
+        ActivateTile(pandaPosition);
+    }
+
+    private void ActivateTile(Vector2Int gardenerPosition)
     {
         foreach (Tile t in tilesPositions)
         {
@@ -105,7 +126,17 @@ public class TileBoard : MonoBehaviour
         }
     }
 
-    internal void DeactivateGardenerTile(Vector2Int gardenerPosition)
+    internal void DeactivateGardenerTile()
+    {
+        DeactivateTile(gardenerPosition);
+    }
+
+    internal void DeactivatePandaTile()
+    {
+        DeactivateTile(pandaPosition);
+    }
+
+    private void DeactivateTile(Vector2Int gardenerPosition)
     {
         foreach (Tile t in tilesPositions)
         {
@@ -119,5 +150,10 @@ public class TileBoard : MonoBehaviour
     internal bool IsFarmerPosition(Vector2Int position)
     {
         return position.Equals(gardenerPosition);
+    }
+
+    internal bool IsPandaPosition(Vector2Int position)
+    {
+        return position.Equals(pandaPosition);
     }
 }

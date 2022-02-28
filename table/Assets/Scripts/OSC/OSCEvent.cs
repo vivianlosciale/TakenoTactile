@@ -13,7 +13,7 @@ public abstract class OSCEvent : MonoBehaviour
     [SerializeField]
     protected UnityEvent<string> OnCollisionEnter;
     [SerializeField]
-    protected UnityEvent OnCollisionExit;
+    protected UnityEvent<string> OnCollisionExit;
 
     public List<TuioEntity> detections = new List<TuioEntity>();
 
@@ -28,7 +28,7 @@ public abstract class OSCEvent : MonoBehaviour
             bool touched = Physics.Raycast(ray, out RaycastHit hit);
             if (t.State == TuioState.CLICK_UP || hit.transform != transform || !touched)
             {
-                OnCollisionExit.Invoke();
+                OnCollisionExit.Invoke((t as TuioObject).GetValue());
                 toRemove.Add(t);
             }
         }
