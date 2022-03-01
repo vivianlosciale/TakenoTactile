@@ -28,7 +28,14 @@ public abstract class OSCEvent : MonoBehaviour
             bool touched = Physics.Raycast(ray, out RaycastHit hit);
             if (t.State == TuioState.CLICK_UP || hit.transform != transform || !touched)
             {
-                OnCollisionExit.Invoke((t as TuioObject).GetValue());
+                if (t is TuioObject tuio)
+                {
+                    OnCollisionExit.Invoke(tuio.GetValue());
+                }
+                else 
+                {
+                    OnCollisionExit.Invoke("");
+                }
                 toRemove.Add(t);
             }
         }
