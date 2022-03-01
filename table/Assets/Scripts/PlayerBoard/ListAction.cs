@@ -4,37 +4,36 @@ using UnityEngine;
 
 public class ListAction : MonoBehaviour
 {
-    List<string> icons = new List<string>();
-    public void AddIcon(string icon)
+    List<string> actionIcons = new List<string>();
+    public void AddActionIcon(string icon)
     {
-        icons.Add(icon);
+        actionIcons.Add(icon);
         UpdateCollection();
     }
 
-    public void RemoveIcon(string icon)
+    public void RemoveActionIcon(string icon)
     {
-        icons.Remove(icon);
+        actionIcons.Remove(icon);
         UpdateCollection();
     }
 
     private void UpdateCollection()
     {
-
-        int max = 2;
+        int max = 3;
 
         for (int i = 0; i < max; i++)
         {
             transform.GetChild(i).GetComponent<ActionMaterial>().RemoveIcon();
         }
-        for (int i = 0; i < icons.Count; i++)
+        for (int i = 0; i < actionIcons.Count; i++)
         {
-            transform.GetChild(i).GetComponent<ActionMaterial>().AddIcon(icons[i]);
+            transform.GetChild(i).GetComponent<ActionMaterial>().AddIcon(actionIcons[i]);
         }
     }
 
     public void useAction()
     {
-        for (int i = 0; i < icons.Count; i++)
+        for (int i = 0; i < actionIcons.Count; i++)
         {
             ActionMaterial actionMaterial = transform.GetChild(i).GetComponent<ActionMaterial>();
             if (!actionMaterial.used)
@@ -48,10 +47,10 @@ public class ListAction : MonoBehaviour
 
     public void removeAllIcon()
     {
-        for(int i = 0; i < icons.Count; i++)
+        for(int i = 0; i < actionIcons.Count; i++)
         {
             transform.GetChild(i).GetComponent<ActionMaterial>().RemoveIcon();
         }
-        icons = new List<string>();
+        actionIcons = new List<string>();
     }
 }

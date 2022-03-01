@@ -41,13 +41,13 @@ public class PawnEvent : MonoBehaviour
     internal IEnumerator AddIcon(string iconName)
     {
         yield return null;
-        transform.GetChild(6).GetComponent<ListAction>().AddIcon(iconName);
+        transform.GetChild(6).GetComponent<ListAction>().AddActionIcon(iconName);
     }
 
     internal IEnumerator RemoveIcon(string iconName)
     {
         yield return null;
-        transform.GetChild(6).GetComponent<ListAction>().RemoveIcon(iconName);
+        transform.GetChild(6).GetComponent<ListAction>().RemoveActionIcon(iconName);
     }
 
     internal IEnumerator RemoveAllIcon()
