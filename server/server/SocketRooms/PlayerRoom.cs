@@ -16,7 +16,7 @@ public class PlayerRoom : SocketRoom
     
     private readonly List<VictoryCard> _victoryCards = new();
     private readonly List<VictoryCard> _validatedCards = new();
-    private readonly FoodStorage _foodStorage = new ();
+    private readonly FoodStorage _foodStorage = new (10,10,10);
     private readonly Dictionary<UpgradeType, int> _upgrades = new();
 
     private bool _isPlaying;
@@ -156,6 +156,13 @@ public class PlayerRoom : SocketRoom
         _diceRoll = DiceFaces.None;
         Sender.Send(MessageQuery.WaitingDiceResult);
         Console.WriteLine("Waiting for player " + _playerNumber + " to roll the dice...");
+        while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
+        return _diceRoll;
+    }
+
+    public DiceFaces WaitingDiceFace()
+    {
+        _diceRoll = DiceFaces.None;
         while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
         return _diceRoll;
     }

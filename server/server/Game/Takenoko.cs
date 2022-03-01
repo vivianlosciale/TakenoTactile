@@ -53,7 +53,7 @@ public class Takenoko
         {
             player.SendEvent(MessageQuery.EndGame, player.TotalPoints().ToString());
         }
-        winner.SendEvent(MessageQuery.EndGame, winner.GetNumber().ToString());
+        _table.SendEvent(MessageQuery.EndGame, winner.GetNumber().ToString());
         Console.WriteLine("\n======== GAME " + _currentPlayer.GetNumber() + " ENDED ========\n");
         _server.EndGame();
     }

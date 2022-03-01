@@ -121,7 +121,8 @@ public enum MessageQuery
                CHOICE DICE POWER
      ***************************************/
     
-    // TODO
+    // TODO doc
+    WaitingChoseWeather,
     
     
     
