@@ -19,8 +19,8 @@ public class TileBoard : MonoBehaviour
         tilesPositions.Add(new Tile(new Vector2Int(0, 0), transform)); //castle tile
         TableClient tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         tableClient.SetTileBoard(this);
-        gardenerId = "4";//"CE";
-        pandaId = "5";//"CF";
+        gardenerId = "CE";
+        pandaId = "CF";
     }
 
     public bool IsGardener(string id)
@@ -47,6 +47,7 @@ public class TileBoard : MonoBehaviour
     {
         if (tilesPositions.Count == 1) return tilesPositions;
         List<Tile> tilesAvailable = new List<Tile>();
+        tilesAvailable.Add(tilesPositions[0]);
         foreach (Tile tile in tilesPositions)
         {
             TileEvent tileEvent = tile.GameObject.GetComponent<TileEvent>();
@@ -70,6 +71,7 @@ public class TileBoard : MonoBehaviour
 
     private List<Tile> ActivateNeighborsSlot(Vector2Int pawn)
     {
+        if (tilesPositions.Count == 1) return tilesPositions;
         List<Tile> neighbors = GetPawnActiveSlot(pawn);
         List<Tile> toDeactivate = new List<Tile>(tilesPositions);
         toDeactivate.RemoveAll(e => neighbors.Contains(e));

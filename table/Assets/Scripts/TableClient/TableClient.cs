@@ -72,7 +72,6 @@ public class TableClient : MonoBehaviour
     /*
      *  GAME SECTION
      */
-
     internal Player GetCurrentPlayer()
     {
         return _currentPlayer;
@@ -187,35 +186,71 @@ public class TableClient : MonoBehaviour
 
     internal bool CanMoveFarmer(Tile tile)
     {
-        if (_tilesEventNotAvailable.Contains(tile))
+        if (_canMoveFarmer)
         {
+            if (_tilesEventNotAvailable.Contains(tile))
+            {
+                SendErrorToServer(_currentPlayer, "Vous ne pouvez pas poser le jardinier ici ! Replacez le jardinier !");
+                return false;
+            }
+            return true;
+        } else
+        {
+            //Message global
             return false;
         }
-        return _canMoveFarmer;
     }
     
     internal bool CanMovePanda(Tile tile)
     {
-        if (_tilesEventNotAvailable.Contains(tile))
+        if (_canMovePanda)
         {
+            if (_tilesEventNotAvailable.Contains(tile))
+            {
+                SendErrorToServer(_currentPlayer, "Vous ne pouvez pas poser le panda ici ! Replacez le panda !");
+                return false;
+            }
+            return true;
+        }
+        else
+        {
+            //Message global
             return false;
         }
-        return _canMovePanda;
     }
 
-    internal bool CanPlaceBambooFromRainPower()
+    internal bool CanPlaceBambooFromRainPower(Tile tile)
     {
-        return _canPlaceBambooFromRainPower;
+        if (_canPlaceBambooFromRainPower)
+        {
+            if (_tilesEventNotAvailable.Contains(tile))
+            {
+                SendErrorToServer(_currentPlayer, "Vous ne pouvez pas poser de bambou ici ! Placez le autre part !");
+                return false;
+            }
+            return true;
+        }
+        else
+        {
+            //Message global
+            return false;
+        }
     }
     
     internal bool CanPlaceBambooFromFarmer(Vector2Int position)
     {
-        if (_canPlaceBambooFromFarmer && _tileBoard.IsFarmerPosition(position))
+        if (_canPlaceBambooFromFarmer)
         {
+            if (!_tileBoard.IsFarmerPosition(position))
+            {
+                SendErrorToServer(_currentPlayer, "Vous ne pouvez pas poser de bambou ici ! Placez le autre part !");
+                return false;
+            }
             return true;
-        } else
+        }
+        else
         {
-            _sender.Send(MessageQuery.Error, _currentPlayer.id.ToString(), "Tu ne peux pas poser le jardinier ici !");
+            //Message global
             return false;
         }
     }
@@ -251,16 +286,18 @@ public class TableClient : MonoBehaviour
 
     internal bool CanEatBamboo(Vector2Int position)
     {
-        Debug.Log("Je vérifie que je peux être mangé");
-        Debug.Log("CAN EAT : " + _canEatBamboo);
-        Debug.Log("IS PANDA POSITION : " + _tileBoard.IsPandaPosition(position));
-        if (_canEatBamboo && _tileBoard.IsPandaPosition(position))
+        if (_canEatBamboo)
         {
+            if (!_tileBoard.IsPandaPosition(position))
+            {
+                SendErrorToServer(_currentPlayer, "Vous ne pouvez manger ce bambou ! Replacez le !");
+                return false;
+            }
             return true;
         }
         else
         {
-            _sender.Send(MessageQuery.Error, _currentPlayer.id.ToString(), "Il n'y a pas de bambous à manger !");
+            //Message global
             return false;
         }
     }
@@ -309,7 +346,7 @@ public class TableClient : MonoBehaviour
         } else
         {
             //TODO envoie au serveur un message d'erreur
-            //_sender.Send(MessageQuery.Error, player.id.ToString(), "Tu ne peux pas jouer d'actions !");
+            //SendErrorToServer(player, "Tu ne peux pas jouer d'actions !");
         }
     }
 
@@ -324,8 +361,22 @@ public class TableClient : MonoBehaviour
         else
         {
             //TODO envoie au serveur un message d'erreur
-            //_sender.Send(MessageQuery.Error, player.id.ToString(), "Tu ne peux pas jouer d'actions !");
+            //SendErrorToServer(player, "Tu ne peux pas jouer d'actions !")
         }
+    }
+
+    /*
+     * Error section
+     */
+
+    internal void SendErrorToTable(string message)
+    {
+        //_sender.Send(MessageQuery.Error, player.id.ToString(), "Tu ne peux pas jouer d'actions !");
+    }
+
+    internal void SendErrorToServer(Player player, string message)
+    {
+        _sender.Send(MessageQuery.Error, player.id.ToString(), message);
     }
 
     /*
@@ -443,8 +494,10 @@ public class TableClient : MonoBehaviour
                     {
                         StartCoroutine(_currentPlayer.RemoveWeatherImage());
                         StartCoroutine(_currentPlayer.RemoveAllIcon());
+                        _currentPlayer.GetBoard().transform.Find("backgroundPlay").gameObject.SetActive(false);
                     }
                     _currentPlayer = players[int.Parse(message.GetBody())];
+                    _currentPlayer.GetBoard().transform.Find("backgroundPlay").gameObject.SetActive(true);
                 });
                 break;
             case MessageQuery.WaitingChoseAction:
@@ -490,8 +543,13 @@ public class TableClient : MonoBehaviour
             case MessageQuery.WaitingMoveFarmer:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _canMoveFarmer = true;
                     _tilesEventNotAvailable = _tileBoard.ActivateGardenerNeighborsSlot();
+                    if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
+                    {
+                        _sender.Send(MessageQuery.ChosenPosition, PositionDto.ToString(0,0));
+                        return;
+                    }
+                    _canMoveFarmer = true;
                 });
                 break;
             case MessageQuery.PlaceBamboo:
@@ -504,8 +562,13 @@ public class TableClient : MonoBehaviour
             case MessageQuery.WaitingMovePanda:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _canMovePanda = true;
                     _tilesEventNotAvailable = _tileBoard.ActivatePandaNeighborsSlot();
+                    if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
+                    {
+                        _sender.Send(MessageQuery.ChosenPosition, PositionDto.ToString(0, 0));
+                        return;
+                    }
+                    _canMovePanda = true;
                 });
                 break;
             case MessageQuery.EatBamboo:
