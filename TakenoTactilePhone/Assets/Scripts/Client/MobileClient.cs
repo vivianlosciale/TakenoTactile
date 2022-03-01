@@ -1,5 +1,4 @@
 ﻿using System;
-using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -170,7 +169,6 @@ public class MobileClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                    _popUpSystem.PopUp("Action météo\nIl pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
-                   //_helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
                 });
                 break;
             case MessageQuery.WaitingChoseWeather:
@@ -179,7 +177,6 @@ public class MobileClient : MonoBehaviour
                     _gameActions.QuestionMark();
                 });
                 break;
-            
             case MessageQuery.RainPower:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
@@ -227,17 +224,17 @@ public class MobileClient : MonoBehaviour
                 break;
             
             //CHOSEN ACTIONS ON THE TABLE
-            case MessageQuery.ValidateChoice:
-                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
-                {
-                    _gameActions.ValidateChoice(bool.Parse(parser.GetMessageBody()));
-                });
-                break;
             case MessageQuery.WaitingChoseAction :
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _popUpSystem.PopUp("Placez vos pions sur la table pour choisir vos actions.");
                     _helper.UpdateHelpMessage("Placez vos pions sur la table pour choisir vos actions.");
+                });
+                break;
+            case MessageQuery.ValidateChoice:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.ValidateChoice(bool.Parse(parser.GetMessageBody()));
                 });
                 break;
            
@@ -308,24 +305,14 @@ public class MobileClient : MonoBehaviour
                 });
                 break;
             
-            //TODO : MESSAGE DE FIN DE JEU
-            /*
-             * il faut transférer le mobile client dans la scène de fin pour conserver le chemin de comm
-             * on affiche le contenu du message EndGame
-             * afficher
-             * puis afficher le message : Vous avez eu x nombre de point
-             */
-            
-            //queue de messages ?
-            //système de queues ?
-            
+            //AVENGERS END GAME
             case MessageQuery.EndGame:
-                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
-                    {
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() => {
+                        Debug.Log("END GAME RECEIVED");
+                        _serverSocket.Close();
                         var move = gameObject.GetComponent<MoveObject>();
                         move.MoveToEndGameScene(parser.GetMessageBody());
-                    }
-                );
+                    });
                 break;
             
             //ERROR

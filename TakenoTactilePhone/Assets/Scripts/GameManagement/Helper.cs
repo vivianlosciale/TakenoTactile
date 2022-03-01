@@ -6,6 +6,7 @@ public class Helper : MonoBehaviour
     public GameObject PopUp;
     public GameObject ARPopUp;
     private string _helpMessage = "Bienvenue dans Takenoko !";
+    private bool shouldSave = false;
 
     private void Start()
     {
@@ -20,27 +21,40 @@ public class Helper : MonoBehaviour
 
     public void UpdateHelpMessage(string message)
     {
-        _helpMessage = message;
+        if (shouldSave)
+        {
+            _helpMessage += "\n" + message;
+        }
+        else
+        {
+            _helpMessage = message;
+        }
     }
 
     public void DiceResultExplanation(DiceFaces face)
     {
+        shouldSave = false;
         switch (face)
         {
             case DiceFaces.Rain: //conserver ce message tant que action pas effectuée
                 _helpMessage = "Action météo\nIl pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.";
+                shouldSave = true;
                 break;
             case DiceFaces.Cloud: //pas implémenté
                 _helpMessage = "Action météo\nLe temps est nuageux... Vous pouvez piocher un aménagement.";
+                shouldSave = false;
                 break;
             case DiceFaces.Sun: //conserver ce message
                 _helpMessage = "Action météo\nIl fait beau ! Vous pouvez sélectionner 3 actions différentes.";
+                shouldSave = true;
                 break;
             case DiceFaces.Thunder: //pas implémenté
                 _helpMessage = "Action météo\nSacré orage ! Déplacez le panda sur la tuile de votre choix, et croquez un bambou.";
+                shouldSave = false;
                 break;
             case DiceFaces.Wind: //conserver ce message
                 _helpMessage = "Action météo\nVent frais, vent du matin... Vous pouvez sélectionner deux fois la même action.";
+                shouldSave = true;
                 break;  
             case DiceFaces.Questionmark:
                 _helpMessage = "ha ha ha ha ha ha it's a prank bro";

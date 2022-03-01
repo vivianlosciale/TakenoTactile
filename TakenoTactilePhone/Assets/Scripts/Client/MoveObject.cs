@@ -1,13 +1,14 @@
 ﻿using System.Collections;
-using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class MoveObject : MonoBehaviour
 {
     private const string _joinGameScene = "JoinGameScene";
     private const string _inGameScene = "InGameScene";
     private const string _endGameScene = "EndGameScene";
+    public static string saved_result;
     private bool _load;
 
     public void MoveToInGameScene()
@@ -21,7 +22,9 @@ public class MoveObject : MonoBehaviour
     {
         if (_load) return;
         _load = true;
-        StartCoroutine(ChangeToEndGameScene(_inGameScene, _endGameScene, result));
+        saved_result = result;
+        StartCoroutine(ChangeToEndGameScene(_inGameScene, _endGameScene));
+        //Debug.Log("result received " + result);
     }
 
     public void RestartGame()
@@ -42,13 +45,11 @@ public class MoveObject : MonoBehaviour
         _load = false;
     }
     
-    private IEnumerator ChangeToEndGameScene(string from, string to, string result)
+    private IEnumerator ChangeToEndGameScene(string from, string to)
     {
         SceneManager.LoadScene(to, LoadSceneMode.Additive);
         yield return null;
         SceneManager.UnloadSceneAsync(from);
-        GameObject.FindWithTag(TagManager.EndGameResult.ToString()).GetComponent<TextMeshPro>().text = 
-            "La partie est terminée ! Vous avez eu " + result + " points. Félicitations !";
     }
     
     private IEnumerator ChangeScene(string from, string to)
@@ -58,4 +59,8 @@ public class MoveObject : MonoBehaviour
         SceneManager.UnloadSceneAsync(from);
     }
 
+    public string GetResult()
+    {
+        return "La partie est terminée ! Vous avez eu " + saved_result + " points. Félicitations !";
+    }
 }

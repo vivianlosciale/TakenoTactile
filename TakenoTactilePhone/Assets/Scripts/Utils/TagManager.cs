@@ -5,5 +5,5 @@
      DiceCheckerFloor,
      GameManager,
      Helper,
-     EndGameResult,
+     MoveObject,
 }
