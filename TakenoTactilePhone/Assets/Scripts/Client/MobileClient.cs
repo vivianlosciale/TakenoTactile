@@ -1,4 +1,5 @@
 ﻿using System;
+using TMPro;
 using UnityEngine;
 using WebSocketSharp;
 
@@ -15,6 +16,7 @@ public class MobileClient : MonoBehaviour
     private Helper _helper;
     private Reserv _reserv;
     private bool _gameStarted;
+    private string score;
 
     private void Start()
     {
@@ -47,7 +49,7 @@ public class MobileClient : MonoBehaviour
     private void StartGame()
     {
         var move = gameObject.GetComponent<MoveObject>();
-        move.MoveToAnotherScene();
+        move.MoveToInGameScene();
     }
 
     public string GetPlayerName()
@@ -167,8 +169,8 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.WaitingChoseRain:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                   _popUpSystem.PopUp("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
-                   _helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
+                   _popUpSystem.PopUp("Action météo\nIl pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
+                   //_helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
                 });
                 break;
             case MessageQuery.RainPower:
@@ -207,7 +209,13 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.EatBamboo:                
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("Vous avez mangé un bambou ! Il s'est ajouté à votre réserve.");
+                    _popUpSystem.PopUp("Vous pouvez croquer un bambou.");
+                });
+                break;
+            case MessageQuery.BambooEaten:                
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Le bambou croqué s'est ajouté à votre réserve.");
                 });
                 break;
             
@@ -291,6 +299,26 @@ public class MobileClient : MonoBehaviour
                 {
                     _reserv.CreateBamboo(parser.GetMessageBody());
                 });
+                break;
+            
+            //TODO : MESSAGE DE FIN DE JEU
+            /*
+             * il faut transférer le mobile client dans la scène de fin pour conserver le chemin de comm
+             * on affiche le contenu du message EndGame
+             * afficher
+             * puis afficher le message : Vous avez eu x nombre de point
+             */
+            
+            //queue de messages ?
+            //système de queues ?
+            
+            case MessageQuery.EndGame:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                    {
+                        var move = gameObject.GetComponent<MoveObject>();
+                        move.MoveToEndGameScene(parser.GetMessageBody());
+                    }
+                );
                 break;
             
             //ERROR

@@ -27,19 +27,19 @@ public class Helper : MonoBehaviour
     {
         switch (face)
         {
-            case DiceFaces.Rain:
+            case DiceFaces.Rain: //conserver ce message tant que action pas effectuée
                 _helpMessage = "Action météo\nIl pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.";
                 break;
-            case DiceFaces.Cloud:
+            case DiceFaces.Cloud: //pas implémenté
                 _helpMessage = "Action météo\nLe temps est nuageux... Vous pouvez piocher un aménagement.";
                 break;
-            case DiceFaces.Sun:
+            case DiceFaces.Sun: //conserver ce message
                 _helpMessage = "Action météo\nIl fait beau ! Vous pouvez sélectionner 3 actions différentes.";
                 break;
-            case DiceFaces.Thunder:
+            case DiceFaces.Thunder: //pas implémenté
                 _helpMessage = "Action météo\nSacré orage ! Déplacez le panda sur la tuile de votre choix, et croquez un bambou.";
                 break;
-            case DiceFaces.Wind:
+            case DiceFaces.Wind: //conserver ce message
                 _helpMessage = "Action météo\nVent frais, vent du matin... Vous pouvez sélectionner deux fois la même action.";
                 break;  
             case DiceFaces.Questionmark:

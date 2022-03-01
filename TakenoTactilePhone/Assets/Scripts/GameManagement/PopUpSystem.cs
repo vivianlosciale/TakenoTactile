@@ -8,7 +8,6 @@ public class PopUpSystem : MonoBehaviour
     public GameObject popUpBox;
     public TMP_Text popUpText;
     public GameObject popUpButton;
-    public Helper helper;
     private MobileClient _mobileClient;
 
     private GameActions _gameActions;
