@@ -50,7 +50,7 @@ public class Tile
 
     public bool CanEat()
     {
-        return _upgrade.PandaCanStay();
+        return _upgrade.PandaCanStay() && _growthAmount > 0;
     }
 
     public void Eat()
