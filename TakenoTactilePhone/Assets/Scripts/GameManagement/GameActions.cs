@@ -19,6 +19,7 @@ public class GameActions : MonoBehaviour
     public GameObject tileSelector;
     public Text playerName;
     public GameObject handBackground;
+    public GameObject chooseDiceFace;
     private PopUpSystem _popUpSystem;
     
     public bool turnStarted;
@@ -63,12 +64,26 @@ public class GameActions : MonoBehaviour
         _popUpSystem.PopUp("Erreur : " + error);
     }
 
-    private void SendDiceResultToServer(DiceFaces result)
+    public void QuestionMark()
+    {
+        _popUpSystem.NewPopUp("Action météo\nLe temps vous sourit ! Choisissez une face de dé.",
+            () =>
+            {
+                chooseDiceFace.SetActive(true);
+                uiElements.SetActive(false);
+                ARCanvas.SetActive(false);
+                hand.SetActive(false);
+            },
+            "D'accord");
+    }
+
+    public void SendDiceResultToServer(DiceFaces result)
     {
         uiElements.SetActive(true);
         ARCanvas.SetActive(true);
         hand.SetActive(true);
         diceRoller.SetActive(false);
+        chooseDiceFace.SetActive(false);
         _checker.ResetDice();
         _mobileClient.SendDiceResult(result);
     }

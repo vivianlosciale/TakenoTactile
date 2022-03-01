@@ -67,7 +67,7 @@ public class PopUpSystem : MonoBehaviour
             buttonText);
     }
 
-    private void NewPopUp(string message, UnityAction action, string buttonText)
+    public void NewPopUp(string message, UnityAction action, string buttonText)
     {
         Handheld.Vibrate();
         popUpBox.SetActive(true);

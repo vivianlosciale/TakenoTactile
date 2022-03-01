@@ -173,6 +173,13 @@ public class MobileClient : MonoBehaviour
                    //_helper.UpdateHelpMessage("Il pleut ! Vous pouvez faire pousser un bambou sur la tuile de votre choix.");
                 });
                 break;
+            case MessageQuery.WaitingChoseWeather:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _gameActions.QuestionMark();
+                });
+                break;
+            
             case MessageQuery.RainPower:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {

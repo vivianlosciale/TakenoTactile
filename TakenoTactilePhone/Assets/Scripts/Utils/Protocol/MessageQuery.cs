@@ -92,6 +92,9 @@ public enum MessageQuery
     
     // TODO
     
+    WaitingChoseWeather,
+    //quand on choisi un pouvoir on RollDice
+    
     
     
     /***************************************
