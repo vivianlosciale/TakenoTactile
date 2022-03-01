@@ -21,6 +21,11 @@ public abstract class VictoryCard
         return _name;
     }
 
+    public int GetValue()
+    {
+        return _value;
+    }
+
     public override string ToString()
     {
         return _name;

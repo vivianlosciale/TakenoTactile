@@ -2,6 +2,7 @@ using server.Game;
 using server.SocketRooms;
 using server.Utils.Devices;
 using server.Utils.Protocol;
+using WebSocketSharp;
 using WebSocketSharp.Server;
 
 namespace server;
@@ -15,8 +16,8 @@ public class Server
     private readonly string _socketAddress;
     private readonly WebSocketServer _ws;
     private readonly List<PlayerRoom> _players;
-    private readonly TableRoom _table;
-    private readonly Takenoko _game;
+    private TableRoom _table;
+    private Takenoko _game;
     private Thread? _gameThread;
 
 
@@ -24,9 +25,10 @@ public class Server
     {
         _socketAddress = "ws://"+Device.GetIPv4()+":8080";
         _ws = new WebSocketServer(_socketAddress);
+        _ws.Log.Output = (LogData data, string path) => { };
         _players = new();
         _table = new TableRoom(this);
-        _game = new Takenoko(_table, _players);
+        _game = new Takenoko(_table, _players, this);
     }
     
     
@@ -83,6 +85,22 @@ public class Server
             _gameThread = new Thread(_game.StartGame);
             _gameThread.Start();
         }
+    }
+
+    
+    /*
+     * Reset all server parameters
+     */
+    public void EndGame()
+    {
+        _players.Clear();
+        _table = new TableRoom(this);
+        _game = new Takenoko(_table, _players, this);
+        foreach (string path in _ws.WebSocketServices.Paths)
+        {
+            _ws.RemoveWebSocketService(path);
+        }
+        _ws.AddWebSocketService(LoginPath, () => new LoginRoom(this));
     }
 
     public void SendError(int playerNumber, string body)

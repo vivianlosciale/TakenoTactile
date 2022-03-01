@@ -11,6 +11,8 @@ TagManager:
   - Hand
   - TileSelector
   - SoundProvider
+  - Helper
+  - EndGameResult
   layers:
   - Default
   - TransparentFX

@@ -5,6 +5,7 @@ using server.Game.Board.Tiles;
 using server.Utils.Game;
 using server.Utils.Protocol;
 using WebSocketSharp;
+using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 
 namespace server.SocketRooms;
 
@@ -88,10 +89,32 @@ public class PlayerRoom : SocketRoom
                 break;
         }
     }
-    
-    public bool FinishedGame()
+
+    protected override void OnClose(CloseEventArgs e)
     {
-        return _validatedCards.Count >= _game.GetNeededValidations();
+        Console.WriteLine("\n\n##############################################\n\n"
+                          +"Player"+_playerNumber+" disconnected!"
+                          +"\n\n##############################################\n\n");
+    }
+
+    public bool FinishedGame(int neededValidations)
+    {
+        return _validatedCards.Count >= neededValidations;
+    }
+
+    public bool HasFullHand()
+    {
+        return _victoryCards.Count >= 5;
+    }
+
+    public int TotalPoints()
+    {
+        int result = 0;
+        foreach (VictoryCard card in _validatedCards)
+        {
+            result += card.GetValue();
+        }
+        return result;
     }
 
     private void ResetPowerUses()
@@ -119,7 +142,7 @@ public class PlayerRoom : SocketRoom
         foreach (VictoryCard card in _victoryCards)
         {
             if (!card.GetName().Equals(cardName)) continue;
-            bool valid = _game.ValidateCard(card);
+            bool valid = _game.ValidateCard(this, card);
             if (valid) _validatedCards.Add(card);
             Sender.Send(valid ? MessageQuery.ValidateObjective : MessageQuery.InvalidObjective, cardName);
             if (valid) _game.SendToTable(MessageQuery.ValidateObjective, cardName);

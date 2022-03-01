@@ -195,6 +195,14 @@ public enum MessageQuery
      */
     EatBamboo,
     
+    /**
+     * FROM/TO: table -> server
+     * server -> mobile
+     * NO ARGS
+     *     Inform that a bamboo was correctly eaten
+     */
+    BambooEaten,
+    
     
     
     /***************************************
@@ -311,6 +319,8 @@ public enum MessageQuery
      *     Inform the server of the end of the turn
      */
     FinishTurn,
+    
+    EndGame, //nombre de points 
 }
 
 public static class QueryMethods
