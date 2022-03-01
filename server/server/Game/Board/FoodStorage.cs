@@ -36,10 +36,10 @@ public class FoodStorage
 
     public void Dispose(FoodStorage amount)
     {
-        Store(amount._greenAmount, amount._yellowAmount, amount._pinkAmount);
+        Dispose(amount._greenAmount, amount._yellowAmount, amount._pinkAmount);
     }
     
-    public void Dispose(int greenAmount, int yellowAmount, int pinkAmount)
+    private void Dispose(int greenAmount, int yellowAmount, int pinkAmount)
     {
         _greenAmount  -= greenAmount;
         _yellowAmount -= yellowAmount;

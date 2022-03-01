@@ -11,7 +11,6 @@ public class MovePanda: PowerAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {
-        /*
         player.SendEvent(MessageQuery.WaitingMovePanda);
         table.SendEvent(MessageQuery.WaitingMovePanda);
         
@@ -35,12 +34,13 @@ public class MovePanda: PowerAction
             table.SendEvent(MessageQuery.EatBamboo, chosenPosition.ToString());
             Console.WriteLine("Waiting for a bamboo to be removed from the panda position!");
             table.WaitForObjectMoved();
+            
+            player.SendEvent(MessageQuery.BambooEaten);
         }
         else 
         {
             player.SendEvent(MessageQuery.EatBamboo, "false");
             Console.WriteLine("Player "+player.GetNumber()+" has no right to use that much power !!!");
         }
-        */
     }
 }

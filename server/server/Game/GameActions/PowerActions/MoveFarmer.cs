@@ -11,7 +11,6 @@ public class MoveFarmer: PowerAction
 {
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {
-        /*
         player.SendEvent(MessageQuery.WaitingMoveFarmer);
         table.SendEvent(MessageQuery.WaitingMoveFarmer);
         
@@ -36,6 +35,5 @@ public class MoveFarmer: PowerAction
             player.SendEvent(MessageQuery.PlaceBamboo, "false");
             Console.WriteLine("Player "+player.GetNumber()+" has no right to use that much power !!!");
         }
-        */
     }
 }
