@@ -14,7 +14,9 @@ public class TableClient : MonoBehaviour
     private WebSocket _loginServerSocket;
     private WebSocket _serverSocket;
     private string _privateAddress;
-    
+    private string _serverAddress;
+
+    private QRCreator _qrCreator;
     public InputField adresseInput;
 
     private bool _canPickTile;
@@ -64,9 +66,17 @@ public class TableClient : MonoBehaviour
         _canEatBamboo = false;
         _canMoveFarmer = false;
         _canMovePanda = false;
-         audioSource = gameObject.GetComponent<AudioSource>();
+        audioSource = gameObject.GetComponent<AudioSource>();
         _actualDice = DiceFaces.None;
         _tilesEventNotAvailable = new List<Tile>();
+
+        GameObject saveObject = GameObject.Find("SaveObject");
+        if (saveObject != null)
+        {
+            QRCreator qrCreator = GameObject.Find("QRRenderer").GetComponent<QRCreator>();
+            _qrCreator = qrCreator;
+            Connect(saveObject.GetComponent<SaveObject>().GetAddressServer());
+        }
     }
 
     /*
@@ -404,6 +414,20 @@ public class TableClient : MonoBehaviour
         gameObject.GetComponent<MoveObject>().MoveToAnotherScene(sceneToLoad, sceneToUnload);
     }
 
+    private void ChangeSceneWithSave(string sceneToLoad, string sceneToUnload, GameObject saveObject)
+    {
+        FindObjectOfType<OSC>().Close();
+        gameObject.GetComponent<MoveObject>().MoveToAnotherSceneWithSave(sceneToLoad, sceneToUnload, saveObject);
+    }
+
+    public void GoHomeWithSave()
+    {
+        GameObject saveObject = new GameObject();
+        saveObject.name = "SaveObject";
+        SaveObject script = saveObject.AddComponent<SaveObject>();
+        script.SetAddressServer(_serverAddress);
+        ChangeSceneWithSave(HOME_SCENE, GAME_SCENE, saveObject);
+    }
 
     /*
      * Open a private websocket to communicate with the server.
@@ -411,6 +435,7 @@ public class TableClient : MonoBehaviour
      */
     public void Connect(QRCreator qrcreator)
     {
+        _serverAddress = adresseInput.text;
         _loginServerSocket = new WebSocket(adresseInput.text);
         _loginServerSocket.Connect();
         _loginServerSocket.OnMessage += OnMessage;
@@ -420,6 +445,22 @@ public class TableClient : MonoBehaviour
         if (exception == null)
         {
             qrcreator.DisplayQR();
+        }
+    }
+
+    /*
+     * Reconnection on server when end game
+     */
+    private void Connect(string serverAddress)
+    {
+        _loginServerSocket = new WebSocket(serverAddress);
+        _loginServerSocket.Connect();
+        _loginServerSocket.OnMessage += OnMessage;
+        _sender = new MessageSender(_loginServerSocket);
+        Exception exception = _sender.Send(MessageQuery.TableConnection, _privateAddress);
+        if (exception == null)
+        {
+            _qrCreator.DisplayQR();
         }
     }
 
@@ -530,7 +571,7 @@ public class TableClient : MonoBehaviour
                     _tilesEventNotAvailable = _tileBoard.TilesWhereCantPlaceBamboo();
                     if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
-                        SendBambooAction(MessageQuery.WaitingChoseRain, new Vector2Int(0,0));
+                        _sender.Send(MessageQuery.ChosenPosition, PositionDto.ToString(0,0));
                         return;
                     }
                     _canPlaceBambooFromRainPower = true;
@@ -538,6 +579,22 @@ public class TableClient : MonoBehaviour
                     {
                         tile.GameObject.AddComponent<TileMaterial>();
                     }
+                });
+                break;
+            case MessageQuery.WaitingChoseThunder:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _tilesEventNotAvailable = _tileBoard.TilesWhereCantEatBamboo();
+                    if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
+                    {
+                        _sender.Send(MessageQuery.ChosenPosition, PositionDto.ToString(0, 0));
+                        return;
+                    }
+                    foreach (Tile tile in _tilesEventNotAvailable)
+                    {
+                        tile.GameObject.AddComponent<TileMaterial>();
+                    }
+                    _canMovePanda = true;
                 });
                 break;
             case MessageQuery.WaitingMoveFarmer:
@@ -576,6 +633,15 @@ public class TableClient : MonoBehaviour
                 {
                     _tileBoard.ActivatePandaTile();
                     _canEatBamboo = true;
+                });
+                break;
+            case MessageQuery.EndGame:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _serverSocket.Close();
+                    Player winnerPlayer = players[int.Parse(message.GetBody())];
+                    winnerPlayer.GetBoard().transform.Find("VictoryParticuleSystem").GetComponent<ParticleSystem>().gameObject.SetActive(true);
+                    GameObject.Find("EndGameButton").SetActive(true);
                 });
                 break;
             default:

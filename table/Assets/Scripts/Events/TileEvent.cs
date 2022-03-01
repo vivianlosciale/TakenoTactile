@@ -67,4 +67,9 @@ public class TileEvent : MonoBehaviour
     {
         return _numberOfBamboos < 4;
     }
+
+    public bool CanEatBamboo()
+    {
+        return _numberOfBamboos > 0;
+    }
 }

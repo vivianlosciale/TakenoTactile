@@ -11,7 +11,7 @@ public class QRCreator : MonoBehaviour
     public RawImage[] QRImages;
     public string address;
 
-    private void Start()
+    private void Awake()
     {
         QRImages = players.GetComponentsInChildren<RawImage>();
         foreach (RawImage qr in QRImages)
@@ -45,6 +45,7 @@ public class QRCreator : MonoBehaviour
 
     public void DisplayQR()
     {
+
         for(int i = 0; i < 4; i++)
         {
             try

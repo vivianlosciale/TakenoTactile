@@ -10,10 +10,17 @@ public class MoveObject : MonoBehaviour
     {
         if (_load) return;
         _load = true;
-        StartCoroutine(ChangeScene(sceneToLoad, sceneToUnload));
+        StartCoroutine(ChangeScene(sceneToLoad, sceneToUnload, gameObject));
     }
 
-    private IEnumerator ChangeScene(string sceneToLoad, string sceneToUnload)
+    public void MoveToAnotherSceneWithSave(string sceneToLoad, string sceneToUnload, GameObject saveObject)
+    {
+        if (_load) return;
+        _load = true;
+        StartCoroutine(ChangeScene(sceneToLoad, sceneToUnload, saveObject));
+    }
+
+    private IEnumerator ChangeScene(string sceneToLoad, string sceneToUnload, GameObject gameObject)
     {
         SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
         var nextScene = SceneManager.GetSceneByName(sceneToLoad);
@@ -21,6 +28,5 @@ public class MoveObject : MonoBehaviour
         yield return null;
         SceneManager.UnloadSceneAsync(sceneToUnload);
     }
-
 }
 

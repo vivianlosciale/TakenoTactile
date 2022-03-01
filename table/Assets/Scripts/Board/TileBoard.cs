@@ -19,8 +19,8 @@ public class TileBoard : MonoBehaviour
         tilesPositions.Add(new Tile(new Vector2Int(0, 0), transform)); //castle tile
         TableClient tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
         tableClient.SetTileBoard(this);
-        gardenerId = "CE";
-        pandaId = "CF";
+        gardenerId = "4";//"CE";
+        pandaId = "5"; // "CF";
     }
 
     public bool IsGardener(string id)
@@ -46,17 +46,30 @@ public class TileBoard : MonoBehaviour
     public List<Tile> TilesWhereCantPlaceBamboo()
     {
         if (tilesPositions.Count == 1) return tilesPositions;
-        List<Tile> tilesAvailable = new List<Tile>();
-        tilesAvailable.Add(tilesPositions[0]);
+        List<Tile> tilesNotAvailable = new List<Tile>();
+        tilesNotAvailable.Add(tilesPositions[0]);
         foreach (Tile tile in tilesPositions)
         {
             TileEvent tileEvent = tile.GameObject.GetComponent<TileEvent>();
             if (!tileEvent.CanPlaceBamboo())
             {
-                tilesAvailable.Add(tile);
+                tilesNotAvailable.Add(tile);
             }
         }
-        return tilesAvailable;
+        return tilesNotAvailable;
+    }
+
+    public List<Tile> TilesWhereCantEatBamboo()
+    {
+        List<Tile> tilesNotAvailable = new List<Tile>();
+        foreach (Tile t in tilesPositions)
+        {
+            if (t.position.Equals(pandaPosition))
+            {
+                tilesNotAvailable.Add(t);
+            }
+        }
+        return tilesNotAvailable;
     }
 
     public List<Tile> ActivatePandaNeighborsSlot()

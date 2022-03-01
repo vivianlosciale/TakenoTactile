@@ -1,5 +1,4 @@
 using System;
-
 public enum MessageQuery
 {
 
@@ -163,7 +162,13 @@ public enum MessageQuery
               THUNDER DICE POWER
      ***************************************/
 
-    // TODO
+    /**
+     * FROM/TO: server -> everyone
+     * NO ARGS
+     *     Inform that the server awaits the table
+     *     to send a placed tile position
+     */
+    WaitingChoseThunder,
 
 
 
@@ -266,6 +271,7 @@ public enum MessageQuery
 
     /**
      * FROM/TO: table -> server
+     * FROM/TO: server -> mobile
      * NO ARGS
      *     Inform that a bamboo was correctly eaten
      */
@@ -376,7 +382,7 @@ public enum MessageQuery
 
 
     /***************************************
-               FINISH THE TURN
+              VALIDATE OBJECTIVES
      ***************************************/
 
     /**
@@ -400,7 +406,7 @@ public enum MessageQuery
 
 
     /***************************************
-               FINISH THE TURN
+               AUGMENTED REALITY
      ***************************************/
 
     /**
@@ -436,6 +442,23 @@ public enum MessageQuery
      *     Inform the server of the end of the turn
      */
     FinishTurn,
+
+
+
+    /***************************************
+               FINISH THE GAME
+     ***************************************/
+
+    /**
+     * FROM/TO: server -> mobile
+     * ARGS:    number of points made
+     *     Inform that the game ended and send the amount of points made
+     *
+     * FROM/TO: server -> table
+     * ARGS:    number of winner player
+     *     Inform that the game ended and send the number of the winner
+     */
+    EndGame,
 }
 
 

@@ -48,10 +48,6 @@ public class GameActions : MonoBehaviour
             DiceFaces result = RetrieveResult();
             if (!result.Equals(DiceFaces.None))
             {
-                if (result.Equals(DiceFaces.Questionmark))
-                {
-                    result = DiceFaces.Cloud;
-                }
                 turnStarted = false;
                 SendDiceResultToServer(result);
             }
