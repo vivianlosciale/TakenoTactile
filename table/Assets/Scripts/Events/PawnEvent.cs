@@ -10,6 +10,8 @@ public class PawnEvent : MonoBehaviour
     public int position;
     private List<Actions> _actions;
 
+    private bool updateLocation = false;
+
     public void Start()
     {
         //StartCoroutine(example());
@@ -23,6 +25,18 @@ public class PawnEvent : MonoBehaviour
             player.SetBoard(gameObject);
         }
         _actions = new List<Actions>();
+    }
+
+    private void Update()
+    {
+        if (!updateLocation)
+        {
+            if (RebaseBoard())
+            {
+                player.SetBoard(gameObject);
+            }
+            updateLocation = true;
+        }
     }
 
 
@@ -99,4 +113,63 @@ public class PawnEvent : MonoBehaviour
         instance.AddComponent<CardMovement>();
     }
 
+    private bool RebaseBoard()
+    {
+        switch (position)
+        {
+            case 0:
+                if (!BoardIsPresent(1))
+                {
+                    Vector3 basePosition = this.gameObject.transform.position;
+                    this.gameObject.transform.position = new Vector3(0, basePosition.y, basePosition.z);
+                    return true;
+                }
+                return false;
+
+            case 1:
+                if (!BoardIsPresent(0))
+                {
+                    Vector3 basePosition = this.gameObject.transform.position;
+                    this.gameObject.transform.position = new Vector3(0, basePosition.y, basePosition.z);
+                    return true;
+                }
+                return false;
+
+            case 2:
+                if (!BoardIsPresent(3))
+                {
+                    Vector3 basePosition = this.gameObject.transform.position;
+                    this.gameObject.transform.position = new Vector3(0, basePosition.y, basePosition.z);
+                    return true;
+                }
+                return false;
+
+            case 3:
+                if (!BoardIsPresent(2))
+                {
+                    Vector3 basePosition = this.gameObject.transform.position;
+                    this.gameObject.transform.position = new Vector3(0, basePosition.y, basePosition.z);
+                    return true;
+                }
+                return false;
+
+            default:
+                return false;
+        }
+    }
+
+    private bool BoardIsPresent(int number)
+    {
+        bool presence = false;
+
+        GameObject[] boards = GameObject.FindGameObjectsWithTag("Board");
+        foreach (GameObject board in boards)
+        {
+            if(board.GetComponent<PawnEvent>().position == number)
+            {
+                presence = true;
+            }
+        }
+        return presence;
+    }
 }
