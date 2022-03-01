@@ -30435,6 +30435,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1561307548612926054, guid: f92acfa269407274f92730b62bc44be0, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2408903365948102301, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_Name
       value: BoardP1
@@ -30445,7 +30449,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3037102309950884903, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.8
+      value: -6.39
       objectReference: {fileID: 0}
     - target: {fileID: 3037102309950884903, guid: f92acfa269407274f92730b62bc44be0, type: 3}
       propertyPath: m_LocalPosition.y
