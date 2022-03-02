@@ -6,7 +6,7 @@ public enum DiceFaces
     Sun,
     Wind,
     Thunder,
-    Questionary,
+    Questionmark,
     Cloud,
     Rain
 }
