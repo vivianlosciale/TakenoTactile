@@ -226,7 +226,14 @@ public class MobileClient : MonoBehaviour
             case MessageQuery.EatBamboo:                
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _popUpSystem.PopUp("Vous pouvez croquer un bambou.");
+                    if (bool.Parse(parser.GetMessageBody()))
+                    {
+                        _popUpSystem.PopUp("Vous pouvez croquer un bambou.");
+                    }
+                    else
+                    {
+                        _popUpSystem.PopUp("Rien à manger par ici...");
+                    }
                 });
                 break;
             case MessageQuery.BambooEaten:                
