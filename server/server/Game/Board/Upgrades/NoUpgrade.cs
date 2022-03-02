@@ -7,9 +7,10 @@ public class NoUpgrade : UpgradeStrategy
         return true;
     }
 
+    //TODO
     public override bool BambooCanGrow()
     {
-        return false;
+        return true; //should be false mais on fait true pour la démo pour faire pousser des bambous plus loin
     }
 
     public override int MaxGrowthSize()

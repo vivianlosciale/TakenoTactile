@@ -18,7 +18,7 @@ public abstract class DiceAction: GameAction
                 return new ThunderAction();
             case DiceFaces.Wind:
                 return new WindAction();
-            case DiceFaces.Questionary:
+            case DiceFaces.Questionmark:
             default:
                 return new ChoiceAction();
         }

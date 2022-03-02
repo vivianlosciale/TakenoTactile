@@ -896,7 +896,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb57961d2bb11d743825a1171760cba0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  adresseInput: {fileID: 148695310}
+  addressInput: {fileID: 148695310}
   jingleClip: {fileID: 8300000, guid: 35cc5875b0df84ea6a7f055aa5681755, type: 3}
   diceAudioClips:
   - {fileID: 8300000, guid: 9f7c997b6cf485443968b99a7c41cb0b, type: 3}
