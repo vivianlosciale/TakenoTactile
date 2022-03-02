@@ -3,7 +3,15 @@ using UnityEngine.SceneManagement;
 
 public class LaunchGameMenu : MonoBehaviour
 {
-    public int level = 0;
+    public AudioClip music;
+    public int level;
+
+    public void Start()
+    {
+        GameObject soundGameObject = new GameObject("Sound");
+        AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
+        audioSource.PlayOneShot(music);
+    }
 
     private void OnMouseDown()
     {
