@@ -90,7 +90,7 @@ public class TileBoard : MonoBehaviour
         toDeactivate.RemoveAll(e => neighbors.Contains(e));
         foreach (Tile t in toDeactivate)
         {
-            t.GameObject.AddComponent<TileMaterial>();
+            t.GameObject.AddComponent<TileMaterial>().DeactivateTile();
         }
         return toDeactivate;
     }
@@ -136,7 +136,7 @@ public class TileBoard : MonoBehaviour
         {
             if (t.position != gardenerPosition)
             {
-                t.GameObject.AddComponent<TileMaterial>();
+                t.GameObject.AddComponent<TileMaterial>().DeactivateTile();
             }
         }
     }

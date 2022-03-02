@@ -598,7 +598,7 @@ public class TableClient : MonoBehaviour
                     _canPlaceBambooFromRainPower = true;
                     foreach (Tile tile in _tilesEventNotAvailable)
                     {
-                        tile.GameObject.AddComponent<TileMaterial>();
+                        tile.GameObject.AddComponent<TileMaterial>().DeactivateTile();
                     }
                 });
                 break;
