@@ -151,6 +151,7 @@ public class MobileClient : MonoBehaviour
         Debug.Log("--------- RECEIVED : " + parser.GetFullMessage());
         switch(parser.GetQuery())
         {
+            //AVENGERS START GAME
             case MessageQuery.StartGame:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
@@ -199,6 +200,12 @@ public class MobileClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.PlaceBamboo(bool.Parse(parser.GetMessageBody()));
+                });
+                break;
+            case MessageQuery.BambooPlaced:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Le jardinier est satisfait de la croissance de votre bambou.");
                 });
                 break;
             

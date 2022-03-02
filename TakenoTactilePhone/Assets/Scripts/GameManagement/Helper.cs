@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class Helper : MonoBehaviour
 {
@@ -10,8 +9,8 @@ public class Helper : MonoBehaviour
 
     private void Start()
     {
-        var _mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
-        _mobileClient.SetHelper(this);
+        var mobileClient = GameObject.FindWithTag(TagManager.MobileClient.ToString()).GetComponent<MobileClient>();
+        mobileClient.SetHelper(this);
     }
 
     public void GetHelpMessage()
@@ -24,6 +23,7 @@ public class Helper : MonoBehaviour
         if (shouldSave)
         {
             _helpMessage += "\n" + message;
+            shouldSave = false;
         }
         else
         {
@@ -50,7 +50,7 @@ public class Helper : MonoBehaviour
                 break;
             case DiceFaces.Thunder: //pas implémenté
                 _helpMessage = "Action météo\nSacré orage ! Déplacez le panda sur la tuile de votre choix, et croquez un bambou.";
-                shouldSave = false;
+                shouldSave = true;
                 break;
             case DiceFaces.Wind: //conserver ce message
                 _helpMessage = "Action météo\nVent frais, vent du matin... Vous pouvez sélectionner deux fois la même action.";
@@ -58,6 +58,7 @@ public class Helper : MonoBehaviour
                 break;  
             case DiceFaces.Questionmark:
                 _helpMessage = "ha ha ha ha ha ha it's a prank bro";
+                shouldSave = false;
                 break;
         }   
     }

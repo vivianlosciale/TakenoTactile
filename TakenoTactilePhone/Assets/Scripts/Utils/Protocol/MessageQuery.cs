@@ -177,6 +177,8 @@ public enum MessageQuery
      */
     PlaceBamboo,
     
+    BambooPlaced, //le bambou a bien été placé
+    
     
     
     /***************************************
