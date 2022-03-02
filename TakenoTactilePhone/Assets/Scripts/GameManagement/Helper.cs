@@ -48,9 +48,9 @@ public class Helper : MonoBehaviour
                 _helpMessage = "Action météo\nIl fait beau ! Vous pouvez sélectionner 3 actions différentes.";
                 shouldSave = true;
                 break;
-            case DiceFaces.Thunder: //pas implémenté
+            case DiceFaces.Thunder: //après l'action : ne pas conserver
                 _helpMessage = "Action météo\nSacré orage ! Déplacez le panda sur la tuile de votre choix, et croquez un bambou.";
-                shouldSave = true;
+                shouldSave = false;
                 break;
             case DiceFaces.Wind: //conserver ce message
                 _helpMessage = "Action météo\nVent frais, vent du matin... Vous pouvez sélectionner deux fois la même action.";
