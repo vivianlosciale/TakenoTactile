@@ -158,14 +158,14 @@ public class MobileClient : MonoBehaviour
                     _gameStarted = true;
                 });
                 break;
-           
-            //METEO ACTIONS
             case MessageQuery.WaitingDiceResult:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _gameActions.StartTurn();
                 });
                 break;
+            
+            //METEO ACTIONS
             case MessageQuery.WaitingChoseRain:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
@@ -185,6 +185,12 @@ public class MobileClient : MonoBehaviour
                     _popUpSystem.PopUp(wasPlaced
                         ? "Votre bambou a poussé ! Regardez comme il est beau !"
                         : "Une erreur s'est produite ! Malheureusement, nous ne pouvons pas gérer ce cas de figure. Veuillez recommencer la partie.");
+                });
+                break;
+            case MessageQuery.WaitingChoseThunder:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    _popUpSystem.PopUp("Action météo\nSacré orage ! Déplacez le panda sur la tuile de votre choix, et croquez un bambou.");
                 });
                 break;
             

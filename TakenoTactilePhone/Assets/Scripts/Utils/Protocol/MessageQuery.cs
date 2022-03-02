@@ -130,7 +130,7 @@ public enum MessageQuery
               THUNDER DICE POWER
      ***************************************/
     
-    // TODO
+    WaitingChoseThunder,
     
     
     
