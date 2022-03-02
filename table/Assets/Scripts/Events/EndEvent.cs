@@ -9,6 +9,8 @@ public class EndEvent : MonoBehaviour
     private void Start()
     {
         _tableClient = GameObject.FindGameObjectWithTag("TableClient").GetComponent<TableClient>();
+        _tableClient.SetEndGameButton(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void EndGame()

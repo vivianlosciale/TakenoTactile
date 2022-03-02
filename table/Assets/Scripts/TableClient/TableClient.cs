@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -17,7 +18,7 @@ public class TableClient : MonoBehaviour
     private string _serverAddress;
 
     private QRCreator _qrCreator;
-    public InputField adresseInput;
+    public InputField addressInput;
 
     private bool _canPickTile;
     private bool _canPickCard;
@@ -42,6 +43,8 @@ public class TableClient : MonoBehaviour
     private TileBoard _tileBoard;
 
     public Loading _loading;
+
+    private GameObject _endGameButton;
 
     private static string GAME_SCENE = "Game";
     private static string HOME_SCENE = "TakenoHome";
@@ -308,6 +311,7 @@ public class TableClient : MonoBehaviour
         else
         {
             //Message global
+            //SendErrorToTable("Vous ne pouvez pas manger ce bambou ! Replacez le !");
             return false;
         }
     }
@@ -381,6 +385,13 @@ public class TableClient : MonoBehaviour
 
     internal void SendErrorToTable(string message)
     {
+        foreach(Player player in players)
+        {
+            GameObject errorObject = player.GetBoard().transform.Find("Error").gameObject;
+            errorObject.SetActive(true);
+            errorObject.transform.GetChild(0).GetComponent<TextMeshPro>().text = message;
+        }
+        
         //_sender.Send(MessageQuery.Error, player.id.ToString(), "Tu ne peux pas jouer d'actions !");
     }
 
@@ -435,8 +446,8 @@ public class TableClient : MonoBehaviour
      */
     public void Connect(QRCreator qrcreator)
     {
-        _serverAddress = adresseInput.text;
-        _loginServerSocket = new WebSocket(adresseInput.text);
+        _serverAddress = addressInput.text;
+        _loginServerSocket = new WebSocket(addressInput.text);
         _loginServerSocket.Connect();
         _loginServerSocket.OnMessage += OnMessage;
 
@@ -449,10 +460,20 @@ public class TableClient : MonoBehaviour
     }
 
     /*
+     * Endgame section
+     */
+
+    public void SetEndGameButton(GameObject endGameButton)
+    {
+        _endGameButton = endGameButton;
+    }
+
+    /*
      * Reconnection on server when end game
      */
     private void Connect(string serverAddress)
     {
+        addressInput.text = serverAddress;
         _loginServerSocket = new WebSocket(serverAddress);
         _loginServerSocket.Connect();
         _loginServerSocket.OnMessage += OnMessage;
@@ -641,7 +662,7 @@ public class TableClient : MonoBehaviour
                     _serverSocket.Close();
                     Player winnerPlayer = players[int.Parse(message.GetBody())];
                     winnerPlayer.GetBoard().transform.Find("VictoryParticuleSystem").GetComponent<ParticleSystem>().gameObject.SetActive(true);
-                    GameObject.Find("EndGameButton").SetActive(true);
+                    _endGameButton.SetActive(true);
                 });
                 break;
             default:

@@ -8,20 +8,18 @@ public class MoveObject : MonoBehaviour
 
     public void MoveToAnotherScene(string sceneToLoad, string sceneToUnload)
     {
-        if (_load) return;
-        _load = true;
         StartCoroutine(ChangeScene(sceneToLoad, sceneToUnload, gameObject));
     }
 
     public void MoveToAnotherSceneWithSave(string sceneToLoad, string sceneToUnload, GameObject saveObject)
     {
-        if (_load) return;
-        _load = true;
         StartCoroutine(ChangeScene(sceneToLoad, sceneToUnload, saveObject));
     }
 
     private IEnumerator ChangeScene(string sceneToLoad, string sceneToUnload, GameObject gameObject)
     {
+        Debug.Log("HEY ! : " + sceneToLoad);
+        Debug.Log("HEY 2 ! : " + sceneToUnload);
         SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Additive);
         var nextScene = SceneManager.GetSceneByName(sceneToLoad);
         SceneManager.MoveGameObjectToScene(gameObject, nextScene);
