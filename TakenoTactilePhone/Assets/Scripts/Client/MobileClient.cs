@@ -119,6 +119,7 @@ public class MobileClient : MonoBehaviour
      */
     private void ConnectToPrivatePath(string address, string playerPlace)
     {
+        Debug.Log("IN CONNECT TO PRIVATE CONNECTION PATH : " + address);
         _serverSocket = new WebSocket(address);
         _messageSender = new MessageSender(_serverSocket);
         _serverSocket.Connect();
@@ -130,6 +131,7 @@ public class MobileClient : MonoBehaviour
     private void ReceiveConnectionPath(object sender, MessageEventArgs args)
     {
         var parser = new MessageParser(args.Data);
+        Debug.Log("IN RECEIVE CONNECTION PATH : " + parser.GetFullMessage());
         if (!MessageQuery.AcceptConnection.Equals(parser.GetQuery())) return;
         if (!parser.GetDest().Equals(Device.GetIPv4())) return;
         _serverSocket.Close();
