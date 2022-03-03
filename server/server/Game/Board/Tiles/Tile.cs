@@ -37,10 +37,11 @@ public class Tile
         return _growthAmount;
     }
 
+    // TODO
     public bool CanGrow()
     {
         if (_upgrade is Castle) return false;
-        return (_irrigation.Contains(true) || _upgrade.BambooCanGrow()) && (_growthAmount < 4) ;
+        return /* (_irrigation.Contains(true) || _upgrade.BambooCanGrow()) && */ (_growthAmount < 4) ;
     }
 
     public void Grow()

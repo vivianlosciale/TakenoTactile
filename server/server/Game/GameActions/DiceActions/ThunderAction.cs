@@ -14,12 +14,13 @@ public class ThunderAction: DiceAction
         player.SendEvent(MessageQuery.WaitingChoseThunder);
         table.SendEvent(MessageQuery.WaitingChoseThunder);
         
-        PositionDto chosenPosition = table.WaitForSelectPosition();
+        PositionDto? chosenPosition = table.WaitForSelectPosition(player);
+        if (chosenPosition == default) return;
         Tile? tile = game.GetTile(new Position(chosenPosition.I, chosenPosition.J));
         
         if (tile == null)
         {
-            player.SendEvent(MessageQuery.Error, "No tile at position ("+chosenPosition+")");
+            player.SendEvent(MessageQuery.Error, "Aucune tuile à la position ("+chosenPosition+")");
             Use(player, table, game);
         }
         else if (tile.CanEat())
@@ -33,7 +34,8 @@ public class ThunderAction: DiceAction
             player.SendEvent(MessageQuery.EatBamboo, "true");
             table.SendEvent(MessageQuery.EatBamboo, chosenPosition.ToString());
             Console.WriteLine("Waiting for a bamboo to be removed from the panda position!");
-            table.WaitForObjectMoved();
+            table.WaitForObjectMoved(player);
+            if (player.IsDisconnected()) return;
             
             player.SendEvent(MessageQuery.BambooEaten);
         }

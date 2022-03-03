@@ -5,33 +5,50 @@ using server.Game.Board.Tiles;
 using server.Utils.Game;
 using server.Utils.Protocol;
 using WebSocketSharp;
-using ErrorEventArgs = WebSocketSharp.ErrorEventArgs;
 
 namespace server.SocketRooms;
 
 public class PlayerRoom : SocketRoom
 {
-    private Takenoko _game;
+    private readonly string _reconnectionAddress;
+
+    private bool _gameStarted;
+    
+    private readonly Takenoko _game;
     private readonly int _playerNumber;
     
     private readonly List<VictoryCard> _victoryCards = new();
     private readonly List<VictoryCard> _validatedCards = new();
-    private readonly FoodStorage _foodStorage = new (10,10,10);
+    private readonly FoodStorage _foodStorage = new ();
     private readonly Dictionary<UpgradeType, int> _upgrades = new();
-
+    
     private bool _isPlaying;
     private bool _endTurn;
-    private string _chosenTile = string.Empty;
+    private string _chosenTileName = string.Empty;
     private DiceFaces _diceRoll = DiceFaces.None;
     
     public bool Validate;
     public bool CanPlayPowerTwice;
     public int PowerUses = 2;
 
-    public PlayerRoom(Takenoko game, int playerNumber)
+    public PlayerRoom(Takenoko game, int playerNumber, string reconnectionAddress)
     {
+        _reconnectionAddress = reconnectionAddress;
         _game = game;
         _playerNumber = playerNumber;
+    }
+
+    public PlayerRoom(PlayerRoom player)
+    {
+        _reconnectionAddress = player._reconnectionAddress;
+        _gameStarted = player._gameStarted;
+        Disconnected = player.Disconnected;
+        _game = player._game;
+        _playerNumber = player._playerNumber;
+        _victoryCards = player._victoryCards;
+        _validatedCards = player._validatedCards;
+        _foodStorage = player._foodStorage;
+        _upgrades = player._upgrades;
     }
     
     public int GetNumber()
@@ -73,10 +90,10 @@ public class PlayerRoom : SocketRoom
                 Validate = true;
                 break;
             case MessageQuery.ChosenTile:
-                _chosenTile = message.GetBody();
+                _chosenTileName = message.GetBody();
                 break;
             case MessageQuery.WaitingFoodStorage:
-                Sender.Send(MessageQuery.FoodStorage, BambooDto.ToString(
+                SendEvent(MessageQuery.FoodStorage, BambooDto.ToString(
                     _foodStorage.GetGreenAmount(),
                     _foodStorage.GetYellowAmount(),
                     _foodStorage.GetPinkAmount()));
@@ -92,9 +109,30 @@ public class PlayerRoom : SocketRoom
 
     protected override void OnClose(CloseEventArgs e)
     {
-        Console.WriteLine("\n\n##############################################\n\n"
-                          +"Player"+_playerNumber+" disconnected!"
-                          +"\n\n##############################################\n\n");
+        Console.WriteLine("<----- Player "+_playerNumber+" disconnected ----->");
+        if (_gameStarted)
+        {
+            Disconnected = true;
+            _game.SendToTable(MessageQuery.Disconnection, _playerNumber.ToString(), _reconnectionAddress);
+        }
+        else _game.SendToTable(MessageQuery.APlayerLeft, _playerNumber.ToString());
+        _game.RemovePlayer(this);
+    }
+
+    protected override void OnOpen()
+    {
+        if (Disconnected) Reconnection();
+    }
+
+    private void Reconnection()
+    {
+        Disconnected = false;
+        Sender.Send(MessageQuery.StartGame);
+        foreach (VictoryCard card in _victoryCards)
+        {
+            Sender.Send(MessageQuery.ReceivedCard,card.GetName());
+        }
+        _game.SendToTable(MessageQuery.Reconnection, _playerNumber.ToString());
     }
 
     public bool FinishedGame(int neededValidations)
@@ -126,9 +164,10 @@ public class PlayerRoom : SocketRoom
 
     public void GiveCard(VictoryCard card)
     {
+        _gameStarted = true;
         _victoryCards.Add(card);
         Console.WriteLine("Sending card " + card.GetName() + " to player " + _playerNumber);
-        Sender.Send(MessageQuery.ReceivedCard,card.GetName());
+        SendEvent(MessageQuery.ReceivedCard,card.GetName());
     }
 
     public void GiveUpgrade(UpgradeType upgrade)
@@ -153,40 +192,43 @@ public class PlayerRoom : SocketRoom
 
     public DiceFaces WaitingDiceResult()
     {
+        if (Disconnected) return _diceRoll;
         _diceRoll = DiceFaces.None;
-        Sender.Send(MessageQuery.WaitingDiceResult);
+        SendEvent(MessageQuery.WaitingDiceResult);
         Console.WriteLine("Waiting for player " + _playerNumber + " to roll the dice...");
-        while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
+        while (_diceRoll.Equals(DiceFaces.None) && !Disconnected) WaitSeconds(1);
         return _diceRoll;
     }
 
     public DiceFaces WaitingDiceFace()
     {
+        if (Disconnected) return _diceRoll;
         _diceRoll = DiceFaces.None;
-        while (_diceRoll.Equals(DiceFaces.None)) WaitSeconds(1);
+        while (_diceRoll.Equals(DiceFaces.None) && !Disconnected) WaitSeconds(1);
         return _diceRoll;
     }
 
     public void WaitForEndTurn()
     {
+        if (Disconnected) return;
         _endTurn = false;
-        Sender.Send(MessageQuery.WaitingEndTurn);
+        SendEvent(MessageQuery.WaitingEndTurn);
         Console.WriteLine("Waiting for player " + _playerNumber + " to end their turn...");
-        while (!_endTurn) WaitSeconds(1);
+        while (!_endTurn && !Disconnected) WaitSeconds(1);
         ResetPowerUses();
     }
 
-    public Tile WaitingChoseTile(List<Tile> pickedTiles)
+    public Tile? WaitingChoseTile(List<Tile> pickedTiles)
     {
-        _chosenTile = string.Empty;
+        _chosenTileName = string.Empty;
         Sender.Send(MessageQuery.WaitingChoseTile, MultiNames.ToMessage(pickedTiles));
         Console.WriteLine("Waiting for player " + _playerNumber + " to chose a tile...");
-        while (_chosenTile == string.Empty) WaitSeconds(1);
-        Console.WriteLine("The player chose the tile '"+_chosenTile+"'");
+        while (_chosenTileName == string.Empty && !Disconnected) WaitSeconds(1);
+        Console.WriteLine("The player chose the tile '"+_chosenTileName+"'");
         foreach (var tile in pickedTiles)
         {
-            if (tile.ToString().Equals(_chosenTile)) return tile;
+            if (tile.ToString().Equals(_chosenTileName)) return tile;
         }
-        return pickedTiles[0];
+        return default;
     }
 }

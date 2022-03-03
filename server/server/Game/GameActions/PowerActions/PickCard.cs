@@ -13,11 +13,12 @@ public class PickCard: PowerAction
         if (!player.HasFullHand())
         {
             player.SendEvent(MessageQuery.WaitingPickCard);
-            CardTypes type = table.WaitForCardPick();
+            CardTypes type = table.WaitForCardPick(player);
+            if (type == CardTypes.None) return;
             VictoryCard? card = game.PickCard(type);
             if (card != null) player.GiveCard(card);
-            else player.SendEvent(MessageQuery.Error, "No more cards in that deck!");
+            else player.SendEvent(MessageQuery.Error, "Il n'y a plus de cartes dans le paquet !");
         }
-        else player.SendEvent(MessageQuery.Error, "You already have 5 cards in your hand!");
+        else player.SendEvent(MessageQuery.Error, "Vous avez déjà 5 cartes dans votre main !");
     }
 }

@@ -64,6 +64,13 @@ public enum MessageQuery
     APlayerJoined,
     
     /**
+     * FROM/TO: server -> table
+     * ARGS:    the player number
+     *     To inform the table that a player left the game
+     */
+    APlayerLeft,
+    
+    /**
      * FROM/TO: server -> everyone
      * NO ARGS
      *     To inform that the game is full and no more players can join
@@ -80,6 +87,20 @@ public enum MessageQuery
      *     To inform the game started
      */
     StartGame,
+    
+    /**
+     * FROM/TO: server -> table
+     * ARGS:    player position and socket address
+     *     To ask the table to create a reconnection code
+     */
+    Disconnection,
+    
+    /**
+     * FROM/TO: server -> table
+     * ARGS:    player position
+     *     To inform the table te player reconnected
+     */
+    Reconnection,
     
     
     
@@ -357,6 +378,10 @@ public enum MessageQuery
     /**
      * FROM/TO: server -> table
      * ARGS:    the name of the tile to be placed
+     *     Inform that the server awaits the table to return the placed tile position
+     * 
+     * FROM/TO: server -> mobile
+     * NO ARGS
      *     Inform that the server awaits the table to return the placed tile position
      */
     WaitingPlaceTile,

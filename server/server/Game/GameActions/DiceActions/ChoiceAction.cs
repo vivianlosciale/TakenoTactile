@@ -11,6 +11,7 @@ public class ChoiceAction: DiceAction
     {
         player.SendEvent(MessageQuery.WaitingChoseWeather);
         DiceFaces diceFace = player.WaitingDiceFace();
+        if (diceFace == DiceFaces.None) return;
         Console.WriteLine("Player "+player.GetNumber()+" chose '"+DiceFacesMethods.ToString(diceFace)+"'");
         table.SendEvent(MessageQuery.RollDice, diceFace.ToString());
         GetPower(diceFace).Use(player,table,game);

@@ -14,12 +14,13 @@ public class RainAction: DiceAction
         player.SendEvent(MessageQuery.WaitingChoseRain);
         table.SendEvent(MessageQuery.WaitingChoseRain);
         
-        PositionDto chosenPosition = table.WaitForSelectPosition();
+        PositionDto? chosenPosition = table.WaitForSelectPosition(player);
+        if (chosenPosition == default) return;
         Tile? tile = game.GetTile(new Position(chosenPosition.I, chosenPosition.J));
         
         if (tile == null)
         {
-            player.SendEvent(MessageQuery.Error, "No tile at position ("+chosenPosition+")");
+            player.SendEvent(MessageQuery.Error, "Aucune tuile à la position ("+chosenPosition+")");
             Use(player, table, game);
         }
         else if (tile.CanGrow())

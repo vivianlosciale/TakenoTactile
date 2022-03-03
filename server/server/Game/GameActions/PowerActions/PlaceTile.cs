@@ -12,18 +12,29 @@ public class PlaceTile: PowerAction
     public override void Use(PlayerRoom player, TableRoom table, GameState game)
     {
         player.SendEvent(MessageQuery.WaitingPickTiles);
-        table.WaitForTilesPick();
+        table.WaitForTilesPick(player);
+        if (player.IsDisconnected()) return;
         List<Tile> pickedTiles = PickTiles(game, 3);
         if (pickedTiles.Count == 0)
         {
             player.SendEvent(MessageQuery.Error, "No more tiles in the deck!");
             return;
         }
-        Tile selectedTile = player.WaitingChoseTile(pickedTiles);
+        Tile? selectedTile = player.WaitingChoseTile(pickedTiles);
+        if (selectedTile == default)
+        {
+            foreach (Tile tile in pickedTiles) game.ReturnTile(tile);
+            return;
+        }
+        table.SendEvent(MessageQuery.WaitingPlaceTile, selectedTile.ToString());
+        PositionDto? selectedPosition = table.WaitForSelectPosition(player);
+        if (selectedPosition == default)
+        {
+            foreach (Tile tile in pickedTiles) game.ReturnTile(tile);
+            return;
+        }
         pickedTiles.Remove(selectedTile);
         foreach (Tile tile in pickedTiles) game.ReturnTile(tile);
-        table.SendEvent(MessageQuery.WaitingPlaceTile, selectedTile.ToString());
-        PositionDto selectedPosition = table.WaitForSelectPosition();
         player.SendEvent(MessageQuery.TilePlaced);
         game.PlaceTile(new Position(selectedPosition.I, selectedPosition.J), selectedTile);
     }
