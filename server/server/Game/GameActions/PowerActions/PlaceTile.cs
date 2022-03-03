@@ -17,7 +17,7 @@ public class PlaceTile: PowerAction
         List<Tile> pickedTiles = PickTiles(game, 3);
         if (pickedTiles.Count == 0)
         {
-            player.SendEvent(MessageQuery.Error, "No more tiles in the deck!");
+            player.SendEvent(MessageQuery.Error, "Il n'y a plus de cartes dans le paquet !");
             return;
         }
         Tile? selectedTile = player.WaitingChoseTile(pickedTiles);
