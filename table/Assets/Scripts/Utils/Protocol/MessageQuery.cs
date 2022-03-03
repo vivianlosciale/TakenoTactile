@@ -459,6 +459,27 @@ public enum MessageQuery
      *     Inform that the game ended and send the number of the winner
      */
     EndGame,
+
+    /**
+     * FROM/TO: server -> table
+     * ARGS:    player position and socket address
+     *     To ask the table to create a reconnection code
+     */
+    Disconnection,
+
+    /**
+     * FROM/TO: server -> table
+     * ARGS:    player position
+     *     To inform the table te player reconnected
+     */
+    Reconnection,
+
+    /**
+     * FROM/TO: server -> table
+     * ARGS:    the player number
+     *     To inform the table that a player left the game
+     */
+    APlayerLeft,
 }
 
 

@@ -12,4 +12,9 @@ public class Loading : MonoBehaviour
     {
         loadingCircle.fillAmount += 0.25f;
     }
+
+    public void RemovePlayer()
+    {
+        loadingCircle.fillAmount -= 0.25f;
+    }
 }

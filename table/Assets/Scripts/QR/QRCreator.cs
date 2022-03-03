@@ -11,10 +11,17 @@ public class QRCreator : MonoBehaviour
     public RawImage[] QRImages;
     public string address;
 
+    public SpriteRenderer[] QRSpriteRenderes;
+
     private void Awake()
     {
         QRImages = players.GetComponentsInChildren<RawImage>();
         foreach (RawImage qr in QRImages)
+        {
+            qr.gameObject.SetActive(false);
+        }
+        QRSpriteRenderes = players.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer qr in QRSpriteRenderes)
         {
             qr.gameObject.SetActive(false);
         }
@@ -59,6 +66,34 @@ public class QRCreator : MonoBehaviour
             {
                 Debug.LogWarning("Please specify an IP address [" + e.Message + "]");
             }
+        }
+    }
+
+    public void DisplayQRLeaveForPlayer(int index)
+    {
+        try
+        {
+            Texture2D myQr = generateQR(addressInput.text + "," + index);
+            QRImages[index].texture = myQr;
+            QRImages[index].gameObject.SetActive(true);
+        }
+        catch (System.ArgumentException e)
+        {
+            Debug.LogWarning("Please specify an IP address [" + e.Message + "]");
+        }
+    }
+
+    public void DisplayQRDisconnectionForPlayer(string message, int index)
+    {
+        try
+        {
+            Texture2D myQr = generateQR(message + "," + index);
+            QRSpriteRenderes[index].sprite = Sprite.Create(myQr, new Rect(0, 0, myQr.width, myQr.height), Vector2.zero);
+            QRSpriteRenderes[index].gameObject.SetActive(true);
+        }
+        catch (System.ArgumentException e)
+        {
+            Debug.LogWarning("Please specify an IP address [" + e.Message + "]");
         }
     }
 }

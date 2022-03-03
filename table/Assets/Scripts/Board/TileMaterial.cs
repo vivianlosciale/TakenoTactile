@@ -7,7 +7,7 @@ public class TileMaterial : MonoBehaviour
     private float _value;
     private MeshRenderer meshRenderer;
 
-    private void Start()
+    private void Awake()
     {
         meshRenderer = transform.GetComponent<MeshRenderer>();
         _value = meshRenderer.material.color.r;

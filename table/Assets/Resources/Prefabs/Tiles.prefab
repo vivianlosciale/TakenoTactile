@@ -125,7 +125,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8966863753341313451}
         m_TargetAssemblyTypeName: TileEvent, Assembly-CSharp
-        m_MethodName: OnBambooPlaced
+        m_MethodName: OnObjectPlacedEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -140,7 +140,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 8966863753341313451}
         m_TargetAssemblyTypeName: TileEvent, Assembly-CSharp
-        m_MethodName: OnBambooEated
+        m_MethodName: OnObjectRemoveEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using WebSocketSharp;
 
@@ -49,6 +48,8 @@ public class TableClient : MonoBehaviour
     private static string GAME_SCENE = "Game";
     private static string HOME_SCENE = "TakenoHome";
 
+    private List<ErrorInGame> _errorsInGame;
+
     /*
      * Private constructor to avoid outside instantiations.
      */
@@ -62,6 +63,7 @@ public class TableClient : MonoBehaviour
         _table = this;
         _privateAddress = "ws://" + Device.GetIPv4() + ":8080";
         players = new Player[4];
+        _errorsInGame = new List<ErrorInGame>();
         _canPickTile = false;
         _canPickCard = false;
         _canPlaceBambooFromRainPower = false;
@@ -72,7 +74,12 @@ public class TableClient : MonoBehaviour
         audioSource = gameObject.GetComponent<AudioSource>();
         _actualDice = DiceFaces.None;
         _tilesEventNotAvailable = new List<Tile>();
+        StartCoroutine(ReloadFromSave());
+    }
 
+    private IEnumerator ReloadFromSave()
+    {
+        yield return new WaitForSeconds(5);
         GameObject saveObject = GameObject.Find("SaveObject");
         if (saveObject != null)
         {
@@ -80,6 +87,79 @@ public class TableClient : MonoBehaviour
             _qrCreator = qrCreator;
             Connect(saveObject.GetComponent<SaveObject>().GetAddressServer());
         }
+    }
+
+    /*
+     *  Erros section
+     */
+    internal void AddNewError(string tuioValue, string message, ErrorInGameType errorInGameType, Tile tile)
+    {
+        Debug.Log("ERREUR : " + message);
+        _errorsInGame.Add(new ErrorInGame(tuioValue, message, errorInGameType, tile));
+        if (_errorsInGame.Count == 1)
+        {
+            TileMaterial tileMaterial = _errorsInGame[0].errorTile.GameObject.AddComponent<TileMaterial>();
+            tileMaterial.TwinkleTile();
+            foreach(Player player in players)
+            {
+                if (player != null)
+                {
+                    GameObject error = player.GetBoard().transform.Find("Error").gameObject;
+                    error.SetActive(true);
+                    error.transform.GetChild(0).GetComponent<TextMeshPro>().SetText(_errorsInGame[0].message);
+                }
+            }
+        }
+    }
+
+    internal ErrorInGame GetNextError()
+    {
+        return _errorsInGame[0];
+    }
+
+    internal List<ErrorInGame> GetErrors()
+    {
+        return _errorsInGame;
+    }
+
+    internal void ResolveNextError(ErrorInGame errorInGame)
+    {
+        if (_errorsInGame[0].Equals(errorInGame))
+        {
+            Destroy(_errorsInGame[0].errorTile.GameObject.GetComponent<TileMaterial>());
+            if (_tilesEventNotAvailable.Contains(_errorsInGame[0].errorTile))
+            {
+                TileMaterial tileMaterial = _errorsInGame[1].errorTile.GameObject.AddComponent<TileMaterial>();
+                tileMaterial.DeactivateTile();
+            }
+            if (_errorsInGame.Count > 1)
+            {
+                TileMaterial tileMaterial = _errorsInGame[1].errorTile.GameObject.AddComponent<TileMaterial>();
+                tileMaterial.TwinkleTile();
+                foreach (Player player in players)
+                {
+                    if (player != null)
+                    {
+                        player.GetBoard().transform.Find("Error").transform.GetChild(0).GetComponent<TextMeshPro>().SetText(_errorsInGame[1].message);
+                    }
+                }
+            } else
+            {
+                foreach (Player player in players)
+                {
+                    if (player != null)
+                    {
+                        player.GetBoard().transform.Find("Error").gameObject.SetActive(false);
+                    }
+                }
+            }
+        }
+        _errorsInGame.Remove(errorInGame);
+    }
+
+    internal bool HasErrorsInGame()
+    {
+        return _errorsInGame.Count > 0; 
     }
 
     /*
@@ -196,6 +276,10 @@ public class TableClient : MonoBehaviour
     /*
      * Bamboo section
      */
+    internal bool CanRemoveFarmer()
+    {
+        return _canMoveFarmer;
+    }
 
     internal bool CanMoveFarmer(Tile tile)
     {
@@ -207,13 +291,15 @@ public class TableClient : MonoBehaviour
                 return false;
             }
             return true;
-        } else
-        {
-            //Message global
-            return false;
         }
+        return _tileBoard.IsFarmerPosition(tile.position);
     }
-    
+
+    internal bool CanRemovePanda()
+    {
+        return _canMovePanda;
+    }
+
     internal bool CanMovePanda(Tile tile)
     {
         if (_canMovePanda)
@@ -225,11 +311,7 @@ public class TableClient : MonoBehaviour
             }
             return true;
         }
-        else
-        {
-            //Message global
-            return false;
-        }
+        return _tileBoard.IsPandaPosition(tile.position);
     }
 
     internal bool CanPlaceBambooFromRainPower(Tile tile)
@@ -243,11 +325,7 @@ public class TableClient : MonoBehaviour
             }
             return true;
         }
-        else
-        {
-            //Message global
-            return false;
-        }
+        return false;
     }
     
     internal bool CanPlaceBambooFromFarmer(Vector2Int position)
@@ -261,11 +339,7 @@ public class TableClient : MonoBehaviour
             }
             return true;
         }
-        else
-        {
-            //Message global
-            return false;
-        }
+        return false;
     }
 
     internal bool IsGardener(string tuioValue)
@@ -295,6 +369,11 @@ public class TableClient : MonoBehaviour
         _tileBoard.SetPandaPosition(newPosition);
         SendBambooAction(MessageQuery.WaitingMovePanda, newPosition);
         _canMovePanda = false;
+    }
+
+    internal bool CanRemoveBamboo()
+    {
+        return _canEatBamboo;
     }
 
     internal bool CanEatBamboo(Vector2Int position)
@@ -408,6 +487,11 @@ public class TableClient : MonoBehaviour
         players[position] = new Player(position);
     }
 
+    private void RemovePlayerFromGame(int position)
+    {
+        players[position] = null;
+    }
+
     /*
      * Start the Game
      */
@@ -421,6 +505,8 @@ public class TableClient : MonoBehaviour
      */
     public void ChangeScene(string sceneToLoad, string sceneToUnload)
     {
+        GameObject sound = GameObject.Find("Sound");
+        if (sound != null) Destroy(sound);
         FindObjectOfType<OSC>().Close();
         gameObject.GetComponent<MoveObject>().MoveToAnotherScene(sceneToLoad, sceneToUnload);
     }
@@ -485,6 +571,24 @@ public class TableClient : MonoBehaviour
         }
     }
 
+    public void ResetTurn()
+    {
+        _canPickTile = false;
+        _canPickCard = false;
+        _canPlaceBambooFromRainPower = false;
+        _canPlaceBambooFromFarmer = false;
+        _canEatBamboo = false;
+        _canMoveFarmer = false;
+        _canMovePanda = false;
+        foreach (Tile tile in _tilesEventNotAvailable)
+        {
+            Destroy(tile.GameObject.GetComponent<TileMaterial>());
+        }
+        _tileBoard.DeactivateGardenerTile();
+        _tileBoard.DeactivatePandaTile();
+        _placeHolderBoard.DeactivateAllSlot();
+    }
+
     /*
      * Message Listener from server
      */
@@ -511,6 +615,16 @@ public class TableClient : MonoBehaviour
                     AddPlayerToGame(player);
                     GameObject.Find("P" + player).SetActive(false);
                     _loading.AddPlayer();
+                });
+                break;
+            case MessageQuery.APlayerLeft:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    int player = int.Parse(message.GetBody());
+                    RemovePlayerFromGame(player);
+                    QRCreator qRCreator = GameObject.Find("QRRenderer").GetComponent<QRCreator>();
+                    qRCreator.DisplayQRLeaveForPlayer(player);
+                    _loading.RemovePlayer();
                 });
                 break;
             case MessageQuery.StartGame:
@@ -565,13 +679,13 @@ public class TableClient : MonoBehaviour
             case MessageQuery.WaitingChoseAction:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _currentPlayer.ChangeChoseAction();
+                    _currentPlayer.ChangeChoseAction(true);
                 });
                 break;
             case MessageQuery.ValidateChoice:
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
-                    _currentPlayer.ChangeChoseAction();
+                    _currentPlayer.ChangeChoseAction(false);
                 });
                 break;
             case MessageQuery.WaitingPlaceTile:
@@ -613,7 +727,7 @@ public class TableClient : MonoBehaviour
                     }
                     foreach (Tile tile in _tilesEventNotAvailable)
                     {
-                        tile.GameObject.AddComponent<TileMaterial>();
+                        tile.GameObject.AddComponent<TileMaterial>().DeactivateTile();
                     }
                     _canMovePanda = true;
                 });
@@ -625,6 +739,7 @@ public class TableClient : MonoBehaviour
                     if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
                         _sender.Send(MessageQuery.ChosenPosition, PositionDto.ToString(0,0));
+                        StartCoroutine(_currentPlayer.UseAction());
                         return;
                     }
                     _canMoveFarmer = true;
@@ -644,6 +759,7 @@ public class TableClient : MonoBehaviour
                     if (_tilesEventNotAvailable.Count == _tileBoard.tilesPositions.Count)
                     {
                         _sender.Send(MessageQuery.ChosenPosition, PositionDto.ToString(0, 0));
+                        StartCoroutine(_currentPlayer.UseAction());
                         return;
                     }
                     _canMovePanda = true;
@@ -660,9 +776,41 @@ public class TableClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _serverSocket.Close();
+                    QRCreator qRCreator = GameObject.Find("QRRenderer").GetComponent<QRCreator>();
+                    foreach (Player player in players)
+                    {
+                        if (player != null)
+                        {
+                            GameObject.Find("P" + player.id).SetActive(false);
+                            player.GetBoard().SetActive(true);
+                        }
+                    }
                     Player winnerPlayer = players[int.Parse(message.GetBody())];
                     winnerPlayer.GetBoard().transform.Find("VictoryParticuleSystem").GetComponent<ParticleSystem>().gameObject.SetActive(true);
                     _endGameButton.SetActive(true);
+                });
+                break;
+            case MessageQuery.Disconnection:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    int playerId = int.Parse(message.GetDest());
+                    if (playerId == _currentPlayer.id)
+                    {
+                        ResetTurn();
+                    }
+                    Debug.Log("PLAYER ID DISCONNEDTED : " + playerId);
+                    Debug.Log("MESSAGE : " + message.GetBody());
+                    players[playerId].GetBoard().SetActive(false);
+                    QRCreator qRCreator = GameObject.Find("QRRenderer").GetComponent<QRCreator>();
+                    qRCreator.DisplayQRDisconnectionForPlayer(message.GetBody(), playerId);
+                });
+                break;
+            case MessageQuery.Reconnection:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                    int playerId = int.Parse(message.GetBody());
+                    players[playerId].GetBoard().SetActive(true);
+                    GameObject.Find("P" + playerId).SetActive(false);
                 });
                 break;
             default:

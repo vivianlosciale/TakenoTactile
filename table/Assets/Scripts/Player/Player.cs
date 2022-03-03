@@ -40,9 +40,9 @@ public class Player
         actions.Remove(action);
     }
 
-    internal void ChangeChoseAction()
+    internal void ChangeChoseAction(bool canChoseAction)
     {
-        _canChoseAction = !_canChoseAction;
+        _canChoseAction = canChoseAction;
         actions = new List<Actions>();
     }
 
