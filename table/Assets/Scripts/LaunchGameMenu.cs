@@ -10,7 +10,9 @@ public class LaunchGameMenu : MonoBehaviour
     {
         GameObject soundGameObject = new GameObject("Sound");
         AudioSource audioSource = soundGameObject.AddComponent<AudioSource>();
-        audioSource.PlayOneShot(music);
+        audioSource.clip = music;
+        audioSource.Play();
+        DontDestroyOnLoad(soundGameObject);
     }
 
     private void OnMouseDown()
