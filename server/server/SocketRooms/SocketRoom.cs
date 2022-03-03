@@ -5,6 +5,7 @@ namespace server.SocketRooms;
 
 public class SocketRoom : WebSocketBehavior
 {
+    protected bool Disconnected;
     
     protected readonly MessageSender Sender;
 
@@ -26,9 +27,19 @@ public class SocketRoom : WebSocketBehavior
     {
         Sender.Send(query, message);
     }
+    
+    public void SendEvent(MessageQuery query, string dest, string message)
+    {
+        Sender.Send(query, dest, message);
+    }
 
     protected void WaitSeconds(int sec)
     {
         Thread.Sleep(TimeSpan.FromSeconds(sec));
+    }
+
+    public bool IsDisconnected()
+    {
+        return Disconnected;
     }
 }

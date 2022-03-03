@@ -14,12 +14,13 @@ public class MoveFarmer: PowerAction
         player.SendEvent(MessageQuery.WaitingMoveFarmer);
         table.SendEvent(MessageQuery.WaitingMoveFarmer);
         
-        PositionDto chosenPosition = table.WaitForSelectPosition();
+        PositionDto? chosenPosition = table.WaitForSelectPosition(player);
+        if (chosenPosition == default) return;
         Tile? tile = game.GetTile(new Position(chosenPosition.I, chosenPosition.J));
         
         if (tile == null)
         {
-            player.SendEvent(MessageQuery.Error, "No tile at position ("+chosenPosition+")");
+            player.SendEvent(MessageQuery.Error, "Aucune tuile à la position ("+chosenPosition+")");
             Use(player, table, game);
         }
         else if (tile.CanGrow())
@@ -28,7 +29,7 @@ public class MoveFarmer: PowerAction
             player.SendEvent(MessageQuery.PlaceBamboo, "true");
             table.SendEvent(MessageQuery.PlaceBamboo, chosenPosition.ToString());
             Console.WriteLine("Waiting for a bamboo to be placed at the farmer position!");
-            table.WaitForObjectMoved();
+            table.WaitForObjectMoved(player);
         }
         else
         {

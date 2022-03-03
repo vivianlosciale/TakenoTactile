@@ -72,33 +72,33 @@ public class TableRoom : SocketRoom
         }
     }
 
-    public CardTypes WaitForCardPick()
+    public CardTypes WaitForCardPick(PlayerRoom player)
     {
         _pickCard = CardTypes.None;
         SendEvent(MessageQuery.WaitingPickCard);
         Console.WriteLine("Waiting for the current player to pick a card...");
-        while (_pickCard.Equals(CardTypes.None)) WaitSeconds(1);
+        while (_pickCard.Equals(CardTypes.None) && !player.IsDisconnected()) WaitSeconds(1);
         return _pickCard;
     }
 
-    public UpgradeType WaitForUpgradePick()
+    public UpgradeType WaitForUpgradePick(PlayerRoom player)
     {
         _pickUpgrade = UpgradeType.None;
         SendEvent(MessageQuery.WaitingPickUpgrade);
         Console.WriteLine("Waiting for the current player to pick an upgrade...");
-        while (_pickUpgrade.Equals(UpgradeType.None)) WaitSeconds(1);
+        while (_pickUpgrade.Equals(UpgradeType.None) && !player.IsDisconnected()) WaitSeconds(1);
         return _pickUpgrade;
     }
 
-    public void WaitForTilesPick()
+    public void WaitForTilesPick(PlayerRoom player)
     {
         _pickTiles = false;
         SendEvent(MessageQuery.WaitingPickTiles);
         Console.WriteLine("Waiting for the current player to pick tiles...");
-        while (!_pickTiles) WaitSeconds(1);
+        while (!_pickTiles && !player.IsDisconnected()) WaitSeconds(1);
     }
 
-    public List<Actions> ChosePowers(PlayerRoom player)
+    public List<Actions>? ChosePowers(PlayerRoom player)
     {
         _currentPlayer = player;
         _chosenPowers.Clear();
@@ -111,6 +111,7 @@ public class TableRoom : SocketRoom
             _chosenPowers.Clear();
             // TODO send message to mobile to notify a miss validation
             WaitValidation();
+            if (_currentPlayer.IsDisconnected()) return default;
         }
         Console.WriteLine("Choices are made!");
         Sender.Send(MessageQuery.ValidateChoice);
@@ -120,20 +121,20 @@ public class TableRoom : SocketRoom
     private void WaitValidation()
     {
         if(_currentPlayer == null) return;
-        while (!_currentPlayer.Validate) WaitSeconds(1);
+        while (!_currentPlayer.Validate && !_currentPlayer.IsDisconnected()) WaitSeconds(1);
     }
 
-    public PositionDto WaitForSelectPosition()
+    public PositionDto? WaitForSelectPosition(PlayerRoom player)
     {
         _tilePosition = null;
         Console.WriteLine("Waiting for the current player to chose a position!");
-        while (_tilePosition == null) WaitSeconds(1);
+        while (_tilePosition == null && !player.IsDisconnected()) WaitSeconds(1);
         return _tilePosition;
     }
 
-    public void WaitForObjectMoved()
+    public void WaitForObjectMoved(PlayerRoom player)
     {
         _objectMoved = false;
-        while (!_objectMoved) WaitSeconds(1);
+        while (!_objectMoved && !player.IsDisconnected()) WaitSeconds(1);
     }
 }
