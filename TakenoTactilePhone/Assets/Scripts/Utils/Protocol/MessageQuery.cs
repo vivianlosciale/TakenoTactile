@@ -255,6 +255,12 @@ public enum MessageQuery
      */
     ChosenTile,
     
+    /** 
+     * FROM/TO: server -> mobile
+     * NO ARGS
+     *     Inform that the server awaits the table to return the placed tile position
+     */
+    WaitingPlaceTile,
     
     /**
      * FROM/TO: server -> mobile

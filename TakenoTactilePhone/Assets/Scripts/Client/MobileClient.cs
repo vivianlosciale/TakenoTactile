@@ -301,8 +301,14 @@ public class MobileClient : MonoBehaviour
                 ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
                 {
                     _popUpSystem.HidePopUp();
-                    _helper.UpdateHelpMessage("Veuillez sélectionner une tuile et la placer sur la table.");
+                    _helper.UpdateHelpMessage("Veuillez choisir une tuile.");
                     _gameActions.DisplayTilesToChoose(parser.GetMessageBody());
+                });
+                break;
+            case MessageQuery.WaitingPlaceTile:
+                ExecuteOnMainThread.RunOnMainThread.Enqueue(() =>
+                {
+                _helper.UpdateHelpMessage("Veuillez placer la tuile sur la table.");
                 });
                 break;
             case MessageQuery.TilePlaced :
