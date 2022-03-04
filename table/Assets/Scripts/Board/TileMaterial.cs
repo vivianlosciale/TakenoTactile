@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using UnityEngine;
 
@@ -7,22 +8,32 @@ public class TileMaterial : MonoBehaviour
     private float _value;
     private MeshRenderer meshRenderer;
 
-    private void Awake()
+    //on stocke la fonction coroutine en train de tourner
+    private IEnumerator coroutine;
+
+    private void Start()
     {
         meshRenderer = transform.GetComponent<MeshRenderer>();
         _value = meshRenderer.material.color.r;
+        coroutine = null;
     }
 
     public void DeactivateTile()
     {
-
-        StartCoroutine(DeactivateTileAnimation());
+        if (coroutine!=null)
+            StopCoroutine(coroutine);
+        meshRenderer.materials[1].SetColor("_Color", Color.white);
+        coroutine = DeactivateTileAnimation();
+        StartCoroutine(coroutine);
     }
 
     public void TwinkleTile()
     {
-
-        StartCoroutine(TwinkleTileAnimation());
+        if (coroutine != null)
+            StopCoroutine(coroutine);
+        meshRenderer.materials[1].SetColor("_Color", Color.white);
+        coroutine = TwinkleTileAnimation();
+        StartCoroutine(coroutine);
     }
 
     private IEnumerator DeactivateTileAnimation()
@@ -46,7 +57,7 @@ public class TileMaterial : MonoBehaviour
         bool down = true;
         while (true)
         {
-            if(down)
+            if (down)
                 _value -= _speed;
             else
                 _value += _speed;
