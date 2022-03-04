@@ -98,8 +98,15 @@ public class TableClient : MonoBehaviour
         _errorsInGame.Add(new ErrorInGame(tuioValue, message, errorInGameType, tile));
         if (_errorsInGame.Count == 1)
         {
-            TileMaterial tileMaterial = _errorsInGame[0].errorTile.GameObject.AddComponent<TileMaterial>();
-            tileMaterial.TwinkleTile();
+            if (_tilesEventNotAvailable.Contains(_errorsInGame[0].errorTile))
+            {
+                TileMaterial tileMaterial = _errorsInGame[0].errorTile.GameObject.GetComponent<TileMaterial>();
+                tileMaterial.TwinkleTile();
+            } else
+            {
+                TileMaterial tileMaterial = _errorsInGame[0].errorTile.GameObject.AddComponent<TileMaterial>();
+                tileMaterial.TwinkleTile();
+            }
             foreach(Player player in players)
             {
                 if (player != null)
@@ -126,16 +133,26 @@ public class TableClient : MonoBehaviour
     {
         if (_errorsInGame[0].Equals(errorInGame))
         {
-            Destroy(_errorsInGame[0].errorTile.GameObject.GetComponent<TileMaterial>());
             if (_tilesEventNotAvailable.Contains(_errorsInGame[0].errorTile))
             {
-                TileMaterial tileMaterial = _errorsInGame[1].errorTile.GameObject.AddComponent<TileMaterial>();
+                TileMaterial tileMaterial = _errorsInGame[0].errorTile.GameObject.GetComponent<TileMaterial>();
                 tileMaterial.DeactivateTile();
+            } else
+            {
+                Destroy(_errorsInGame[0].errorTile.GameObject.GetComponent<TileMaterial>());
             }
             if (_errorsInGame.Count > 1)
             {
-                TileMaterial tileMaterial = _errorsInGame[1].errorTile.GameObject.AddComponent<TileMaterial>();
-                tileMaterial.TwinkleTile();
+                if (_tilesEventNotAvailable.Contains(_errorsInGame[1].errorTile))
+                {
+                    TileMaterial tileMaterial = _errorsInGame[1].errorTile.GameObject.GetComponent<TileMaterial>();
+                    tileMaterial.TwinkleTile();
+                }
+                else
+                {
+                    TileMaterial tileMaterial = _errorsInGame[1].errorTile.GameObject.AddComponent<TileMaterial>();
+                    tileMaterial.TwinkleTile();
+                }
                 foreach (Player player in players)
                 {
                     if (player != null)
@@ -424,6 +441,7 @@ public class TableClient : MonoBehaviour
         {
             Destroy(tile.GameObject.GetComponent<TileMaterial>());
         }
+        _tilesEventNotAvailable = new List<Tile>();
     }
 
     /*
@@ -584,6 +602,7 @@ public class TableClient : MonoBehaviour
         {
             Destroy(tile.GameObject.GetComponent<TileMaterial>());
         }
+        _tilesEventNotAvailable = new List<Tile>();
         _tileBoard.DeactivateGardenerTile();
         _tileBoard.DeactivatePandaTile();
         _placeHolderBoard.DeactivateAllSlot();

@@ -11,7 +11,7 @@ public class TileMaterial : MonoBehaviour
     //on stocke la fonction coroutine en train de tourner
     private IEnumerator coroutine;
 
-    private void Start()
+    private void Awake()
     {
         meshRenderer = transform.GetComponent<MeshRenderer>();
         _value = meshRenderer.material.color.r;
