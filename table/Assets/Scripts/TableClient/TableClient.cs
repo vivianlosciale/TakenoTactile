@@ -796,14 +796,7 @@ public class TableClient : MonoBehaviour
                 {
                     _serverSocket.Close();
                     QRCreator qRCreator = GameObject.Find("QRRenderer").GetComponent<QRCreator>();
-                    foreach (Player player in players)
-                    {
-                        if (player != null)
-                        {
-                            GameObject.Find("P" + player.id).SetActive(false);
-                            player.GetBoard().SetActive(true);
-                        }
-                    }
+                   
                     Player winnerPlayer = players[int.Parse(message.GetBody())];
                     winnerPlayer.GetBoard().transform.Find("VictoryParticuleSystem").GetComponent<ParticleSystem>().gameObject.SetActive(true);
                     _endGameButton.SetActive(true);
